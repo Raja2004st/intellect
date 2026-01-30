@@ -1,0 +1,142 @@
+import React, { useMemo } from "react";
+import AutoPaginatedSections from "./AutoPaginatedSections";
+import Header from "./header";
+import HorizontalCompareBar from "./HorizontalCompareBar";
+import "../styles/mainPage.scss";
+import "../styles/contentPage.scss";
+
+const PALETTE = {
+  self: "#0e4a2e",
+  manager: "#b8860b",
+  team: "#b3792e",
+  peers: "#a9d0b8",
+};
+
+const defaultData = [
+  {
+    label: "Leadership",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
+  {
+    label: "Bandwidth",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
+  {
+    label: "Sales and Customer Centricity",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
+  {
+    label: "Collaboration",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
+];
+
+const EvaluatorCategoryBreakdown = ({
+  startPage = 15,
+  pageWidth = 794,
+  pageHeight = 1123,
+  pagePadding = 10,
+  items = defaultData,
+}) => {
+  const blocks = useMemo(() => {
+    const out = [];
+
+    out.push(
+      <h2
+        key="title"
+        className="content-page__title"
+        style={{ color: "#0e4a2e" }}
+      >
+        <span className="content-page__title-index">2.4.</span>
+        <span className="content-page__title-text">
+          LBSCORE Broken Down by Evaluator Category
+        </span>
+      </h2>
+    );
+
+    out.push(
+      <div
+        key="note"
+        style={{ marginTop: -8, marginBottom: 16, color: "#333" }}
+      >
+        <em style={{ fontSize: 13 }}>
+          Note: For categories with more than one respondent, scores represent
+          the mean of all individual ratings.
+        </em>
+      </div>
+    );
+
+    items.forEach((row, idx) => {
+      out.push(
+        <div key={`sec-${idx}`} style={{ marginTop: idx === 0 ? 8 : 24 }}>
+          <h3 style={{ color: "#0e4a2e", margin: 0 }}>
+            {idx === 0
+              ? `Overall Rating: ${row.label}`
+              : `Rating: ${row.label}`}
+          </h3>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 56px",
+              alignItems: "center",
+              gap: 12,
+              marginTop: 10,
+            }}
+          >
+            <HorizontalCompareBar
+              rows={[
+                { label: "Self", value: row.values.self, color: PALETTE.self },
+                {
+                  label: "Manager",
+                  value: row.values.manager,
+                  color: PALETTE.manager,
+                },
+                {
+                  label: "Team Members",
+                  value: row.values.team,
+                  color: PALETTE.team,
+                },
+                {
+                  label: "Peers",
+                  value: row.values.peers,
+                  color: PALETTE.peers,
+                },
+              ]}
+              max={5}
+              showTicks={true}
+            />
+            <div
+              style={{
+                fontSize: 13,
+                color: "#0e4a2e",
+                fontWeight: 700,
+                lineHeight: 2.23,
+              }}
+            >
+              <div style={{ textAlign: "right" }}>{row.values.self}</div>
+              <div style={{ textAlign: "right" }}>{row.values.manager}</div>
+              <div style={{ textAlign: "right" }}>{row.values.team}</div>
+              <div style={{ textAlign: "right" }}>{row.values.peers}</div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+
+    return out;
+  }, [items]);
+
+  return (
+    <AutoPaginatedSections
+      blocks={blocks}
+      startPage={startPage}
+      pageWidth={pageWidth}
+      pageHeight={pageHeight}
+      pagePadding={pagePadding}
+      HeaderComponent={Header}
+      contentClassName="content-page"
+    />
+  );
+};
+
+export default EvaluatorCategoryBreakdown;

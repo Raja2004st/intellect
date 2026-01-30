@@ -11,6 +11,8 @@ import AboutSectionPages from "../components/aboutSectionPages";
 import ScoringDefinition from "../components/ScoringDefinition";
 import CompetencySummary from "../components/CompetencySummary";
 import OverviewSummary from "../components/OverviewSummary";
+import SpiderChartSummary from "../components/SpiderChartSummary";
+import EvaluatorCategoryBreakdown from "../components/EvaluatorCategoryBreakdown";
 
 const MainPage = () => {
   return (
@@ -208,6 +210,8 @@ const MainPage = () => {
           { label: "Expertise and Communication", self: 2.6, others: 4.1 },
         ]}
       />
+      <SpiderChartSummary />
+      <EvaluatorCategoryBreakdown />
     </div>
   );
 };

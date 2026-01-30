@@ -14,6 +14,9 @@ const HorizontalCompareBar = ({
     track: "#ffffff",
     border: "#d9d9d9",
   },
+  // New: rows mode [{label, value, color?}]
+  rows,
+  showTicks = true,
 }) => {
   const isNumericWidth = typeof width === "number";
   const containerStyle = {
@@ -26,7 +29,85 @@ const HorizontalCompareBar = ({
   const barHeight = 16;
   const padX = 12;
 
-  // When numeric width is provided, compute pixel widths; otherwise use %
+  // Helper to compute width style by value
+  const widthStyleFor = (value) => {
+    if (isNumericWidth) {
+      const innerWidth = width - 2; // border
+      const trackWidth = innerWidth - padX * 2;
+      const w = Math.max(0, Math.min(1, value / max)) * trackWidth;
+      return { width: w };
+    } else {
+      const pct = Math.max(0, Math.min(1, value / max)) * 100;
+      return { width: `${pct}%` };
+    }
+  };
+
+  // If rows supplied, render multi-row variant
+  if (Array.isArray(rows) && rows.length) {
+    return (
+      <div
+        role="figure"
+        aria-label={`Horizontal bars up to ${max}`}
+        style={containerStyle}
+      >
+        <div style={{ padding: `0 ${padX}px` }}>
+          {rows.map((r, idx) => (
+            <div
+              key={idx}
+              style={{ display: "flex", alignItems: "center", marginBottom: 8 }}
+            >
+              <span
+                style={{
+                  width: 100,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#35624b",
+                }}
+              >
+                {r.label}
+              </span>
+              <div
+                style={{
+                  position: "relative",
+                  height: barHeight,
+                  flex: 1,
+                  background: "#f9faf9",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    height: barHeight,
+                    background: r.color || colors.self,
+                    ...widthStyleFor(r.value ?? 0),
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        {showTicks && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: `6px ${padX}px 0`,
+              fontSize: 12,
+              color: "#666",
+            }}
+          >
+            {Array.from({ length: max + 1 }).map((_, i) => (
+              <span key={i}>{i}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Original two-bar comparison fallback
   let selfStyle, othersStyle;
   if (isNumericWidth) {
     const innerWidth = width - 2; // border
@@ -114,19 +195,21 @@ const HorizontalCompareBar = ({
         </div>
       </div>
       {/* ticks */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: `6px ${padX}px 0`,
-          fontSize: 12,
-          color: "#666",
-        }}
-      >
-        {Array.from({ length: max + 1 }).map((_, i) => (
-          <span key={i}>{i}</span>
-        ))}
-      </div>
+      {showTicks && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: `6px ${padX}px 0`,
+            fontSize: 12,
+            color: "#666",
+          }}
+        >
+          {Array.from({ length: max + 1 }).map((_, i) => (
+            <span key={i}>{i}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
