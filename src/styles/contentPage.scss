@@ -1,0 +1,32 @@
+$green: #0e4a2e;
+$copper: #e8ae61;
+
+.content-page {
+  padding: 24px 48px 48px;
+
+  &__title {
+    margin: 48px 0 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    color: black;
+    // font-weight: 800;
+    letter-spacing: 0.4px;
+    line-height: 1.2;
+    font-size: 23px;
+  }
+
+  &__title-index {
+    font-weight: 900;
+  }
+
+  &__title-text {
+    font-weight: 600;
+  }
+
+  &__table {
+    margin-top: 24px;
+    max-width: 88%;
+    padding-left: 37px;
+  }
+}

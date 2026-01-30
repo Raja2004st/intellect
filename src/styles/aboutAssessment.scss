@@ -1,0 +1,174 @@
+$green: #0e4a2e;
+$copper: #b3792e; // aligns with header color tweak
+$text: #222;
+
+/* Top utility bar (breadcrumb left, page number right) */
+.about-topbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 16px;
+
+  &__crumb {
+    color: $green;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  &__page {
+    color: $text;
+    font-weight: 700;
+    font-size: 14px;
+  }
+}
+
+/* Page title */
+.about-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: $green;
+  margin: 14px 0 12px;
+  font-weight: 800;
+  font-size: clamp(18px, 2.6vw, 22px);
+
+  &__num {
+    font-weight: 900;
+  }
+
+  &__text {
+    font-weight: 800;
+  }
+}
+
+.about-intro {
+  color: $text;
+  margin: 0 0 18px;
+  line-height: 1.5;
+  font-size: 15px;
+  max-width: 92%;
+  padding-left: 45px;
+}
+
+.about-subtitle {
+  color: $text;
+  font-weight: 800;
+  margin: 10px 0 20px;
+  font-size: 14px;
+  padding-left: 45px;
+}
+
+.about-tablewrap {
+  max-width: 92%;
+  padding-left: 29px;
+}
+
+.about-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid $copper; // outer border
+  background: #fff;
+  table-layout: fixed;
+
+  &__head {
+    text-align: left;
+    padding: 10px 12px;
+    color: #000;
+    font-weight: 800;
+    border-bottom: 1px solid $copper;
+    &:first-child {
+      width: 32%;
+    }
+  }
+
+  &__cell {
+    padding: 10px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid $copper;
+    border-left: 1px solid $copper;
+    font-size: 14px;
+    color: $text;
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &--label {
+      font-weight: 800;
+      width: 32%;
+      white-space: nowrap;
+    }
+
+    &--value {
+      width: 68%;
+    }
+  }
+
+  tbody tr:last-child .about-table__cell {
+    border-bottom: 0;
+  }
+}
+
+/* Purpose section (Page Two) */
+.about-purpose-title {
+  margin-top: 24px;
+  margin-bottom: 10px;
+  color: $text;
+  font-weight: 800;
+  font-size: 14px;
+  padding-left: 40px;
+}
+
+.about-purpose-list {
+  margin: 0;
+  padding-left: 22px;
+  max-width: 92%;
+  color: $text;
+  font-size: 14px;
+  line-height: 1.55;
+  padding-left: 53px;
+
+  li {
+    margin: 8px 0;
+  }
+}
+
+.about-purpose-lead {
+  font-weight: 800;
+}
+.about-purpose-tail {
+  font-weight: 400;
+}
+
+/* About the Sections (1.2) */
+.about-sections__group {
+  margin: 26px 0 28px;
+  padding-left: 36px; // align with other about content
+
+  .section-chip {
+    margin: 14px 0 8px;
+  }
+}
+
+.about-sections__list {
+  margin: 8px 0 0;
+  padding-left: 18px; // bullet indent
+  list-style: disc;
+  color: $text;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 92%;
+}
+
+.about-sections__item {
+  margin: 10px 0;
+}
+
+.about-sections__lead {
+  font-weight: 800;
+}
+
+.about-sections__tail {
+  font-weight: 400;
+}
