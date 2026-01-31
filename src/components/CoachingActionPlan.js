@@ -8,7 +8,7 @@ import FormTable from "./FormTable";
 const CoachingActionPlan = ({
   startPage = 49,
   pageWidth = 794,
-  pageHeight = 902,
+  pageHeight = 900,
   pagePadding = 10,
   titleIndex = "5.",
   titleText = "Leadership Potential Coaching Action Plan",
@@ -55,7 +55,6 @@ const CoachingActionPlan = ({
           labelWidth={170}
         />
 
-        {/* Coach Name block */}
         <FormTable
           header={labels.coachName}
           rows={[labels.associateId, labels.role, labels.lob, labels.email]}
@@ -68,8 +67,22 @@ const CoachingActionPlan = ({
           rows={[labels.from, labels.to]}
           labelWidth={170}
         />
+        <FormTable
+          header={labels.coachingPeriod}
+          rows={[labels.from, labels.to]}
+          labelWidth={170}
+        />
 
-        {/* Big feedback box */}
+        {/* <div className="cap-block">
+          <div className="cap-block__header cap-label--green">
+            {labels.reportFeedback}
+          </div>
+          <div className="cap-textarea" />
+        </div> */}
+      </div>,
+    );
+    out.push(
+      <div key="cap" className="cap" style={{ paddingLeft: 40 }}>
         <div className="cap-block">
           <div className="cap-block__header cap-label--green">
             {labels.reportFeedback}
@@ -86,10 +99,10 @@ const CoachingActionPlan = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
       // paddingLeft={40}
-      pagePadding={pagePadding}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

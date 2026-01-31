@@ -51,7 +51,7 @@ const ScoringDefinition = ({
           "Behaviour is fully mastered and role-modelled; others look to this leader for guidance.",
       },
     ],
-    []
+    [],
   );
 
   const blocks = useMemo(() => {
@@ -63,7 +63,7 @@ const ScoringDefinition = ({
         <span className="content-page__title-text">
           Scoring Definition & Rating Scale
         </span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -72,7 +72,7 @@ const ScoringDefinition = ({
         statement is rated on a <strong>six-point scale</strong>: five
         performance levels plus one “not observed” option for behaviours raters
         have not witnessed.
-      </p>
+      </p>,
     );
 
     out.push(
@@ -86,7 +86,7 @@ const ScoringDefinition = ({
           rowHeight={undefined}
           extraKey="meaning"
         />
-      </div>
+      </div>,
     );
 
     out.push(
@@ -113,7 +113,7 @@ const ScoringDefinition = ({
             </div>
           </li>
         </ul>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -172,7 +172,7 @@ const ScoringDefinition = ({
             </div>
           </li>
         </ul>
-      </div>
+      </div>,
     );
 
     return out;
@@ -182,9 +182,9 @@ const ScoringDefinition = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

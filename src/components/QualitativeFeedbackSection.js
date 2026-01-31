@@ -135,9 +135,9 @@ const QualitativeFeedbackSection = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

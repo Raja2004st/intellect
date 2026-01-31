@@ -7,7 +7,7 @@ import "../styles/coachingActionPlan.scss";
 const IndividualDevelopmentPlan = ({
   startPage = 51,
   pageWidth = 794,
-  pageHeight = 602,
+  pageHeight = 900,
   pagePadding = 10,
   titleIndex = "6.",
   titleText = "Individual Developmental Plan",
@@ -32,7 +32,7 @@ const IndividualDevelopmentPlan = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
     const bodyRows = Array.from({ length: rows });
@@ -53,10 +53,9 @@ const IndividualDevelopmentPlan = ({
             ))}
           </div>
         ))}
-      </div>
+      </div>,
     );
 
-    // Assignments / Cross Functional Projects section
     const assignmentsHeaders = [
       "SL No",
       "Assignments/ Projects completed",
@@ -86,7 +85,7 @@ const IndividualDevelopmentPlan = ({
             </div>
           ))}
         </div>
-      </div>
+      </div>,
     );
 
     // Summary section
@@ -94,7 +93,7 @@ const IndividualDevelopmentPlan = ({
       <div key="summary-block" className="summary">
         <div className="section-band">Summary</div>
         <div className="summary__box" />
-      </div>
+      </div>,
     );
 
     return out;
@@ -104,9 +103,9 @@ const IndividualDevelopmentPlan = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

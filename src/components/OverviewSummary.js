@@ -25,7 +25,7 @@ const OverviewSummary = ({
             { label: "Result Orientation", self: 2.5, others: 4.0 },
             { label: "Expertise and Communication", self: 2.5, others: 4.0 },
           ],
-    [items]
+    [items],
   );
 
   const blocks = useMemo(() => {
@@ -43,7 +43,7 @@ const OverviewSummary = ({
         >
           Overview/Summary of Scores Across 7 Elements
         </span>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -60,7 +60,7 @@ const OverviewSummary = ({
           Note: For categories with more than one respondent, scores represent
           the mean of all individual ratings.
         </em>
-      </div>
+      </div>,
     );
 
     data.forEach((row, idx) => {
@@ -104,7 +104,7 @@ const OverviewSummary = ({
               <span style={{ fontSize: 16 }}>{row.others}</span>
             </div>
           </div>
-        </div>
+        </div>,
       );
     });
 
@@ -115,9 +115,9 @@ const OverviewSummary = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

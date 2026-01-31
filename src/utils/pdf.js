@@ -16,7 +16,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
     return;
   }
 
-  const APPROX_SECTION_PX = 950;
+  const APPROX_SECTION_PX = 900; // Fixed section height
   const TOLERANCE_PX = 40;
   if (canvas.height <= APPROX_SECTION_PX + TOLERANCE_PX) {
     const targetH = usableH;
@@ -46,7 +46,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       0,
       0,
       canvas.width,
-      sliceCanvas.height,
+      sliceCanvas.height
     );
 
     const sliceImgData = sliceCanvas.toDataURL("image/png");
@@ -59,29 +59,6 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
   }
 }
 
-// export async function downloadPdfSplitByHeader() {
-//   const sections = Array.from(document.querySelectorAll(".pdf-section"));
-//   if (!sections.length) return;
-
-//   const pdf = new jsPDF("p", "mm", "a4");
-
-//   for (let i = 0; i < sections.length; i++) {
-//     const el = sections[i];
-
-//     const canvas = await html2canvas(el, {
-//       scale: 2,
-//       useCORS: true,
-//       backgroundColor: i === 0 ? "#ffffff" : "#000",
-//       scrollY: -window.scrollY,
-//     });
-
-//     await addCanvasToPdf(pdf, canvas, 0);
-
-//     if (i < sections.length - 1) pdf.addPage();
-//   }
-
-//   pdf.save("report.pdf");
-// }
 export async function downloadPdfSplitByHeader() {
   const sections = Array.from(document.querySelectorAll(".pdf-section"));
   if (!sections.length) return;

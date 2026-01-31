@@ -34,7 +34,7 @@ const ParticipantCohortSummary = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
     // Note
@@ -44,7 +44,7 @@ const ParticipantCohortSummary = ({
         style={{ marginTop: -6, marginBottom: 12, color: "#333" }}
       >
         <em style={{ fontSize: 13 }}>{note}</em>
-      </div>
+      </div>,
     );
 
     // Table
@@ -55,7 +55,7 @@ const ParticipantCohortSummary = ({
           selfRatings={selfRatings}
           cohortRatings={cohortRatings}
         />
-      </div>
+      </div>,
     );
 
     return out;
@@ -65,9 +65,9 @@ const ParticipantCohortSummary = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

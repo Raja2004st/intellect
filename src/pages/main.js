@@ -644,7 +644,7 @@ const MainPage = () => {
         <EvaluatorCategoryBreakdown />
         <BehaviouralIndicators startPage={16} />
         <ParticipantCohortSummary startPage={26} />
-        <QualitativeFeedbackIntro startPage={30} />
+        {/* <QualitativeFeedbackIntro startPage={30} />
         {qualitativeSections.map((sec, i) => (
           <QualitativeFeedbackList
             key={`qsec-${i}`}
@@ -654,12 +654,7 @@ const MainPage = () => {
             questions={sec.questions}
           />
         ))}
-        {highlightsSections.map((sec, i) => (
-          <Highlights key={`hl-${i}`} {...sec} />
-        ))}
-        <CoachingActionPlan startPage={49} />
-        <CoachingActionPlanPage2 startPage={50} />
-        <IndividualDevelopmentPlan startPage={51} />
+    */}
       </div>
     </div>
   );

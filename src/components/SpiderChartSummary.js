@@ -101,8 +101,8 @@ function RadarLabels({ size = 420, labels = [] }) {
           Math.abs(Math.cos(a)) < 0.3
             ? "middle"
             : Math.cos(a) > 0
-            ? "start"
-            : "end";
+              ? "start"
+              : "end";
         return (
           <text
             key={i}
@@ -180,7 +180,7 @@ const SpiderChartSummary = ({
         <span className="content-page__title-text">
           LBSCORE Element Summary – Spider Chart
         </span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -210,7 +210,7 @@ const SpiderChartSummary = ({
             address in your development plan.
           </li>
         </ol>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -231,7 +231,7 @@ const SpiderChartSummary = ({
           </svg>
         </div>
         <Legend />
-      </div>
+      </div>,
     );
 
     return out;
@@ -241,10 +241,10 @@ const SpiderChartSummary = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
       // paddingLeft={40}
-      pagePadding={pagePadding}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

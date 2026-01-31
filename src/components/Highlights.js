@@ -101,7 +101,7 @@ const Highlights = ({
         >
           <span className="content-page__title-index">{titleIndex}</span>
           <span className="content-page__title-text">{titleText}</span>
-        </h2>
+        </h2>,
       );
     }
 
@@ -113,7 +113,7 @@ const Highlights = ({
       >
         <span style={{ marginRight: 8 }}>{subIndex}</span>
         <span>{subText}</span>
-      </h3>
+      </h3>,
     );
 
     out.push(
@@ -122,7 +122,7 @@ const Highlights = ({
         style={{ marginTop: 10, color: "#333", marginBottom: 36 }}
       >
         <em style={{ fontSize: 13 }}>{note}</em>
-      </div>
+      </div>,
     );
 
     // Layout grid
@@ -168,7 +168,7 @@ const Highlights = ({
             </div>
           ))}
         </div>
-      </div>
+      </div>,
     );
 
     return out;
@@ -189,9 +189,9 @@ const Highlights = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

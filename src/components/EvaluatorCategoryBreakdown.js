@@ -42,7 +42,7 @@ const defaultData = [
 const EvaluatorCategoryBreakdown = ({
   startPage = 15,
   pageWidth = 794,
-  pageHeight = 752,
+  pageHeight = 852,
   pagePadding = 10,
   items = defaultData,
 }) => {
@@ -59,7 +59,7 @@ const EvaluatorCategoryBreakdown = ({
         <span className="content-page__title-text">
           LBSCORE Broken Down by Evaluator Category
         </span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -71,7 +71,7 @@ const EvaluatorCategoryBreakdown = ({
           Note: For categories with more than one respondent, scores represent
           the mean of all individual ratings.
         </em>
-      </div>
+      </div>,
     );
 
     items.forEach((row, idx) => {
@@ -127,7 +127,7 @@ const EvaluatorCategoryBreakdown = ({
               <div style={{ textAlign: "right" }}>{row.values.peers}</div>
             </div>
           </div>
-        </div>
+        </div>,
       );
     });
 
@@ -138,9 +138,9 @@ const EvaluatorCategoryBreakdown = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

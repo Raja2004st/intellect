@@ -1,134 +1,299 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { createRoot } from "react-dom/client";
 import PageFooter from "./PageFooter";
+import measurementManager from "./measurementManager"; // Import the manager
 import "../styles/mainPage.scss";
 
 /**
- * AutoPaginatedSections
- * Props:
- * - blocks: ReactNode[]               // content blocks to paginate
- * - startPage?: number                // starting page number (default 1)
- * - pageWidth?: number                // px (default 794)
- * - pageHeight?: number               // px (default 802)
- * - pagePadding?: number              // px (default 10)
- * - HeaderComponent?: ReactComponent  // optional header to render on each page
- * - contentClassName?: string         // optional inner wrapper class (default 'content-page')
+ * AutoPaginatedSections - Enhanced with sequential measurement
  */
 const AutoPaginatedSections = ({
   blocks = [],
   startPage = 1,
   pageWidth = 794,
-  pageHeight = 802,
-  pagePadding = 10,
+  pageHeight = 950,
+  pagePadding = 20,
   HeaderComponent,
   paddingLeft = 0,
   contentClassName = "content-page",
+  componentId,
 }) => {
-  const USABLE_HEIGHT = useMemo(
-    () => pageHeight - pagePadding * 2,
-    [pageHeight, pagePadding],
-  );
-
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [heights, setHeights] = useState([]);
   const [pages, setPages] = useState([]);
   const [measured, setMeasured] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [isMeasuringLocal, setIsMeasuringLocal] = useState(false);
+
+  const measurementId = useRef(
+    componentId ||
+      `auto-page-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+  );
+  const cleanupRef = useRef(null);
+  const isUnmounted = useRef(false);
+
+  const USABLE_HEIGHT = useMemo(
+    () => pageHeight - pagePadding * 2 - (HeaderComponent ? headerHeight : 0),
+    [pageHeight, pagePadding, HeaderComponent, headerHeight],
+  );
 
   const isBrowser =
-    typeof document !== "undefined" && typeof window !== "undefined";
+    typeof window !== "undefined" && typeof document !== "undefined";
 
-  useEffect(() => {
-    if (!isBrowser) {
-      setMeasured(true);
-      return;
-    }
-    let isMounted = true;
-    if (!blocks.length) {
-      setHeights([]);
-      setMeasured(true);
-      return;
+  /* -------------------------------------------------------
+   * MEASUREMENT FUNCTION
+   * ----------------------------------------------------- */
+  const performMeasurement = useCallback(async () => {
+    if (!isBrowser || !blocks.length || isUnmounted.current) {
+      return { blockHeights: [], headerHeightPx: 0 };
     }
 
-    const container = document.createElement("div");
-    container.style.position = "absolute";
-    container.style.visibility = "hidden";
-    container.style.width = `${pageWidth}px`;
-    container.style.left = "-99999px";
-    document.body.appendChild(container);
+    setIsMeasuringLocal(true);
 
-    const root = createRoot(container);
-    root.render(
-      <div className={contentClassName}>
-        {blocks.map((b, i) => (
-          <div key={i} data-blockindex={i}>
-            {b}
-          </div>
-        ))}
-      </div>,
-    );
+    return new Promise((resolve) => {
+      const container = document.createElement("div");
+      container.style.position = "absolute";
+      container.style.visibility = "hidden";
+      container.style.width = `${pageWidth}px`;
+      container.style.left = "-100000px";
+      container.style.top = "0";
+      container.style.zIndex = "-9999";
+      container.style.pointerEvents = "none";
+      container.id = `measurement-${measurementId.current}`;
 
-    const measure = () => {
-      const content = container.firstElementChild;
-      if (!content) return done();
-      const nodes = Array.from(content.children);
-      const hs = nodes.map((node) => node.offsetHeight || 0);
-      setHeights(hs);
-      setMeasured(true);
-      done();
-    };
+      document.body.appendChild(container);
 
-    const done = () => {
-      try {
-        root.unmount();
-      } catch {}
-      if (container.parentNode) container.parentNode.removeChild(container);
-    };
+      const root = createRoot(container);
 
-    requestAnimationFrame(measure);
-
-    return () => {
-      isMounted = false;
-      try {
-        root.unmount();
-      } catch {}
-      if (container.parentNode) container.parentNode.removeChild(container);
-    };
-  }, [blocks, pageWidth, pagePadding, contentClassName, isBrowser]);
-
-  useEffect(() => {
-    if (!heights.length) return;
-    const out = [];
-    let current = [];
-    let used = 0;
-
-    heights.forEach((h, i) => {
-      if (used + h > USABLE_HEIGHT && current.length) {
-        out.push(current);
-        current = [];
-        used = 0;
-      }
-      current.push(blocks[i]);
-      used += h;
-    });
-
-    if (current.length) out.push(current);
-    setPages(out);
-  }, [heights, USABLE_HEIGHT, blocks]);
-
-  if (!pages.length) {
-    return (
-      <section className="section-page pdf-section">
-        <div
-          className={contentClassName}
-          style={
-            {
-              // padding: `${pagePadding}px`,
-              // paddingLeft: `${paddingLeft}px`,
-            }
-          }
-        >
+      root.render(
+        <div className={contentClassName}>
           {HeaderComponent ? <HeaderComponent /> : null}
           {blocks.map((b, i) => (
-            <div style={{ paddingLeft: `${paddingLeft}px` }} key={i}>
+            <div key={i} data-blockindex={i} style={{ paddingLeft }}>
+              {b}
+            </div>
+          ))}
+        </div>,
+      );
+
+      const measure = async () => {
+        try {
+          // Wait for fonts and layout
+          if (document.fonts?.ready) {
+            await document.fonts.ready;
+          }
+
+          // Triple requestAnimationFrame for reliable layout
+          await new Promise((resolveFrame) => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  resolveFrame();
+                });
+              });
+            });
+          });
+
+          const content = container.firstElementChild;
+          if (!content) {
+            throw new Error("No content for measurement");
+          }
+
+          const children = Array.from(content.children);
+          let headerHeightPx = 0;
+          let startIndex = 0;
+
+          if (HeaderComponent && children[0]) {
+            const headerRect = children[0].getBoundingClientRect();
+            headerHeightPx = Math.ceil(headerRect.height);
+            startIndex = 1;
+          }
+
+          const blockElements = children.slice(startIndex);
+          const blockHeights = blockElements.map((node) => {
+            const rect = node.getBoundingClientRect();
+            return Math.ceil(rect.height);
+          });
+
+          resolve({ blockHeights, headerHeightPx });
+        } catch (error) {
+          console.error(
+            `Measurement error for ${measurementId.current}:`,
+            error,
+          );
+          resolve({ blockHeights: [], headerHeightPx: 0 });
+        } finally {
+          // Cleanup
+          try {
+            root.unmount();
+          } catch {}
+          container.remove();
+          setIsMeasuringLocal(false);
+        }
+      };
+
+      // Small delay before measurement
+      setTimeout(measure, 30);
+    });
+  }, [
+    blocks,
+    pageWidth,
+    HeaderComponent,
+    contentClassName,
+    isBrowser,
+    paddingLeft,
+  ]);
+
+  /* -------------------------------------------------------
+   * 1️⃣ MEASURE BLOCK HEIGHTS WITH QUEUE
+   * ----------------------------------------------------- */
+  useEffect(() => {
+    if (!isBrowser || !blocks.length) {
+      setMeasured(true);
+      return;
+    }
+
+    isUnmounted.current = false;
+
+    const measureWithQueue = async () => {
+      try {
+        // Add to queue and wait for turn
+        await measurementManager.addToQueue(measurementId.current, async () => {
+          if (isUnmounted.current) return;
+
+          const result = await performMeasurement();
+
+          if (!isUnmounted.current && result.blockHeights.length > 0) {
+            setHeights(result.blockHeights);
+            setHeaderHeight(result.headerHeightPx);
+          }
+        });
+
+        if (!isUnmounted.current) {
+          setMeasured(true);
+        }
+      } catch (error) {
+        console.error(
+          `Queue measurement failed for ${measurementId.current}:`,
+          error,
+        );
+        if (!isUnmounted.current) {
+          setHasError(true);
+          setMeasured(true);
+        }
+      }
+    };
+
+    measureWithQueue();
+
+    return () => {
+      isUnmounted.current = true;
+      measurementManager.removeFromQueue(measurementId.current);
+
+      if (cleanupRef.current) {
+        cleanupRef.current();
+      }
+    };
+  }, [
+    blocks,
+    pageWidth,
+    HeaderComponent,
+    contentClassName,
+    isBrowser,
+    paddingLeft,
+    performMeasurement,
+  ]);
+
+  /* -------------------------------------------------------
+   * 2️⃣ PAGINATE BLOCKS
+   * ----------------------------------------------------- */
+  useEffect(() => {
+    if (!measured || heights.length === 0 || !blocks.length) {
+      if (measured && blocks.length > 0) {
+        // Fallback to single page
+        setPages([blocks]);
+      }
+      return;
+    }
+
+    try {
+      const result = [];
+      let currentPage = [];
+      let usedHeight = 0;
+
+      heights.forEach((h, i) => {
+        if (h > USABLE_HEIGHT) {
+          if (currentPage.length > 0) {
+            result.push([...currentPage]);
+            currentPage = [];
+            usedHeight = 0;
+          }
+          result.push([blocks[i]]);
+          return;
+        }
+
+        if (usedHeight + h > USABLE_HEIGHT) {
+          result.push([...currentPage]);
+          currentPage = [blocks[i]];
+          usedHeight = h;
+        } else {
+          currentPage.push(blocks[i]);
+          usedHeight += h;
+        }
+      });
+
+      if (currentPage.length > 0) {
+        result.push([...currentPage]);
+      }
+
+      setPages(result);
+    } catch (error) {
+      console.error("Pagination error:", error);
+      setPages([blocks]);
+    }
+  }, [heights, blocks, USABLE_HEIGHT, measured]);
+
+  /* -------------------------------------------------------
+   * RENDER LOGIC
+   * ----------------------------------------------------- */
+  if (!measured || isMeasuringLocal) {
+    return (
+      <section
+        className="section-page pdf-section"
+        style={{ padding: pagePadding }}
+      >
+        <div className={contentClassName}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "60px 20px",
+              color: "#666",
+              fontStyle: "italic",
+            }}
+          >
+            Measuring content layout...
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (hasError || pages.length === 0) {
+    return (
+      <section
+        className="section-page pdf-section"
+        style={{ padding: pagePadding }}
+      >
+        <div className={contentClassName}>
+          {HeaderComponent ? <HeaderComponent /> : null}
+          {blocks.map((b, i) => (
+            <div key={i} style={{ paddingLeft }}>
               {b}
             </div>
           ))}
@@ -140,25 +305,24 @@ const AutoPaginatedSections = ({
 
   return (
     <div>
-      {pages.map((pageBlocks, i) => (
-        <section key={i} className="section-page pdf-section">
-          <div
-            className={contentClassName}
-            style={
-              {
-                // padding: `${pagePadding}px`,
-                // paddingLeft: `${paddingLeft}px`,
-              }
-            }
-          >
+      {pages.map((pageBlocks, pageIndex) => (
+        <section
+          key={`page-${measurementId.current}-${pageIndex}`}
+          className="section-page pdf-section"
+          style={{ padding: pagePadding }}
+        >
+          <div className={contentClassName}>
             {HeaderComponent ? <HeaderComponent /> : null}
-            {pageBlocks.map((block, j) => (
-              <div style={{ paddingLeft: `${paddingLeft}px` }} key={j}>
+            {pageBlocks.map((block, i) => (
+              <div
+                key={`block-${measurementId.current}-${pageIndex}-${i}`}
+                style={{ paddingLeft }}
+              >
                 {block}
               </div>
             ))}
           </div>
-          <PageFooter pageNumber={startPage + i} />
+          <PageFooter pageNumber={startPage + pageIndex} />
         </section>
       ))}
     </div>

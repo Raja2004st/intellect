@@ -7,7 +7,7 @@ import "../styles/coachingActionPlan.scss";
 const CoachingActionPlanPage2 = ({
   startPage = 50,
   pageWidth = 794,
-  pageHeight = 802,
+  pageHeight = 900,
   pagePadding = 10,
   takeawayTitle = "Talent Discovery Dialogue Takeaway",
   tableHeaders = ["Focus Area", "Learning Goals"],
@@ -21,7 +21,7 @@ const CoachingActionPlanPage2 = ({
       <div key="takeaway" className="cap-block" style={{ marginTop: 8 }}>
         <div className="cap-block__header">{takeawayTitle}</div>
         <div className="cap-textarea cap-textarea--lg" />
-      </div>
+      </div>,
     );
 
     // Two-column goals table with header
@@ -38,7 +38,7 @@ const CoachingActionPlanPage2 = ({
             <div className="cap-grid2__td" />
           </div>
         ))}
-      </div>
+      </div>,
     );
 
     // Signatures
@@ -52,7 +52,7 @@ const CoachingActionPlanPage2 = ({
           <div className="cap-signature__line" />
           <div className="cap-signature__label">Coach Signature</div>
         </div>
-      </div>
+      </div>,
     );
 
     return out;
@@ -62,9 +62,9 @@ const CoachingActionPlanPage2 = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

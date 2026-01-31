@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import EvaluatorRatingsTable from "./EvaluatorRatingsTable";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 
+// ... (keep all your defaultSections data as is) ...
 const defaultSections = [
   {
     titleIndex: "2.5.1.",
@@ -1243,26 +1244,51 @@ const defaultSections = [
 const BehaviouralIndicators = ({
   startPage = 17,
   pageWidth = 794,
-  pageHeight = 752,
+  pageHeight = 1002,
   pagePadding = 10,
   note = "Note: For categories with more than one respondent, scores represent the mean of all individual ratings.",
   sections = defaultSections,
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+  const componentId = useMemo(
+    () => `behavioural-${startPage}-${Date.now()}`,
+    [startPage],
+  );
+
+  // Stagger mounting to prevent simultaneous measurements
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, Math.random() * 150);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const blocks = useMemo(() => {
+    if (!isMounted) return [];
+
     const out = [];
 
+    // Title block
     out.push(
-      <div key="title" style={{ marginTop: 0 }}>
+      <div
+        key="title"
+        style={{
+          marginTop: 0,
+          pageBreakInside: "avoid",
+          breakInside: "avoid",
+        }}
+      >
         <h2
           className="content-page__title"
           style={{
             display: "inline-block",
-            // background: "#e96b1a",
-            // color: "#fff",
             padding: "6px 10px",
             borderRadius: 2,
             margin: 0,
             color: "#0e4a2e",
+            pageBreakAfter: "avoid",
+            breakAfter: "avoid",
           }}
         >
           <span
@@ -1280,15 +1306,33 @@ const BehaviouralIndicators = ({
 
     // Note
     out.push(
-      <div key="note" style={{ marginTop: 10, color: "#333" }}>
+      <div
+        key="note"
+        style={{
+          marginTop: 10,
+          color: "#333",
+          pageBreakInside: "avoid",
+          breakInside: "avoid",
+        }}
+      >
         <em style={{ fontSize: 13 }}>{note}</em>
       </div>,
     );
 
-    // Sections
+    // Process sections with pagination-friendly structure
     sections.forEach((sec, secIdx) => {
+      // Section header - keep with first indicator if possible
       out.push(
-        <div key={`sec-${secIdx}`} style={{ marginTop: 18 }}>
+        <div
+          key={`sec-header-${secIdx}`}
+          style={{
+            marginTop: 18,
+            pageBreakInside: "avoid",
+            breakInside: "avoid",
+            pageBreakAfter: "avoid",
+            breakAfter: "avoid",
+          }}
+        >
           <h3 style={{ color: "#0e4a2e", margin: 0 }}>
             <span style={{ marginRight: 6 }}>{sec.titleIndex}</span>
             <span>{sec.title}</span>
@@ -1296,26 +1340,36 @@ const BehaviouralIndicators = ({
         </div>,
       );
 
+      // Indicators
       sec.indicators.forEach((ind, indIdx) => {
+        // Group indicator text and table to keep together
         out.push(
-          <div key={`ind-${secIdx}-${indIdx}`} style={{ marginTop: 10 }}>
+          <div
+            key={`ind-${secIdx}-${indIdx}`}
+            style={{
+              marginTop: 10,
+              pageBreakInside: "avoid",
+              breakInside: "avoid",
+            }}
+          >
             <div
               style={{
                 color: "#0e4a2e",
                 fontWeight: 600,
                 display: "flex",
                 gap: 8,
+                marginBottom: 4,
               }}
             >
-              <span>{ind.label}</span>
+              <span style={{ whiteSpace: "nowrap" }}>{ind.label}</span>
               <span style={{ color: "#333", fontWeight: 400 }}>{ind.text}</span>
             </div>
             <div
               style={{
-                marginTop: 12,
                 width: "100%",
                 maxWidth: "100%",
-                overflowX: "hidden",
+                overflow: "hidden",
+                marginTop: 8,
               }}
             >
               <EvaluatorRatingsTable
@@ -1330,7 +1384,22 @@ const BehaviouralIndicators = ({
     });
 
     return out;
-  }, [sections, note]);
+  }, [sections, note, isMounted]);
+
+  if (!isMounted) {
+    return (
+      <section
+        className="section-page pdf-section"
+        style={{ padding: pagePadding }}
+      >
+        <div className="content-page">
+          <div style={{ padding: "40px", textAlign: "center", color: "#999" }}>
+            Loading behavioural indicators...
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <AutoPaginatedSections
@@ -1341,6 +1410,7 @@ const BehaviouralIndicators = ({
       pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
+      componentId={componentId}
     />
   );
 };

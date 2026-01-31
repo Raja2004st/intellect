@@ -82,7 +82,7 @@ const CompetencySummary = ({
       { label: "Third quartile (75th percentile)", value: "425.5", extra: "" },
       { label: "Max Score", value: "483.0", extra: "" },
     ],
-    []
+    [],
   );
 
   const streamRows = cohortRows; // same demo values
@@ -94,7 +94,7 @@ const CompetencySummary = ({
       3: ["310.0", "380.0", "405.0", "440.0", "490.0"],
       4: ["335.0", "395.0", "415.0", "455.0", "500.0"],
     }),
-    []
+    [],
   );
   const defaultStreamMap = useMemo(
     () => ({
@@ -103,7 +103,7 @@ const CompetencySummary = ({
       3: ["305.0", "378.0", "402.0", "438.0", "488.0"],
       4: ["330.0", "392.0", "412.0", "452.0", "498.0"],
     }),
-    []
+    [],
   );
   const cohortMap =
     (cohortQuartiles && cohortQuartiles.map) || defaultCohortMap;
@@ -121,7 +121,7 @@ const CompetencySummary = ({
       >
         <span className="content-page__title-index">2.</span>
         <span className="content-page__title-text">Competency Summary</span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -163,7 +163,7 @@ const CompetencySummary = ({
             </em>
           </li>
         </ul>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -195,7 +195,7 @@ const CompetencySummary = ({
             initialSelected={2}
           />
         </div>
-      </div>
+      </div>,
     );
 
     return out;
@@ -205,9 +205,9 @@ const CompetencySummary = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

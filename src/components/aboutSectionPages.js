@@ -9,7 +9,7 @@ import SectionChip from "./SectionChip";
 const AboutSectionPages = ({
   startPage = 6,
   pageWidth = 794,
-  pageHeight = 842,
+  pageHeight = 802,
   pagePadding = 10,
   titleIndex = "1.2.",
   titleText = "About the Sections",
@@ -127,7 +127,7 @@ const AboutSectionPages = ({
         ],
       },
     ],
-    []
+    [],
   );
 
   // Use provided sections if passed, else the defaults above
@@ -141,7 +141,7 @@ const AboutSectionPages = ({
       <h2 key="title-sections" className="about-title">
         <span className="about-title__num">{titleIndex}</span>
         <span className="about-title__text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
     sections.forEach((s, idx) => {
@@ -156,7 +156,7 @@ const AboutSectionPages = ({
               </li>
             ))}
           </ul>
-        </div>
+        </div>,
       );
     });
 
@@ -167,9 +167,9 @@ const AboutSectionPages = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      pageWidth={pageWidth}
-      pageHeight={pageHeight}
-      pagePadding={pagePadding}
+      // pageWidth={pageWidth}
+      // pageHeight={pageHeight}
+      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />
