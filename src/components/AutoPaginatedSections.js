@@ -9,7 +9,7 @@ import "../styles/mainPage.scss";
  * - blocks: ReactNode[]               // content blocks to paginate
  * - startPage?: number                // starting page number (default 1)
  * - pageWidth?: number                // px (default 794)
- * - pageHeight?: number               // px (default 902)
+ * - pageHeight?: number               // px (default 802)
  * - pagePadding?: number              // px (default 10)
  * - HeaderComponent?: ReactComponent  // optional header to render on each page
  * - contentClassName?: string         // optional inner wrapper class (default 'content-page')
@@ -18,9 +18,10 @@ const AutoPaginatedSections = ({
   blocks = [],
   startPage = 1,
   pageWidth = 794,
-  pageHeight = 902,
+  pageHeight = 802,
   pagePadding = 10,
   HeaderComponent,
+  paddingLeft = 0,
   contentClassName = "content-page",
 }) => {
   const USABLE_HEIGHT = useMemo(
@@ -116,17 +117,23 @@ const AutoPaginatedSections = ({
     setPages(out);
   }, [heights, USABLE_HEIGHT, blocks]);
 
-  // Provisional render: if not yet measured or pagination not computed, render one page
   if (!pages.length) {
     return (
       <section className="section-page pdf-section">
         <div
           className={contentClassName}
-          // style={{ padding: `${pagePadding}px` }}
+          style={
+            {
+              // padding: `${pagePadding}px`,
+              // paddingLeft: `${paddingLeft}px`,
+            }
+          }
         >
           {HeaderComponent ? <HeaderComponent /> : null}
           {blocks.map((b, i) => (
-            <div key={i}>{b}</div>
+            <div style={{ paddingLeft: `${paddingLeft}px` }} key={i}>
+              {b}
+            </div>
           ))}
         </div>
         <PageFooter pageNumber={startPage} />
@@ -138,10 +145,20 @@ const AutoPaginatedSections = ({
     <div>
       {pages.map((pageBlocks, i) => (
         <section key={i} className="section-page pdf-section">
-          <div className={contentClassName}>
+          <div
+            className={contentClassName}
+            style={
+              {
+                // padding: `${pagePadding}px`,
+                // paddingLeft: `${paddingLeft}px`,
+              }
+            }
+          >
             {HeaderComponent ? <HeaderComponent /> : null}
             {pageBlocks.map((block, j) => (
-              <div key={j}>{block}</div>
+              <div style={{ paddingLeft: `${paddingLeft}px` }} key={j}>
+                {block}
+              </div>
             ))}
           </div>
           <PageFooter pageNumber={startPage + i} />

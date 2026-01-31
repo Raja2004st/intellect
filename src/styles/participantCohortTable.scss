@@ -1,0 +1,78 @@
+$green: #0e4a2e;
+$green-mid: #35624b;
+$green-header: #1f5a36;
+$border: #cc8b2c; // warm border similar to other tables
+$bg-label: #e2efe6; // subtle green tint for label column
+$bg-header: $green-header;
+
+.pc-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: inherit;
+  color: #222;
+
+  thead th {
+    background: $bg-header;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 8px;
+    border: 1px solid $border;
+    font-size: 12px;
+  }
+
+  // Column sizing
+  .pc-col-label {
+    width: 190px;
+    text-align: left;
+  }
+  .pc-col-self {
+    width: 90px;
+  }
+  .pc-col-mgr {
+    width: 110px;
+  }
+  .pc-col-team {
+    width: 98px;
+  }
+  .pc-col-peers {
+    width: 90px;
+  }
+
+  tbody td {
+    border: 1px solid $border;
+    padding: 8px 10px;
+    vertical-align: middle;
+    font-size: 13px;
+  }
+
+  .pc-label {
+    background: $bg-label;
+    font-weight: 700;
+    color: $green-mid;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .pc-gutter {
+    width: 12px;
+    background: #f4fff7;
+    border-left: 1px solid $border;
+    border-right: 1px solid $border;
+    padding: 0;
+  }
+
+  .pc-cell {
+    background: #fff;
+  }
+  .pc-your {
+    color: #000;
+    font-weight: 600;
+  }
+  .pc-cohort {
+    color: #000;
+    font-weight: 600;
+  }
+}

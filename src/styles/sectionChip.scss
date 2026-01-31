@@ -12,21 +12,18 @@
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-/* Left rounded tail to mimic the speech-bubble look */
 .section-chip::before {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -6px;
-  width: 24px;
-  height: 12px;
+  bottom: -13px;
+  width: 23px;
+  height: 25px;
   background: var(--chip-color, #0e4a2e);
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  transform: translateX(8px);
+  // border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 66px;
+  transform: translateX(1px);
 }
-
-/* Optional: adjust size on small screens */
 @media (max-width: 768px) {
   .section-chip {
     padding: 8px 14px;

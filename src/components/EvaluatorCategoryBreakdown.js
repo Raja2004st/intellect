@@ -18,6 +18,10 @@ const defaultData = [
     values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
   },
   {
+    label: "Leadership",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
+  {
     label: "Bandwidth",
     values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
   },
@@ -29,12 +33,16 @@ const defaultData = [
     label: "Collaboration",
     values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
   },
+  {
+    label: "Collaboration",
+    values: { self: 4.5, manager: 3.0, team: 2.5, peers: 4.0 },
+  },
 ];
 
 const EvaluatorCategoryBreakdown = ({
   startPage = 15,
   pageWidth = 794,
-  pageHeight = 1123,
+  pageHeight = 752,
   pagePadding = 10,
   items = defaultData,
 }) => {

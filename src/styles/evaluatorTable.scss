@@ -1,0 +1,144 @@
+$green: #0e4a2e;
+$green-dark: #0b3a24;
+$green-mid: #35624b;
+$border: $green;
+$cell-pad-y: 8px;
+$cell-pad-x: 10px;
+
+.evaluator-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: inherit;
+  color: #333;
+  border: 1px solid $border;
+
+  thead th {
+    border-bottom: 1px solid $border;
+    border-left: 1px solid $border;
+    font-weight: 700;
+    text-align: center;
+    color: $green-mid;
+    padding: 6px $cell-pad-x;
+    font-size: 12px;
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  tbody td {
+    border-top: 1px solid $border;
+    border-left: 1px solid $border;
+    padding: $cell-pad-y $cell-pad-x;
+    font-size: 13px;
+    vertical-align: middle;
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  // Column sizing
+  .et-col-label {
+    width: 140px;
+    text-align: left;
+  }
+  .et-col-na {
+    width: 48px;
+  }
+  .et-col-scale {
+    width: 44px;
+  }
+  .et-col-score {
+    width: 56px;
+  }
+  .et-col-gap {
+    width: 110px;
+  }
+  .et-col-highlight {
+    width: 90px;
+  }
+
+  .et-label {
+    font-weight: 700;
+    color: $green-mid;
+  }
+
+  .et-na {
+    text-align: center;
+  }
+  .et-score,
+  .et-gap {
+    text-align: center;
+    font-weight: 700;
+    color: $green-mid;
+  }
+  .et-highlight {
+    color: $green-mid;
+  }
+
+  // Scale track occupying 1..5 columns via colSpan
+  .et-scale {
+    padding: 10px 0; // tighter vertically to match screenshot
+  }
+  .et-track {
+    position: relative;
+    height: 16px;
+    background: #f9faf9;
+    border: 1px solid #d9d9d9;
+    margin: 0 8px;
+  }
+  .et-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+// Compact variant for pages with dense content
+.evaluator-table--compact {
+  thead th {
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+  tbody td {
+    padding: 6px 6px;
+    font-size: 12px;
+  }
+
+  .et-col-label {
+    width: 120px;
+  }
+  .et-col-na {
+    width: 40px;
+  }
+  .et-col-scale {
+    width: 36px;
+  }
+  .et-col-score {
+    width: 40px;
+  }
+  .et-col-gap {
+    width: 45px;
+  }
+  .et-col-highlight {
+    width: 130px;
+  }
+
+  .et-scale {
+    padding: 8px 0;
+  }
+  .et-track {
+    height: 14px;
+    margin: 0 6px;
+  }
+}
+
+.et-caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 700;
+  color: $green-mid;
+  margin-bottom: 8px;
+}

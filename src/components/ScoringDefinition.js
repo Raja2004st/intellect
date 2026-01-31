@@ -9,7 +9,7 @@ import "../styles/contentPage.scss";
 const ScoringDefinition = ({
   startPage = 8,
   pageWidth = 794,
-  pageHeight = 842,
+  pageHeight = 802,
   pagePadding = 10,
 }) => {
   const ratingRows = useMemo(

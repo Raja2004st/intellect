@@ -35,7 +35,7 @@ const OverviewSummary = ({
       <div
         key="title"
         className="content-page__title"
-        style={{ color: "#0e4a2e" }}
+        style={{ color: "#0e4a2e", paddingLeft: 40 }}
       >
         <span
           className="content-page__title-text"
@@ -50,7 +50,7 @@ const OverviewSummary = ({
       <div
         key="note"
         style={{
-          //   paddingLeft: 40,
+          paddingLeft: 40,
           marginTop: -8,
           marginBottom: 10,
           color: "#333",
@@ -73,6 +73,7 @@ const OverviewSummary = ({
             alignItems: "center",
             gap: "30px",
             padding: "12px 11px",
+            paddingLeft: 40,
           }}
         >
           {/* label */}

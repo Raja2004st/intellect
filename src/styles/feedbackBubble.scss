@@ -1,0 +1,72 @@
+$green: #0e4a2e;
+$border: #123b2b;
+
+.fb-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.fb-row--compact {
+  gap: 8px;
+}
+
+.fb-avatar {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $border;
+}
+
+.fb-bubble {
+  position: relative;
+  flex: 1;
+  border: 2px solid $border;
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.fb-row--compact .fb-bubble {
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+// left notch connecting avatar to bubble
+.fb-bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-left: 2px solid $border;
+  border-bottom: 2px solid $border;
+  transform: rotate(45deg);
+  border-bottom-left-radius: 8px;
+}
+
+.fb-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* new textarea style */
+.fb-textarea {
+  width: 100%;
+  min-height: 20px;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  font: inherit;
+  color: #333;
+  line-height: 1.4;
+  padding: 0;
+}

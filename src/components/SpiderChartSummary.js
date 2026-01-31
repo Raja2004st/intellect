@@ -243,6 +243,7 @@ const SpiderChartSummary = ({
       startPage={startPage}
       pageWidth={pageWidth}
       pageHeight={pageHeight}
+      // paddingLeft={40}
       pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
