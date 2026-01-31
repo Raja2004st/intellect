@@ -37,19 +37,19 @@ $border: #123b2b;
 }
 
 // left notch connecting avatar to bubble
-.fb-bubble::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: 10px;
-  width: 16px;
-  height: 16px;
-  background: #fff;
-  border-left: 2px solid $border;
-  border-bottom: 2px solid $border;
-  transform: rotate(45deg);
-  border-bottom-left-radius: 8px;
-}
+// .fb-bubble::before {
+//   content: "";
+//   position: absolute;
+//   left: -8px;
+//   top: 10px;
+//   width: 16px;
+//   height: 16px;
+//   background: #fff;
+//   border-left: 2px solid $border;
+//   border-bottom: 2px solid $border;
+//   transform: rotate(45deg);
+//   border-bottom-left-radius: 8px;
+// }
 
 .fb-text {
   font-size: 13px;

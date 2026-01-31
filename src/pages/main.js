@@ -17,8 +17,413 @@ import BehaviouralIndicators from "../components/BehaviouralIndicators";
 import ParticipantCohortSummary from "../components/ParticipantCohortSummary";
 import QualitativeFeedbackIntro from "../components/QualitativeFeedbackIntro";
 import QualitativeFeedbackSection from "../components/QualitativeFeedbackSection";
+import QualitativeFeedbackList from "../components/QualitativeFeedbackList";
+import Highlights from "../components/Highlights";
+import CoachingActionPlan from "../components/CoachingActionPlan";
+import CoachingActionPlanPage2 from "../components/CoachingActionPlanPage2";
+import IndividualDevelopmentPlan from "../components/IndividualDevelopmentPlan";
 
 const MainPage = () => {
+  const qualitativeSections = [
+    {
+      titleIndex: "3.1.",
+      titleText: "Leadership",
+      questions: [
+        {
+          index: "1.",
+          text: "What do you consider the key leadership strengths demonstrated by the Participant?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.2.",
+      titleText: "Bandwidth",
+      questions: [
+        {
+          index: "1.",
+          text: "In what ways does the Participant effectively manage bandwidth and handle responsibilities with clarity and focus?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you feel Participant could improve in managing workload, prioritization, or capacity planning?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.3.",
+      titleText: "Sales & Customer Centricity",
+      questions: [
+        {
+          index: "1.",
+          text: "What strengths does the Participant demonstrate in driving customer value or supporting sales outcomes?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.4.",
+      titleText: "Collaboration",
+      questions: [
+        {
+          index: "1.",
+          text: "What behaviors of the Participant positively contribute to collaboration and cross-functional teamwork?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.5.",
+      titleText: "Operational Excellence",
+      questions: [
+        {
+          index: "1.",
+          text: "What strengths does the Participant display in ensuring operational discipline, process alignment, or quality of execution?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.6.",
+      titleText: "Results Orientation",
+      questions: [
+        {
+          index: "1.",
+          text: "In what ways does the Participant demonstrate strong ownership and drive for results?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+    {
+      titleIndex: "3.7.",
+      titleText: "Expertise & Communication",
+      questions: [
+        {
+          index: "1.",
+          text: "What strengths does the Participant demonstrate in their expertise and communication?",
+          colorTheme: "green",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+        {
+          index: "2.",
+          text: "Where do you see opportunities for the Participant to strengthen their leadership effectiveness?",
+          colorTheme: "gold",
+          comments: [
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+            "Sample",
+          ],
+        },
+      ],
+    },
+  ];
+  const highlightsSections = [
+    {
+      startPage: 45,
+      titleIndex: "4.",
+      titleText: "Highlights",
+      subIndex: "4.1.",
+      subText: "Strengths",
+      note: "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
+      arcColor: "#0e4a2e",
+      chipColor: "#0e4a2e",
+      dotsColor: "#0e4a2e",
+      leftIcon: null,
+      items: [
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+      ],
+    },
+    {
+      startPage: 46,
+      titleIndex: "4.",
+      titleText: "Highlights",
+      subIndex: "4.2.",
+      subText: "Areas of Improvement",
+      note: "Below are the 5 statements where you received the lowest ratings and are considered your areas of improvements.",
+      arcColor: "#b37b2f",
+      chipColor: "#b37b2f",
+      dotsColor: "#b37b2f",
+      leftIcon: null,
+      items: [
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+      ],
+    },
+    {
+      startPage: 45,
+      titleIndex: "4.",
+      // titleText: "Highlights",
+      subIndex: "4.3.",
+      subText: "Strengths",
+      note: "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
+      arcColor: "#0e4a2e",
+      chipColor: "#0e4a2e",
+      dotsColor: "#0e4a2e",
+      leftIcon: null,
+      items: [
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+      ],
+    },
+    {
+      startPage: 46,
+      titleIndex: "4.",
+      // titleText: "Highlights",
+      subIndex: "4.4.",
+      subText: "Areas of Improvement",
+      note: "Below are the 5 statements where you received the lowest ratings and are considered your areas of improvements.",
+      arcColor: "#b37b2f",
+      chipColor: "#b37b2f",
+      dotsColor: "#b37b2f",
+      leftIcon: null,
+      items: [
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+        {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+      ],
+    },
+  ];
+
   return (
     <div>
       <div
@@ -200,6 +605,26 @@ const MainPage = () => {
                 },
               ],
             },
+            {
+              chip: "Sales & Customer Centricity",
+              items: [
+                {
+                  tail: "Seeks deep customer and market understanding through data, observation, and dialogue",
+                },
+                {
+                  tail: "Anticipates underlying needs and emerging opportunities beyond stated requirements",
+                },
+                {
+                  tail: "Designs solutions that deliver meaningful value and strengthen long-term partnerships",
+                },
+                {
+                  tail: "Communicates a clear and consistent customer experience across functions and touchpoints",
+                },
+                {
+                  tail: "Positions offerings with a focus on outcomes and shared success",
+                },
+              ],
+            },
           ]}
         />
         <CompetencySummary startPage={12} />
@@ -220,22 +645,21 @@ const MainPage = () => {
         <BehaviouralIndicators startPage={16} />
         <ParticipantCohortSummary startPage={26} />
         <QualitativeFeedbackIntro startPage={30} />
-        <QualitativeFeedbackSection
-          startPage={31}
-          titleIndex="3.1."
-          titleText="Leadership"
-          questionIndex="1."
-          questionText="What do you consider the key leadership strengths demonstrated by the Participant?"
-          comments={[
-            "Sample",
-            "Sample",
-            "Sample",
-            "Sample",
-            "Sample",
-            "Sample",
-            "Sample",
-          ]}
-        />
+        {qualitativeSections.map((sec, i) => (
+          <QualitativeFeedbackList
+            key={`qsec-${i}`}
+            startPage={31 + i}
+            titleIndex={sec.titleIndex}
+            titleText={sec.titleText}
+            questions={sec.questions}
+          />
+        ))}
+        {highlightsSections.map((sec, i) => (
+          <Highlights key={`hl-${i}`} {...sec} />
+        ))}
+        <CoachingActionPlan startPage={49} />
+        <CoachingActionPlanPage2 startPage={50} />
+        <IndividualDevelopmentPlan startPage={51} />
       </div>
     </div>
   );

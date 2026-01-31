@@ -3,6 +3,10 @@ $copper: #e8ae61;
 
 .content-page {
   padding: 24px 48px 48px;
+  // height: 803px;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
 
   &__title {
     margin: 48px 0 16px;
@@ -29,4 +33,7 @@ $copper: #e8ae61;
     max-width: 88%;
     padding-left: 37px;
   }
+}
+.content-page > * {
+  margin-top: 0;
 }

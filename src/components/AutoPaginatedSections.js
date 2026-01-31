@@ -26,18 +26,16 @@ const AutoPaginatedSections = ({
 }) => {
   const USABLE_HEIGHT = useMemo(
     () => pageHeight - pagePadding * 2,
-    [pageHeight, pagePadding]
+    [pageHeight, pagePadding],
   );
 
   const [heights, setHeights] = useState([]);
   const [pages, setPages] = useState([]);
   const [measured, setMeasured] = useState(false);
 
-  // If not in a browser (e.g., SSR), fall back to a single page render
   const isBrowser =
     typeof document !== "undefined" && typeof window !== "undefined";
 
-  // Measure blocks offscreen
   useEffect(() => {
     if (!isBrowser) {
       setMeasured(true);
@@ -65,7 +63,7 @@ const AutoPaginatedSections = ({
             {b}
           </div>
         ))}
-      </div>
+      </div>,
     );
 
     const measure = () => {
@@ -96,7 +94,6 @@ const AutoPaginatedSections = ({
     };
   }, [blocks, pageWidth, pagePadding, contentClassName, isBrowser]);
 
-  // Paginate
   useEffect(() => {
     if (!heights.length) return;
     const out = [];

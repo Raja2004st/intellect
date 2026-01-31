@@ -24,11 +24,10 @@ const FeedbackBubble = ({
   compact = false,
   style,
   className = "",
-  // textarea props (optional controlled usage)
   value,
   onChange,
   placeholder,
-  rows = 1,
+  rows = 2,
   readOnly = false,
 }) => {
   return (
@@ -47,6 +46,7 @@ const FeedbackBubble = ({
           background: bubbleColor,
           color: textColor,
           borderColor,
+          //   height: "42px",
         }}
       >
         <textarea

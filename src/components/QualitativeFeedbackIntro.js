@@ -7,7 +7,7 @@ import "../styles/contentPage.scss";
 const QualitativeFeedbackIntro = ({
   startPage = 30,
   pageWidth = 794,
-  pageHeight = 802,
+  pageHeight = 402,
   pagePadding = 10,
   titleIndex = "3.",
   titleText = "Qualitative Feedback",
@@ -19,7 +19,6 @@ const QualitativeFeedbackIntro = ({
   const blocks = useMemo(() => {
     const out = [];
 
-    // Title
     out.push(
       <h2
         key="title"
@@ -28,10 +27,9 @@ const QualitativeFeedbackIntro = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
-    // Body paragraphs
     out.push(
       <div
         key="body"
@@ -54,7 +52,7 @@ const QualitativeFeedbackIntro = ({
             {p}
           </p>
         ))}
-      </div>
+      </div>,
     );
 
     return out;

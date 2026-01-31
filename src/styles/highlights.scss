@@ -1,0 +1,77 @@
+$green: #0e4a2e;
+
+.hl-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 12px;
+  margin-top: 12px;
+  align-items: start;
+}
+
+.hl-left {
+  position: relative;
+  min-height: 520px;
+}
+
+.hl-arc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hl-chess {
+  position: absolute;
+  left: 58px; // sits near the arc
+  top: 190px;
+}
+
+.hl-right {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding-top: 16px;
+}
+
+.hl-row {
+  display: grid;
+  grid-template-columns: 88px 48px 1fr;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.hl-row-line {
+  height: 2px;
+  background: $green;
+  width: 100%;
+}
+
+.hl-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $green;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.hl-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hl-row-title {
+  font-weight: 700;
+  color: $green;
+}
+
+.hl-row-desc {
+  color: #333;
+  line-height: 1.4;
+}
