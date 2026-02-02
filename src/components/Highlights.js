@@ -21,9 +21,9 @@ const ChessIcon = ({ size = 120, color = "#0e4a2e" }) => (
   </svg>
 );
 
-const ScoreChip = ({ score = 2.5, color = "#0e4a2e" }) => (
+const ScoreChip = ({ score = 2.5, color = "#c0943a", scoreShip = false }) => (
   <div className="hl-chip" style={{ background: color }}>
-    {/* <span>{score}</span> */}
+    {scoreShip && <span>{score}</span>}
   </div>
 );
 
@@ -56,40 +56,49 @@ const Highlights = ({
   subIndex = "4.1.",
   subText = "Strengths",
   note = "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
-  arcColor = "#0e4a2e",
-  chipColor = "#0e4a2e",
-  dotsColor = "#0e4a2e",
+  arcColor = "#c0943a",
+  chipColor = "#c0943a",
+  dotsColor = "#c0943a",
   leftIcon = null,
+  scoreShip = false,
   items = [
     {
       score: 2.5,
       title: "Negotiation",
       desc: "Is flexible and works well in a fast paced and dynamic environment",
+      circleX: 65,
     },
     {
       score: 2.5,
       title: "Negotiation",
       desc: "Is flexible and works well in a fast paced and dynamic environment",
+      circleX: 95,
     },
     {
       score: 2.5,
       title: "Negotiation",
       desc: "Is flexible and works well in a fast paced and dynamic environment",
+      circleX: 135,
     },
     {
       score: 2.5,
       title: "Negotiation",
       desc: "Is flexible and works well in a fast paced and dynamic environment",
+      circleX: 95,
     },
     {
       score: 2.5,
       title: "Negotiation",
       desc: "Is flexible and works well in a fast paced and dynamic environment",
+      circleX: 65,
     },
   ],
 }) => {
   const blocks = useMemo(() => {
     const out = [];
+    const rowSpacing = 90; // px between rows to align with arc dots
+    const topOffset = 50; // starting Y for first dot
+    const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
 
     // Title
     if (titleIndex && titleText) {
@@ -125,40 +134,59 @@ const Highlights = ({
       </div>,
     );
 
-    // Layout grid
     out.push(
       <div key="grid" className="hl-grid">
-        <div className="hl-left">
+        <div className="hl-left" style={{ minHeight: arcHeight }}>
           <svg
             className="hl-arc"
-            viewBox="0 0 200 520"
+            viewBox={`0 0 200 ${arcHeight}`}
             preserveAspectRatio="none"
           >
             <path
-              d={`M180 0 C 40 120, 40 400, 180 520`}
+              d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
+                arcHeight * 0.77,
+              )}, 20 ${arcHeight}`}
               stroke={arcColor}
-              strokeWidth="6"
+              strokeWidth="2.5"
               fill="none"
+              strokeLinecap="round"
             />
             {items.map((_, i) => (
               <circle
                 key={i}
-                cx={140}
-                cy={50 + i * 90}
-                r={8}
-                fill={dotsColor}
+                cx={
+                  i == 0 ? 59 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 59
+                }
+                cy={topOffset + i * rowSpacing + i * 40}
+                r={6}
+                fill={arcColor}
               />
             ))}
           </svg>
-          <div className="hl-chess">
-            <LeftIcon leftIcon={leftIcon} arcColor={arcColor} />
-          </div>
+          {leftIcon && (
+            <div
+              className="hl-chess"
+              style={{
+                top: topOffset + Math.floor(items.length / 2) * rowSpacing - 60,
+              }}
+            >
+              <LeftIcon leftIcon={leftIcon} arcColor={arcColor} />
+            </div>
+          )}
         </div>
         <div className="hl-right">
           {items.map((it, i) => (
-            <div key={`it-${i}`} className="hl-row">
+            <div
+              key={`it-${i}`}
+              className="hl-row"
+              style={{ minHeight: rowSpacing - 10 }}
+            >
               <div className="hl-row-line" style={{ background: arcColor }} />
-              <ScoreChip score={it.score} color={chipColor} />
+              <ScoreChip
+                score={it.score}
+                color={chipColor}
+                scoreShip={scoreShip}
+              />
               <div className="hl-row-text">
                 <div className="hl-row-title" style={{ color: arcColor }}>
                   {it.title}
@@ -189,9 +217,6 @@ const Highlights = ({
     <AutoPaginatedSections
       blocks={blocks}
       startPage={startPage}
-      // pageWidth={pageWidth}
-      // pageHeight={pageHeight}
-      // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
     />

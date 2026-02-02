@@ -84,3 +84,59 @@ export async function downloadPdfSplitByHeader() {
 }
 
 export { addCanvasToPdf };
+
+// export async function downloadDocxSplitByHeader() {
+//   const sections = Array.from(document.querySelectorAll(".pdf-section"));
+//   if (!sections.length) return;
+
+//   // showLoader("Exporting Word…");
+//   try {
+//     const doc = new Document({
+//       sections: [],
+//     });
+
+//     for (let i = 0; i < sections.length; i++) {
+//       const el = sections[i];
+//       if (!el || !el.isConnected) continue;
+//       // await waitForLayoutReady();
+//       // const canvas = await html2canvas(el, buildH2cOptions({ scale: 1.25 }));
+
+//       // Convert canvas to compressed JPEG ArrayBuffer
+//       const blob = await new Promise((resolve) =>
+//         canvas.toBlob(resolve, "image/jpeg", 0.72)
+//       );
+//       if (!blob) continue;
+//       const imgBuffer = await blob.arrayBuffer();
+
+//       const targetWidthPx = 700; // slightly less to keep margins and reduce size
+//       const targetHeightPx = Math.round(
+//         (canvas.height * targetWidthPx) / canvas.width
+//       );
+
+//       doc.addSection({
+//         children: [
+//           new Paragraph({
+//             children: [
+//               new ImageRun({
+//                 data: imgBuffer,
+//                 transformation: {
+//                   width: targetWidthPx,
+//                   height: targetHeightPx,
+//                 },
+//               }),
+//             ],
+//           }),
+//         ],
+//       });
+//     }
+
+//     const blob = await Packer.toBlob(doc);
+//     saveAs(blob, "report.docx");
+
+//     // } finally {
+//     //   hideLoader();
+//     // }
+//   } catch (e) {
+//     console.error(e);
+//   }
+// }

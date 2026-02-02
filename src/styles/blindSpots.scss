@@ -1,0 +1,240 @@
+$green: #0e4a2e;
+$gold: #b37b2f;
+$bar-bg: #e5e7e9;
+$bar-self: #92c59f; // light green fill
+$bar-self-tail: #c8d8cd; // muted segment
+
+.bs-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  //   gap: 12px;
+  margin-top: 12px;
+  align-items: start;
+}
+
+.bs-left {
+  position: relative;
+  min-height: 520px;
+}
+
+.bs-arc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bs-left-icon {
+  position: absolute;
+  left: 58px;
+}
+
+.bs-left-icon-card {
+  width: 140px;
+  height: 140px;
+  background: #f5f1ea;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+.bs-right {
+  display: flex;
+  flex-direction: column;
+  gap: 53px;
+  padding-top: 20px;
+}
+
+.bs-row {
+  display: grid;
+  grid-template-columns: 88px 48px 1fr;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.bs-connector {
+  height: 2px;
+  background: $gold;
+  width: 100%;
+}
+
+.bs-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $gold;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.bs-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-row-top {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.bs-row-title {
+  color: $gold;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.bs-row-text {
+  color: #333;
+  line-height: 1.4;
+  font-size: 12px;
+}
+
+/* rating bars */
+.bs-bars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  align-items: center;
+}
+
+.bs-bar-group {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.bs-label.self {
+  color: $gold;
+  font-weight: 700;
+}
+
+.bs-label.others {
+  color: #333;
+  font-weight: 700;
+}
+
+.bs-bar {
+  position: relative;
+  height: 20px;
+  background: $bar-bg;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bs-bar.self {
+  background: $bar-bg;
+}
+
+.bs-fill.self {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: $bar-self;
+}
+
+.bs-badge.self {
+  background: $gold;
+  color: #fff;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+
+.bs-bar.others {
+  background: $bar-bg;
+}
+
+.bs-fill.others {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: $bar-self;
+}
+
+.bs-value.others {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  color: #2d5f3f;
+  font-size: 12px;
+}
+
+.bs-badge {
+  background: $gold;
+  color: #fff;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+
+.bs-desc {
+  margin-top: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.bs-bars-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.bs-left-others .bs-bar.others {
+  height: 20px;
+}
+
+.bs-right-self {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.bs-center-label {
+  font-weight: 700;
+  color: $green;
+  font-size: 13px;
+}
+
+/* Compact bar card: Others (gold) + green bar with centered value */
+.bs-bars-simple {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.bs-bars-simple .bs-label.others {
+  color: $gold;
+  font-weight: 700;
+}
+
+/* Center the number inside the green bar */
+.bs-bar.others {
+  position: relative;
+}
+
+.bs-bar.others .bs-value.others {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

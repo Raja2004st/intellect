@@ -33,14 +33,14 @@ const AutoPaginatedSections = ({
 
   const measurementId = useRef(
     componentId ||
-      `auto-page-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      `auto-page-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
   );
   const cleanupRef = useRef(null);
   const isUnmounted = useRef(false);
 
   const USABLE_HEIGHT = useMemo(
     () => pageHeight - pagePadding * 2 - (HeaderComponent ? headerHeight : 0),
-    [pageHeight, pagePadding, HeaderComponent, headerHeight],
+    [pageHeight, pagePadding, HeaderComponent, headerHeight]
   );
 
   const isBrowser =
@@ -79,7 +79,7 @@ const AutoPaginatedSections = ({
               {b}
             </div>
           ))}
-        </div>,
+        </div>
       );
 
       const measure = async () => {
@@ -125,7 +125,7 @@ const AutoPaginatedSections = ({
         } catch (error) {
           console.error(
             `Measurement error for ${measurementId.current}:`,
-            error,
+            error
           );
           resolve({ blockHeights: [], headerHeightPx: 0 });
         } finally {
@@ -181,7 +181,7 @@ const AutoPaginatedSections = ({
       } catch (error) {
         console.error(
           `Queue measurement failed for ${measurementId.current}:`,
-          error,
+          error
         );
         if (!isUnmounted.current) {
           setHasError(true);

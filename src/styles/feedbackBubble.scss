@@ -8,7 +8,7 @@ $border: #123b2b;
 }
 
 .fb-row--compact {
-  gap: 8px;
+  gap: 18px;
 }
 
 .fb-avatar {
@@ -25,31 +25,31 @@ $border: #123b2b;
 .fb-bubble {
   position: relative;
   flex: 1;
-  border: 2px solid $border;
-  border-radius: 14px;
+  border: 2px solid var(--fb-border, #{$border});
+  border-radius: 0 12px 12px 12px;
   padding: 10px 12px;
   background: #fff;
 }
 
 .fb-row--compact .fb-bubble {
-  border-radius: 12px;
+  border-radius: 4px 12px 12px 12px;
   padding: 8px 10px;
 }
-
-// left notch connecting avatar to bubble
-// .fb-bubble::before {
-//   content: "";
-//   position: absolute;
-//   left: -8px;
-//   top: 10px;
-//   width: 16px;
-//   height: 16px;
-//   background: #fff;
-//   border-left: 2px solid $border;
-//   border-bottom: 2px solid $border;
-//   transform: rotate(45deg);
-//   border-bottom-left-radius: 8px;
-// }
+.fb-bubble::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: -1px;
+  width: 13px;
+  height: 13px;
+  border-left: 2px solid var(--fb-border, #{$border});
+  border-right: 2px solid var(--fb-border, #{$border});
+  border-bottom: 2px solid var(--fb-border, #{$border});
+  background: white;
+  transform: rotate(90deg);
+  z-index: 1;
+  border-bottom-right-radius: 20px;
+}
 
 .fb-text {
   font-size: 13px;

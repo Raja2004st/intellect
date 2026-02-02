@@ -185,7 +185,7 @@ const SpiderChartSummary = ({
 
     out.push(
       <div key="desc" style={{ marginTop: 10, color: "#222" }}>
-        <p style={{ lineHeight: 1.55 }}>
+        <p style={{ lineHeight: 1.55, fontSize: 14 }}>
           The spider chart below plots each of the seven LBSCORE elements —
           Leadership, Bandwidth, Sales & Customer Centricity, Collaboration,
           Operational Excellence, Results Orientation, and Expertise &
@@ -193,18 +193,25 @@ const SpiderChartSummary = ({
           coloured line for each rater group - Self, Manager(s), and Others
           [Team Member(s) and Peer(s)].
         </p>
-        <ol style={{ marginTop: 12, paddingLeft: 20, lineHeight: 1.6 }}>
-          <li>
+        <ol
+          style={{
+            marginTop: 12,
+            paddingLeft: 20,
+            lineHeight: 1.6,
+            fontSize: 14,
+          }}
+        >
+          <li style={{ fontSize: 14 }}>
             <strong>Quick-gap spotting:</strong> Diverging shapes make it easy
             to see where your own view or one rater group's perception differs
             from the rest.
           </li>
-          <li style={{ marginTop: 10 }}>
+          <li style={{ marginTop: 10, fontSize: 14 }}>
             <strong>Score direction:</strong> Points closer to the outer rim
             indicate more consistent demonstration of the behaviour; points
             nearer the hub show less frequent or less visible practice.
           </li>
-          <li style={{ marginTop: 10 }}>
+          <li style={{ marginTop: 10, fontSize: 14 }}>
             <strong>Action cues:</strong> Look for spokes where the lines pull
             inward or spread widely apart — these highlight the priority gaps to
             address in your development plan.

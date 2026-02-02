@@ -59,7 +59,7 @@ const EvaluatorCategoryBreakdown = ({
         <span className="content-page__title-text">
           LBSCORE Broken Down by Evaluator Category
         </span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -71,7 +71,7 @@ const EvaluatorCategoryBreakdown = ({
           Note: For categories with more than one respondent, scores represent
           the mean of all individual ratings.
         </em>
-      </div>,
+      </div>
     );
 
     items.forEach((row, idx) => {
@@ -86,7 +86,7 @@ const EvaluatorCategoryBreakdown = ({
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 56px",
-              alignItems: "center",
+              // alignItems: "center",
               gap: 12,
               marginTop: 10,
             }}
@@ -119,6 +119,10 @@ const EvaluatorCategoryBreakdown = ({
                 color: "#0e4a2e",
                 fontWeight: 700,
                 lineHeight: 2.23,
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                marginTop: 10,
               }}
             >
               <div style={{ textAlign: "right" }}>{row.values.self}</div>
@@ -127,7 +131,7 @@ const EvaluatorCategoryBreakdown = ({
               <div style={{ textAlign: "right" }}>{row.values.peers}</div>
             </div>
           </div>
-        </div>,
+        </div>
       );
     });
 

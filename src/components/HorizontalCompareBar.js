@@ -9,12 +9,11 @@ const HorizontalCompareBar = ({
   width = "100%",
   height = 70,
   colors = {
-    self: "#b3792e",
-    others: "#a9d0b8",
+    self: "#0e4a2e", // dark green for Self
+    others: "#b37b2f", // gold for managers/team
     track: "#ffffff",
     border: "#d9d9d9",
   },
-  // New: rows mode [{label, value, color?}]
   rows,
   showTicks = true,
 }) => {
@@ -23,26 +22,38 @@ const HorizontalCompareBar = ({
     width: isNumericWidth ? width : "100%",
     border: `1px solid ${colors.border}`,
     background: colors.track,
-    padding: "10px 0 6px",
   };
 
-  const barHeight = 16;
+  const barHeight = 18;
   const padX = 12;
 
-  // Helper to compute width style by value
+  // width helper used for both modes
   const widthStyleFor = (value) => {
     if (isNumericWidth) {
       const innerWidth = width - 2; // border
       const trackWidth = innerWidth - padX * 2;
       const w = Math.max(0, Math.min(1, value / max)) * trackWidth;
       return { width: w };
-    } else {
-      const pct = Math.max(0, Math.min(1, value / max)) * 100;
-      return { width: `${pct}%` };
+    }
+    const pct = Math.max(0, Math.min(1, value / max)) * 100;
+    return { width: `${pct}%` };
+  };
+
+  // Decide a readable label color based on fill
+  const labelColorFor = (hex) => {
+    try {
+      const h = hex.replace("#", "");
+      const r = parseInt(h.substring(0, 2), 16) / 255;
+      const g = parseInt(h.substring(2, 4), 16) / 255;
+      const b = parseInt(h.substring(4, 6), 16) / 255;
+      const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      return luminance > 0.65 ? "#35624b" : "#ffffff";
+    } catch {
+      return "#ffffff";
     }
   };
 
-  // If rows supplied, render multi-row variant
+  // Strict rows design (bars only, NO right value column)
   if (Array.isArray(rows) && rows.length) {
     return (
       <div
@@ -50,50 +61,69 @@ const HorizontalCompareBar = ({
         aria-label={`Horizontal bars up to ${max}`}
         style={containerStyle}
       >
-        <div style={{ padding: `0 ${padX}px` }}>
-          {rows.map((r, idx) => (
-            <div
-              key={idx}
-              style={{ display: "flex", alignItems: "center", marginBottom: 8 }}
-            >
-              <span
-                style={{
-                  width: 100,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: "#35624b",
-                }}
-              >
-                {r.label}
-              </span>
+        {/* Bars area with inner grid lines (no outer padding; per-row inner margin) */}
+        <div>
+          {rows.map((r, idx) => {
+            const fill = r.color || colors.self;
+            const textColor = r.textColor || labelColorFor(fill);
+            return (
               <div
+                key={idx}
                 style={{
                   position: "relative",
-                  height: barHeight,
-                  flex: 1,
-                  background: "#f9faf9",
+                  height: barHeight + 15,
+                  background: "#ffffff",
+                  borderTop: idx === 0 ? "none" : `1px solid ${colors.border}`,
                 }}
               >
+                {/* inner track */}
                 <div
                   style={{
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
+                    position: "relative",
                     height: barHeight,
-                    background: r.color || colors.self,
-                    ...widthStyleFor(r.value ?? 0),
+                    marginTop: 7,
                   }}
-                />
+                >
+                  {/* fill */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      top: 0,
+                      height: barHeight,
+                      background: fill,
+                      ...widthStyleFor(r.value ?? 0),
+                    }}
+                  />
+                  {/* label inside bar */}
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: 6,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: textColor,
+                    }}
+                  >
+                    {r.label}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+          {/* bottom border to close the grid */}
+          <div style={{ borderTop: `1px solid ${colors.border}` }} />
         </div>
+
+        {/* X-axis ticks under the bars */}
         {showTicks && (
           <div
             style={{
+              padding: `6px ${padX}px 6px`,
               display: "flex",
               justifyContent: "space-between",
-              padding: `6px ${padX}px 0`,
               fontSize: 12,
               color: "#666",
             }}
@@ -107,7 +137,6 @@ const HorizontalCompareBar = ({
     );
   }
 
-  // Original two-bar comparison fallback
   let selfStyle, othersStyle;
   if (isNumericWidth) {
     const innerWidth = width - 2; // border
@@ -127,28 +156,20 @@ const HorizontalCompareBar = ({
     <div
       role="figure"
       aria-label={`${selfLabel} ${self} vs ${othersLabel} ${others} out of ${max}`}
-      style={containerStyle}
+      style={{ ...containerStyle, padding: "4px 0 6px" }}
     >
-      {/* bars */}
-      <div style={{ padding: `0 ${padX}px` }}>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
-          <span
-            style={{
-              width: 52,
-              fontSize: 12,
-              fontWeight: 700,
-              color: "#35624b",
-            }}
-          >
-            {selfLabel}
-          </span>
+      {/* bars (rows-style, labels inside, no outer padding) */}
+      <div>
+        {/* Self row */}
+        <div
+          style={{
+            position: "relative",
+            height: barHeight + 8,
+            background: "#ffffff",
+          }}
+        >
           <div
-            style={{
-              position: "relative",
-              height: barHeight,
-              flex: 1,
-              background: "#f9faf9",
-            }}
+            style={{ position: "relative", height: barHeight, marginTop: 7 }}
           >
             <div
               style={{
@@ -160,26 +181,33 @@ const HorizontalCompareBar = ({
                 ...selfStyle,
               }}
             />
+            <span
+              style={{
+                position: "absolute",
+                left: 6,
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: 12,
+                fontWeight: 700,
+                color: labelColorFor(colors.self),
+              }}
+            >
+              {selfLabel}
+            </span>
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span
-            style={{
-              width: 52,
-              fontSize: 12,
-              fontWeight: 700,
-              color: "#35624b",
-            }}
-          >
-            {othersLabel}
-          </span>
+
+        {/* Others row */}
+        <div
+          style={{
+            position: "relative",
+            height: barHeight + 15,
+            background: "#ffffff",
+            borderTop: `1px solid ${colors.border}`,
+          }}
+        >
           <div
-            style={{
-              position: "relative",
-              height: barHeight,
-              flex: 1,
-              background: "#f9faf9",
-            }}
+            style={{ position: "relative", height: barHeight, marginTop: 7 }}
           >
             <div
               style={{
@@ -191,6 +219,19 @@ const HorizontalCompareBar = ({
                 ...othersStyle,
               }}
             />
+            <span
+              style={{
+                position: "absolute",
+                left: 6,
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: 12,
+                fontWeight: 700,
+                color: labelColorFor(colors.others),
+              }}
+            >
+              {othersLabel}
+            </span>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import ReportInfoTable from "./reportInfoTable";
 
 const headers5 = [
   "Score",
@@ -89,15 +88,58 @@ const QuartilePositionCard = ({
         </span>
       </div>
 
-      {/* Values table */}
-      <ReportInfoTable
-        headers={headers}
-        rows={[{ cells: values }]}
-        leftWidth="20%"
-        rightWidth="20%"
-        midWidth="20%"
-        rowHeight={42}
-      />
+      {/* Values table - 5 columns to match headers */}
+      <div style={{ border: "1px solid #c9d5cf" }}>
+        <table
+          role="table"
+          style={{
+            // width: "100%",
+            borderCollapse: "collapse",
+            tableLayout: "fixed",
+          }}
+        >
+          <thead>
+            <tr>
+              {headers.map((h, i) => (
+                <th
+                  key={`h-${i}`}
+                  scope="col"
+                  style={{
+                    borderBottom: "1px solid #c9d5cf",
+                    borderRight:
+                      i < headers.length - 1 ? "1px solid #c9d5cf" : "none",
+                    padding: "6px 8px",
+                    textAlign: "center",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    color: "#333",
+                  }}
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {headers.map((_, i) => (
+                <td
+                  key={`v-${i}`}
+                  style={{
+                    borderRight:
+                      i < headers.length - 1 ? "1px solid #c9d5cf" : "none",
+                    padding: "8px 10px",
+                    textAlign: i === 0 ? "left" : "center",
+                    fontSize: 12,
+                  }}
+                >
+                  {values?.[i] ?? ""}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

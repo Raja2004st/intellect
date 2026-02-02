@@ -5,7 +5,6 @@ import EvaluatorRatingsTable from "./EvaluatorRatingsTable";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 
-// ... (keep all your defaultSections data as is) ...
 const defaultSections = [
   {
     titleIndex: "2.5.1.",
@@ -1255,7 +1254,6 @@ const BehaviouralIndicators = ({
     [startPage],
   );
 
-  // Stagger mounting to prevent simultaneous measurements
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsMounted(true);
@@ -1340,9 +1338,7 @@ const BehaviouralIndicators = ({
         </div>,
       );
 
-      // Indicators
       sec.indicators.forEach((ind, indIdx) => {
-        // Group indicator text and table to keep together
         out.push(
           <div
             key={`ind-${secIdx}-${indIdx}`}

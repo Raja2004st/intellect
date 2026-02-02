@@ -45,7 +45,7 @@ const FeedbackBubble = ({
         style={{
           background: bubbleColor,
           color: textColor,
-          borderColor,
+          "--fb-border": borderColor,
           //   height: "42px",
         }}
       >

@@ -5,7 +5,10 @@ import Header from "../components/header";
 import ReportInfoTable from "../components/reportInfoTable";
 import ContentPage from "../components/contentPage";
 import TableContentPage from "../components/tableContentPage";
-import { downloadPdfSplitByHeader } from "../utils/pdf";
+import {
+  downloadPdfSplitByHeader,
+  // downloadDocxSplitByHeader,
+} from "../utils/pdf";
 import AboutAssessmentPages from "../components/aboutAssessmentPages";
 import AboutSectionPages from "../components/aboutSectionPages";
 import ScoringDefinition from "../components/ScoringDefinition";
@@ -22,6 +25,7 @@ import Highlights from "../components/Highlights";
 import CoachingActionPlan from "../components/CoachingActionPlan";
 import CoachingActionPlanPage2 from "../components/CoachingActionPlanPage2";
 import IndividualDevelopmentPlan from "../components/IndividualDevelopmentPlan";
+import BlindSpots from "../components/BlindSpots";
 
 const MainPage = () => {
   const qualitativeSections = [
@@ -277,6 +281,7 @@ const MainPage = () => {
       chipColor: "#0e4a2e",
       dotsColor: "#0e4a2e",
       leftIcon: null,
+      scoreShip: false,
       items: [
         {
           score: 2.5,
@@ -315,84 +320,7 @@ const MainPage = () => {
       arcColor: "#b37b2f",
       chipColor: "#b37b2f",
       dotsColor: "#b37b2f",
-      leftIcon: null,
-      items: [
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-      ],
-    },
-    {
-      startPage: 45,
-      titleIndex: "4.",
-      // titleText: "Highlights",
-      subIndex: "4.3.",
-      subText: "Strengths",
-      note: "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
-      arcColor: "#0e4a2e",
-      chipColor: "#0e4a2e",
-      dotsColor: "#0e4a2e",
-      leftIcon: null,
-      items: [
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-        {
-          score: 2.5,
-          title: "Negotiation",
-          desc: "Is flexible and works well in a fast paced and dynamic environment",
-        },
-      ],
-    },
-    {
-      startPage: 46,
-      titleIndex: "4.",
-      // titleText: "Highlights",
-      subIndex: "4.4.",
-      subText: "Areas of Improvement",
-      note: "Below are the 5 statements where you received the lowest ratings and are considered your areas of improvements.",
-      arcColor: "#b37b2f",
-      chipColor: "#b37b2f",
-      dotsColor: "#b37b2f",
+      scoreShip: true,
       leftIcon: null,
       items: [
         {
@@ -423,6 +351,42 @@ const MainPage = () => {
       ],
     },
   ];
+  const blindSpotsSections = [
+    {
+      startPage: 45,
+      subIndex: "4.3.",
+      subText: "Hidden Strengths",
+      note: "Hidden Strengths are behaviours/competencies where you have rated yourself lower than others, with a difference of ≥ 0.5 between your self-rating and the rating given by other raters. These are highlighted only when your self-rating is ≤ 3, meaning you tend to underrate yourself relative to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
+      arcColor: "#0e4a2e",
+      chipColor: "#0e4a2e",
+      leftIcon: "/images/hidden-strengths.png", // place your uploaded image under public/images/
+      scoreShip: false,
+      items: [
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+      ],
+    },
+    {
+      startPage: 46,
+      subIndex: "4.4.",
+      subText: "Blind Spots",
+      note: "Blind Spots are behaviours/ competencies where you have rated yourself higher than others with a difference of ≥ 0.5 between your self-rating and the rating given by others. These are highlighted only when self-rating is ≥3.5, indicating areas where you may be overestimating your effectiveness compared to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
+      arcColor: "#b37b2f",
+      chipColor: "#b37b2f",
+      scoreShip: true,
+      leftIcon: "/images/blind-spots.png", // place your uploaded image under public/images/
+      items: [
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+        { score: 2.5, desc: "Text" },
+      ],
+    },
+  ];
 
   return (
     <div>
@@ -431,6 +395,7 @@ const MainPage = () => {
           display: "flex",
           justifyContent: "flex-end",
           padding: "12px 16px",
+          gap: 8,
         }}
       >
         <button
@@ -445,6 +410,19 @@ const MainPage = () => {
           }}
         >
           Download PDF
+        </button>
+        <button
+          // onClick={downloadDocxSplitByHeader}
+          style={{
+            padding: "8px 14px",
+            background: "#1a5fb4",
+            color: "#fff",
+            border: "none",
+            borderRadius: 6,
+            cursor: "pointer",
+          }}
+        >
+          Download Word
         </button>
       </div>
       <div className="section-page-container">
@@ -644,7 +622,7 @@ const MainPage = () => {
         <EvaluatorCategoryBreakdown />
         <BehaviouralIndicators startPage={16} />
         <ParticipantCohortSummary startPage={26} />
-        {/* <QualitativeFeedbackIntro startPage={30} />
+        <QualitativeFeedbackIntro startPage={30} />
         {qualitativeSections.map((sec, i) => (
           <QualitativeFeedbackList
             key={`qsec-${i}`}
@@ -654,7 +632,31 @@ const MainPage = () => {
             questions={sec.questions}
           />
         ))}
-    */}
+        {highlightsSections.map((sec, i) => (
+          <Highlights key={`hl-${i}`} {...sec} />
+        ))}
+        {blindSpotsSections.map((sec, i) => (
+          <BlindSpots
+            key={`bs-${i}`}
+            startPage={sec.startPage}
+            titleIndex={sec.subIndex}
+            titleText={sec.subText}
+            description={sec.note}
+            arcColor={sec.arcColor}
+            chipColor={sec.chipColor}
+            leftIcon={sec.leftIcon}
+            items={sec.items.map((it) => ({
+              score: it.score ?? 2.5,
+              text: it.desc ?? "Text",
+              self: 4,
+              others: 2,
+            }))}
+            scoreShip={sec.scoreShip}
+          />
+        ))}
+        <CoachingActionPlan startPage={49} />
+        <CoachingActionPlanPage2 startPage={50} />
+        <IndividualDevelopmentPlan startPage={51} />
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ const measurementManager = {
 
   removeFromQueue: (componentId) => {
     measurementQueue = measurementQueue.filter(
-      (item) => item.componentId !== componentId,
+      (item) => item.componentId !== componentId
     );
   },
 

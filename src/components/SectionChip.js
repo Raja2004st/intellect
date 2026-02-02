@@ -15,7 +15,6 @@ const SectionChip = ({
         backgroundColor: color,
         color: textColor,
         borderRadius: radius,
-        // tail uses ::after, color synced via CSS var
         ["--chip-color"]: color,
       }}
     >

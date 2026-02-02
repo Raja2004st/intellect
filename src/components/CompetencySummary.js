@@ -7,9 +7,9 @@ import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 
 const Gauge = ({ score = 383, max = 500, size = 240 }) => {
-  const radius = (size - 24) / 2;
   const center = size / 2;
   const stroke = 16;
+  const radius = center - stroke / 2 - 4; // small inset to avoid clipping
   const circ = 2 * Math.PI * radius;
   const pct = Math.min(1, Math.max(0, score / max));
   const dash = circ * pct;
@@ -23,11 +23,21 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
       aria-label="overall score gauge"
     >
       <defs>
-        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="1.2" />
+        <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0e4a2e" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#1a6b48" stopOpacity="1" />
+        </linearGradient>
+        <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow
+            dx="0"
+            dy="2"
+            stdDeviation="2"
+            floodColor="rgba(0,0,0,0.25)"
+          />
         </filter>
       </defs>
-      {/* track */}
+
+      {/* Track */}
       <circle
         cx={center}
         cy={center}
@@ -36,29 +46,37 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
         strokeWidth={stroke}
         fill="none"
       />
-      {/* progress */}
+
+      {/* Progress arc with gradient + shadow */}
       <circle
         cx={center}
         cy={center}
         r={radius}
-        stroke="#0e4a2e"
+        stroke="url(#gaugeGradient)"
         strokeWidth={stroke}
         fill="none"
         strokeDasharray={`${dash} ${gap}`}
         transform={`rotate(-90 ${center} ${center})`}
         strokeLinecap="round"
-        filter="url(#soft)"
+        style={{
+          filter: "url(#gaugeShadow)",
+          transition: "stroke-dasharray 600ms ease",
+        }}
       />
-      {/* inner circle */}
-      <circle cx={center} cy={center} r={radius - 26} fill="#0e4a2e" />
+
+      {/* Center disc */}
+      <circle cx={center} cy={center} r={radius - stroke - 6} fill="#0e4a2e" />
+
+      {/* Score */}
       <text
         x="50%"
         y="50%"
         dominantBaseline="middle"
         textAnchor="middle"
-        fontSize="44"
+        fontSize={Math.round(size * 0.185)}
         fontWeight="700"
         fill="#fff"
+        style={{ fontFamily: "'Arial', sans-serif" }}
       >
         {score}
       </text>
@@ -85,7 +103,7 @@ const CompetencySummary = ({
     [],
   );
 
-  const streamRows = cohortRows; // same demo values
+  const streamRows = cohortRows;
 
   const defaultCohortMap = useMemo(
     () => ({
@@ -135,7 +153,7 @@ const CompetencySummary = ({
             weightages applicable for your respective streams.
           </em>
         </div>
-        {/* <div
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -149,8 +167,8 @@ const CompetencySummary = ({
             </div>
             <Gauge />
           </div>
-        </div> */}
-        <ul style={{ marginTop: 10, lineHeight: 1.55 }}>
+        </div>
+        <ul style={{ marginTop: 10, lineHeight: 1.55, fontSize: 14 }}>
           <li>
             The overall score is calculated on a total score of 500 using
             weightages applicable for <strong>DELIVERY</strong>
@@ -167,11 +185,11 @@ const CompetencySummary = ({
     );
 
     out.push(
-      <div key="quartiles" style={{ paddingLeft: 24, marginTop: 18 }}>
+      <div key="quartiles" style={{ marginTop: 18 }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 12px 1fr",
+            gridTemplateColumns: "1fr 4px 1fr",
             alignItems: "start",
             gap: 12,
           }}
