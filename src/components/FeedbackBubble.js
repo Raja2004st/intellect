@@ -37,8 +37,13 @@ const FeedbackBubble = ({
       } ${className}`.trim()}
       style={style}
     >
-      <div className="fb-avatar" style={{ background: avatarBg, borderColor }}>
-        {icon || <PersonIcon size={14} color="#fff" />}
+      <div style={{ paddingTop: "10px" }}>
+        <div
+          className="fb-avatar"
+          style={{ background: avatarBg, borderColor }}
+        >
+          {icon || <PersonIcon size={20} color="#fff" />}
+        </div>
       </div>
       <div
         className="fb-bubble"
@@ -46,12 +51,11 @@ const FeedbackBubble = ({
           background: bubbleColor,
           color: textColor,
           "--fb-border": borderColor,
-          //   height: "42px",
         }}
       >
         <textarea
           className="fb-textarea"
-          style={{ color: textColor }}
+          style={{ color: textColor, fontSize: 14 }}
           value={typeof value === "string" ? value : undefined}
           onChange={onChange}
           defaultValue={typeof value === "string" ? undefined : text}

@@ -37,7 +37,16 @@ const EvaluatorRatingsTable = ({
   compact = false,
 }) => {
   const pct = (score) => `${Math.max(0, Math.min(1, score / max)) * 100}%`;
-
+  const colorPicker = (value) => {
+    if (value < 3.5) {
+      return "#AE7F2E";
+    } else if (value >= 3.5 && value < 4) {
+      return "#B5D3BB";
+    } else if (value >= 4) {
+      return "#21552F";
+    }
+    return "#ffffff";
+  };
   return (
     <div style={{ width: "100%" }}>
       <table
@@ -70,7 +79,10 @@ const EvaluatorRatingsTable = ({
                 <div className="et-track">
                   <div
                     className="et-bar"
-                    style={{ width: pct(r.score), background: r.color }}
+                    style={{
+                      width: pct(r.score),
+                      background: colorPicker(r.score),
+                    }}
                   />
                 </div>
               </td>

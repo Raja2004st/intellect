@@ -27,7 +27,7 @@ function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
     0,
     0,
     targetW,
-    targetH
+    targetH,
   );
   return dst;
 }
@@ -81,7 +81,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       0,
       0,
       processedCanvas.width,
-      sliceCanvas.height
+      sliceCanvas.height,
     );
 
     const sliceImgData = sliceCanvas.toDataURL("image/jpeg", IMG_QUALITY);
@@ -93,7 +93,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       marginMm,
       marginMm,
       usableW,
-      sliceImgH
+      sliceImgH,
     );
 
     yPx += sliceHeightPx;
@@ -145,7 +145,7 @@ export async function downloadPdfSplitByHeader() {
           },
         });
 
-        await addCanvasToPdf(pdf, canvas, 5 /* margin in mm */);
+        await addCanvasToPdf(pdf, canvas, 0.1 /* margin in mm */);
 
         if (i < sections.length - 1) pdf.addPage();
       } catch (sectionErr) {
@@ -164,7 +164,6 @@ export async function downloadPdfSplitByHeader() {
 
 export { addCanvasToPdf };
 
-// Minimal, self-contained loader overlay (no external CSS or deps)
 function showLoader(message = "Loading…") {
   const existing = document.getElementById("pdf-export-loader");
   if (existing) {
@@ -181,22 +180,32 @@ function showLoader(message = "Loading…") {
   overlay.style.cssText = [
     "position:fixed",
     "inset:0",
-    "background:rgba(255,255,255,0.75)",
+    "background:rgba(17,24,39,0.35)", // slate-900 with opacity
     "z-index:2147483646",
     "display:flex",
     "align-items:center",
     "justify-content:center",
     "pointer-events:none",
+    "backdrop-filter:blur(2px)",
   ].join(";");
 
   overlay.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 22px;border-radius:10px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.12);color:#111827;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif">
-      <svg width="40" height="40" viewBox="0 0 44 44" aria-hidden="true">
-        <circle cx="22" cy="22" r="18" stroke="#2563eb" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="80" stroke-dashoffset="60">
-          <animateTransform attributeName="transform" type="rotate" from="0 22 22" to="360 22 22" dur="1s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-      <div class="msg" style="font-weight:600">${message}</div>
+    <style>
+      @keyframes loader-bounce { 0%, 80%, 100% { transform: scale(0); opacity:.5 } 40% { transform: scale(1); opacity:1 } }
+      .loader-card { display:flex; flex-direction:column; align-items:center; gap:12px; padding:18px 22px; border-radius:12px; background:#ffffff; box-shadow:0 10px 30px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.06); color:#111827; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; border:1px solid rgba(0,0,0,0.06); }
+      .loader-row { display:flex; align-items:center; gap:10px; height:24px; }
+      .dot { width:10px; height:10px; border-radius:50%; background:#2563eb; animation: loader-bounce 1.4s infinite ease-in-out both; }
+      .dot:nth-child(1) { animation-delay:-0.32s; }
+      .dot:nth-child(2) { animation-delay:-0.16s; }
+      .msg { font-weight:600; font-size:14px; color:#0f172a; }
+    </style>
+    <div class="loader-card">
+      <div class="loader-row" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div class="msg">${message}</div>
     </div>
   `;
 

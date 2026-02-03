@@ -92,7 +92,14 @@ const ScoringDefinition = ({
     out.push(
       <div key="usage" style={{ marginTop: 28 }}>
         <SectionChip text="How the scores are used in the report:" />
-        <ul style={{ marginTop: 14, paddingLeft: 56, lineHeight: 1.55 }}>
+        <ul
+          style={{
+            marginTop: 14,
+            paddingLeft: 56,
+            lineHeight: 1.55,
+            fontSize: 15,
+          }}
+        >
           <li>
             <strong>Raw scores –</strong>
             <div style={{ marginTop: 8 }}>
@@ -118,7 +125,7 @@ const ScoringDefinition = ({
 
     out.push(
       <div key="more-usage" style={{ marginTop: 28, paddingLeft: 40 }}>
-        <ul style={{ lineHeight: 1.55, paddingLeft: 16 }}>
+        <ul style={{ lineHeight: 1.55, paddingLeft: 16, fontSize: 15 }}>
           <li style={{ marginTop: 8 }}>
             <strong>Colour bands for quick insight –</strong>
             <ul style={{ marginTop: 10, paddingLeft: 18 }}>

@@ -90,7 +90,7 @@ const BlindSpots = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -98,7 +98,7 @@ const BlindSpots = ({
         <p>
           <strong>Blind Spots</strong> {description}
         </p>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -111,10 +111,10 @@ const BlindSpots = ({
           >
             <path
               d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
-                arcHeight * 0.77
+                arcHeight * 0.77,
               )}, 20 ${arcHeight}`}
               stroke={arcColor}
-              strokeWidth="2.5"
+              strokeWidth="3.0"
               fill="none"
               strokeLinecap="round"
             />
@@ -125,7 +125,7 @@ const BlindSpots = ({
                   i == 0 ? 65 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 65
                 }
                 cy={topOffset + i * rowSpacing + i * 40}
-                r={6}
+                r={8}
                 fill={arcColor}
               />
             ))}
@@ -177,7 +177,7 @@ const BlindSpots = ({
             </div>
           ))}
         </div>
-      </div>
+      </div>,
     );
 
     return out;

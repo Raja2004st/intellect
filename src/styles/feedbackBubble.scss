@@ -5,15 +5,16 @@ $border: #123b2b;
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  // align-items: center;
 }
 
 .fb-row--compact {
-  gap: 18px;
+  gap: 12px;
 }
 
 .fb-avatar {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   min-width: 28px;
   border-radius: 50%;
   display: flex;
@@ -35,21 +36,52 @@ $border: #123b2b;
   border-radius: 4px 12px 12px 12px;
   padding: 8px 10px;
 }
+
+.fb-bubble {
+  position: relative;
+}
+
 .fb-bubble::before {
   content: "";
   position: absolute;
-  left: -14px;
-  top: -1px;
-  width: 13px;
-  height: 13px;
-  border-left: 2px solid var(--fb-border, #{$border});
-  border-right: 2px solid var(--fb-border, #{$border});
-  border-bottom: 2px solid var(--fb-border, #{$border});
-  background: white;
-  transform: rotate(90deg);
+  width: 0;
+  height: 0;
+  left: -22px;
+  top: -2px;
+  border: 21px solid;
+  border-color: var(--fb-border, #{$border}) transparent transparent transparent;
+
   z-index: 1;
-  border-bottom-right-radius: 20px;
 }
+
+.fb-bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -18px;
+  top: 0;
+  border: 22px solid;
+  border-color: white transparent transparent transparent;
+
+  z-index: 2;
+}
+
+// .fb-bubble::before {
+//   content: "";
+//   position: absolute;
+//   left: -14px;
+//   top: -1px;
+//   width: 13px;
+//   height: 13px;
+//   border-left: 2px solid var(--fb-border, #{$border});
+//   border-right: 2px solid var(--fb-border, #{$border});
+//   border-bottom: 2px solid var(--fb-border, #{$border});
+//   background: white;
+//   transform: rotate(90deg);
+//   z-index: 1;
+//   border-bottom-right-radius: 20px;
+// }
 
 .fb-text {
   font-size: 13px;
@@ -70,3 +102,5 @@ $border: #123b2b;
   line-height: 1.4;
   padding: 0;
 }
+
+/* RCE overrides removed: we are using the custom .fb-bubble implementation */

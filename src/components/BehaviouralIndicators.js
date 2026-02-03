@@ -16,14 +16,14 @@ const defaultSections = [
         rows: [
           {
             label: "Self",
-            score: 1,
+            score: 3,
             gapFromSelf: 0,
             highlight: "Area of Improvement",
             color: "#b3792e",
           },
           {
             label: "Manager",
-            score: 3,
+            score: 1,
             gapFromSelf: 2,
             highlight: "Area of Improvement",
             color: "#b8860b",
@@ -37,7 +37,7 @@ const defaultSections = [
           },
           {
             label: "Team Members",
-            score: 5,
+            score: 3,
             gapFromSelf: 4,
             highlight: "Hidden Strength",
             color: "#0e4a2e",
@@ -1251,7 +1251,7 @@ const BehaviouralIndicators = ({
   const [isMounted, setIsMounted] = useState(false);
   const componentId = useMemo(
     () => `behavioural-${startPage}-${Date.now()}`,
-    [startPage],
+    [startPage]
   );
 
   useEffect(() => {
@@ -1299,7 +1299,7 @@ const BehaviouralIndicators = ({
             LBSCORE Broken Down by Behavioural Indicators
           </span>
         </h2>
-      </div>,
+      </div>
     );
 
     // Note
@@ -1314,7 +1314,7 @@ const BehaviouralIndicators = ({
         }}
       >
         <em style={{ fontSize: 13 }}>{note}</em>
-      </div>,
+      </div>
     );
 
     // Process sections with pagination-friendly structure
@@ -1335,7 +1335,7 @@ const BehaviouralIndicators = ({
             <span style={{ marginRight: 6 }}>{sec.titleIndex}</span>
             <span>{sec.title}</span>
           </h3>
-        </div>,
+        </div>
       );
 
       sec.indicators.forEach((ind, indIdx) => {
@@ -1357,8 +1357,12 @@ const BehaviouralIndicators = ({
                 marginBottom: 4,
               }}
             >
-              <span style={{ whiteSpace: "nowrap" }}>{ind.label}</span>
-              <span style={{ color: "#333", fontWeight: 400 }}>{ind.text}</span>
+              <span style={{ whiteSpace: "nowrap", fontSize: 14 }}>
+                {ind.label}
+              </span>
+              <span style={{ color: "#333", fontWeight: 400, fontSize: 14 }}>
+                {ind.text}
+              </span>
             </div>
             <div
               style={{
@@ -1374,7 +1378,7 @@ const BehaviouralIndicators = ({
                 compact={true}
               />
             </div>
-          </div>,
+          </div>
         );
       });
     });

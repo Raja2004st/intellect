@@ -411,6 +411,7 @@ const MainPage = () => {
             border: "none",
             borderRadius: 6,
             cursor: "pointer",
+            display: "none",
           }}
         >
           Download PDF
@@ -424,6 +425,7 @@ const MainPage = () => {
             border: "none",
             borderRadius: 6,
             cursor: "pointer",
+            display: "none",
           }}
         >
           Download Word
@@ -613,13 +615,13 @@ const MainPage = () => {
         <OverviewSummary
           startPage={13}
           items={[
-            { label: "Leadership", self: 2.5, others: 4.0 },
+            { label: "Leadership", self: 3.5, others: 4.5 },
             { label: "Bandwidth", self: 2.4, others: 4.1 },
-            { label: "Sales and Customer Centricity", self: 2.6, others: 4.2 },
-            { label: "Collaboration", self: 2.5, others: 4.0 },
-            { label: "Operational Excellence", self: 2.7, others: 4.1 },
-            { label: "Result Orientation", self: 2.5, others: 4.0 },
-            { label: "Expertise and Communication", self: 2.6, others: 4.1 },
+            { label: "Sales and Customer Centricity", self: 3.6, others: 1.2 },
+            { label: "Collaboration", self: 4.5, others: 1.0 },
+            { label: "Operational Excellence", self: 3.7, others: 2.1 },
+            { label: "Result Orientation", self: 3.5, others: 3.0 },
+            { label: "Expertise and Communication", self: 2.6, others: 3.5 },
           ]}
         />
         <SpiderChartSummary />

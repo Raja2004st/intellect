@@ -26,8 +26,17 @@ const HorizontalCompareBar = ({
 
   const barHeight = 18;
   const padX = 12;
+  const colorPicker = (value) => {
+    if (value < 3.5) {
+      return "#AE7F2E";
+    } else if (value >= 3.5 && value < 4) {
+      return "#B5D3BB";
+    } else if (value >= 4) {
+      return "#21552F";
+    }
+    return "#ffffff";
+  };
 
-  // width helper used for both modes
   const widthStyleFor = (value) => {
     if (isNumericWidth) {
       const innerWidth = width - 2; // border
@@ -39,7 +48,6 @@ const HorizontalCompareBar = ({
     return { width: `${pct}%` };
   };
 
-  // Decide a readable label color based on fill
   const labelColorFor = (hex) => {
     try {
       const h = hex.replace("#", "");
@@ -53,7 +61,6 @@ const HorizontalCompareBar = ({
     }
   };
 
-  // Strict rows design (bars only, NO right value column)
   if (Array.isArray(rows) && rows.length) {
     return (
       <div
@@ -64,7 +71,14 @@ const HorizontalCompareBar = ({
         {/* Bars area with inner grid lines (no outer padding; per-row inner margin) */}
         <div>
           {rows.map((r, idx) => {
-            const fill = r.color || colors.self;
+            const fill =
+              r.value < 3.5
+                ? "#AE7F2E"
+                : r.value >= 3.5 && r.value < 4
+                ? "#B5D3BB"
+                : r.value >= 4
+                ? "#21552F"
+                : null;
             const textColor = r.textColor || labelColorFor(fill);
             return (
               <div
@@ -177,7 +191,7 @@ const HorizontalCompareBar = ({
                 left: 0,
                 top: 0,
                 height: barHeight,
-                background: colors.self,
+                background: colorPicker(self),
                 ...selfStyle,
               }}
             />
@@ -215,7 +229,7 @@ const HorizontalCompareBar = ({
                 left: 0,
                 top: 0,
                 height: barHeight,
-                background: colors.others,
+                background: colorPicker(others),
                 ...othersStyle,
               }}
             />
