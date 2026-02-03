@@ -6,7 +6,7 @@ $bar-self-tail: #c8d8cd; // muted segment
 
 .bs-grid {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 230px 1fr;
   //   gap: 12px;
   margin-top: 12px;
   align-items: start;
@@ -27,7 +27,8 @@ $bar-self-tail: #c8d8cd; // muted segment
 
 .bs-left-icon {
   position: absolute;
-  left: 58px;
+  left: -12px;
+  top: 249px;
 }
 
 .bs-left-icon-card {
@@ -44,21 +45,24 @@ $bar-self-tail: #c8d8cd; // muted segment
 .bs-right {
   display: flex;
   flex-direction: column;
-  gap: 53px;
-  padding-top: 20px;
+  gap: 50px;
+  padding-top: 25px;
 }
 
 .bs-row {
   display: grid;
-  grid-template-columns: 88px 48px 1fr;
+  grid-template-columns: 48px 1fr;
   align-items: center;
   column-gap: 16px;
+  position: relative;
 }
 
 .bs-connector {
   height: 2px;
   background: $gold;
-  width: 100%;
+  // width: 20%;
+  position: absolute;
+  // left: 0;
 }
 
 .bs-chip {

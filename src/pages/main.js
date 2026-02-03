@@ -26,6 +26,10 @@ import CoachingActionPlan from "../components/CoachingActionPlan";
 import CoachingActionPlanPage2 from "../components/CoachingActionPlanPage2";
 import IndividualDevelopmentPlan from "../components/IndividualDevelopmentPlan";
 import BlindSpots from "../components/BlindSpots";
+import ChessKingIcon from "../assets/png/chessKingIcon.png";
+import MarketingIcon from "../assets/png/marketingIcon.png";
+import ChessIcon from "../assets/png/chessIcon.png";
+import EyeIcon from "../assets/png/eye.png";
 
 const MainPage = () => {
   const qualitativeSections = [
@@ -280,7 +284,7 @@ const MainPage = () => {
       arcColor: "#0e4a2e",
       chipColor: "#0e4a2e",
       dotsColor: "#0e4a2e",
-      leftIcon: null,
+      leftIcon: ChessKingIcon,
       scoreShip: false,
       items: [
         {
@@ -321,7 +325,7 @@ const MainPage = () => {
       chipColor: "#b37b2f",
       dotsColor: "#b37b2f",
       scoreShip: true,
-      leftIcon: null,
+      leftIcon: MarketingIcon,
       items: [
         {
           score: 2.5,
@@ -359,7 +363,7 @@ const MainPage = () => {
       note: "Hidden Strengths are behaviours/competencies where you have rated yourself lower than others, with a difference of ≥ 0.5 between your self-rating and the rating given by other raters. These are highlighted only when your self-rating is ≤ 3, meaning you tend to underrate yourself relative to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
       arcColor: "#0e4a2e",
       chipColor: "#0e4a2e",
-      leftIcon: "/images/hidden-strengths.png", // place your uploaded image under public/images/
+      leftIcon: ChessIcon,
       scoreShip: false,
       items: [
         { score: 2.5, desc: "Text" },
@@ -377,7 +381,7 @@ const MainPage = () => {
       arcColor: "#b37b2f",
       chipColor: "#b37b2f",
       scoreShip: true,
-      leftIcon: "/images/blind-spots.png", // place your uploaded image under public/images/
+      leftIcon: EyeIcon,
       items: [
         { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },

@@ -1,10 +1,9 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-// Image compression and capture settings
-const IMG_FORMAT = "JPEG"; // Use JPEG to significantly reduce size vs PNG
-const IMG_QUALITY = 0.68; // 0..1, tune for quality vs size
-const H2C_SCALE = 1.3; // Lower scale to reduce canvas pixel count
+const IMG_FORMAT = "JPEG";
+const IMG_QUALITY = 0.68;
+const H2C_SCALE = 1.3;
 const MAX_CANVAS_WIDTH_PX = 1800; // Downscale very large canvases to cap size
 
 function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {

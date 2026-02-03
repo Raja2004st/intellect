@@ -35,8 +35,8 @@ const LeftIcon = ({ leftIcon, arcColor }) => {
         src={leftIcon}
         alt="left"
         style={{
-          width: 120,
-          height: 120,
+          width: 106,
+          height: 106,
           objectFit: "contain",
           filter: arcColor ? undefined : undefined,
         }}
@@ -110,7 +110,7 @@ const Highlights = ({
         >
           <span className="content-page__title-index">{titleIndex}</span>
           <span className="content-page__title-text">{titleText}</span>
-        </h2>,
+        </h2>
       );
     }
 
@@ -122,7 +122,7 @@ const Highlights = ({
       >
         <span style={{ marginRight: 8 }}>{subIndex}</span>
         <span>{subText}</span>
-      </h3>,
+      </h3>
     );
 
     out.push(
@@ -131,7 +131,7 @@ const Highlights = ({
         style={{ marginTop: 10, color: "#333", marginBottom: 36 }}
       >
         <em style={{ fontSize: 13 }}>{note}</em>
-      </div>,
+      </div>
     );
 
     out.push(
@@ -144,10 +144,10 @@ const Highlights = ({
           >
             <path
               d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
-                arcHeight * 0.77,
+                arcHeight * 0.77
               )}, 20 ${arcHeight}`}
               stroke={arcColor}
-              strokeWidth="2.5"
+              strokeWidth="3.0"
               fill="none"
               strokeLinecap="round"
             />
@@ -158,7 +158,7 @@ const Highlights = ({
                   i == 0 ? 59 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 59
                 }
                 cy={topOffset + i * rowSpacing + i * 40}
-                r={6}
+                r={8}
                 fill={arcColor}
               />
             ))}
@@ -167,7 +167,9 @@ const Highlights = ({
             <div
               className="hl-chess"
               style={{
-                top: topOffset + Math.floor(items.length / 2) * rowSpacing - 60,
+                // top: topOffset + Math.floor(items.length / 2) * rowSpacing - 60,
+                width: 106,
+                height: 106,
               }}
             >
               <LeftIcon leftIcon={leftIcon} arcColor={arcColor} />
@@ -181,7 +183,16 @@ const Highlights = ({
               className="hl-row"
               style={{ minHeight: rowSpacing - 10 }}
             >
-              <div className="hl-row-line" style={{ background: arcColor }} />
+              <div
+                className="hl-row-line"
+                style={{
+                  background: arcColor,
+                  width:
+                    i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
+                  left:
+                    i === 0 || i === 4 ? -133 : i === 1 || i === 3 ? -88 : -71,
+                }}
+              />
               <ScoreChip
                 score={it.score}
                 color={chipColor}
@@ -196,7 +207,7 @@ const Highlights = ({
             </div>
           ))}
         </div>
-      </div>,
+      </div>
     );
 
     return out;

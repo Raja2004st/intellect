@@ -28,12 +28,16 @@ const RatingBars = ({ self = 4, others = 2 }) => {
   const max = 5;
   const selfPct = Math.max(0, Math.min(100, (self / max) * 100));
   const othersPct = Math.max(0, Math.min(100, (others / max) * 100));
+  const colorPicker = ["#0e4a2e", "#b37b2f", "#b8860b", "#a9d0b8", "#b3792e"];
   return (
     <div className="bs-bars-row">
       {/* Left: Others green bar with centered value */}
       <div className="bs-left-others">
         <div className="bs-bar others">
-          <div className="bs-fill others" style={{ width: `${selfPct}%` }} />
+          <div
+            className="bs-fill others"
+            style={{ width: `${selfPct}%`, background: colorPicker[self - 1] }}
+          />
           <span className="bs-value others">{self}</span>
         </div>
       </div>
@@ -41,7 +45,13 @@ const RatingBars = ({ self = 4, others = 2 }) => {
       <span className="bs-center-label">Others</span>
       {/* Right: Your Rating gold chip + grey bar */}
       <div className="bs-bar others">
-        <div className="bs-fill others" style={{ width: `${othersPct}%` }} />-{" "}
+        <div
+          className="bs-fill others"
+          style={{
+            width: `${othersPct}%`,
+            background: colorPicker[others - 1],
+          }}
+        />
         <span className="bs-value others">{others}</span>-{" "}
       </div>
     </div>
@@ -80,7 +90,7 @@ const BlindSpots = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -88,7 +98,7 @@ const BlindSpots = ({
         <p>
           <strong>Blind Spots</strong> {description}
         </p>
-      </div>,
+      </div>
     );
 
     out.push(
@@ -101,7 +111,7 @@ const BlindSpots = ({
           >
             <path
               d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
-                arcHeight * 0.77,
+                arcHeight * 0.77
               )}, 20 ${arcHeight}`}
               stroke={arcColor}
               strokeWidth="2.5"
@@ -123,13 +133,15 @@ const BlindSpots = ({
           {leftIcon && (
             <div
               className="bs-left-icon"
-              style={{
-                top: topOffset + Math.floor(items.length / 2) * rowSpacing - 80,
-              }}
+              style={
+                {
+                  // top: topOffset + Math.floor(items.length / 2) * rowSpacing - 80,
+                }
+              }
             >
-              {/* <div className="bs-left-icon-card">
+              <div className="bs-left-icon-card">
                 <LeftIcon leftIcon={leftIcon} />
-              </div> */}
+              </div>
             </div>
           )}
         </div>
@@ -140,7 +152,16 @@ const BlindSpots = ({
               className="bs-row"
               style={{ minHeight: rowSpacing - 10 }}
             >
-              <div className="bs-connector" style={{ background: arcColor }} />
+              <div
+                className="bs-connector"
+                style={{
+                  background: arcColor,
+                  width:
+                    i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
+                  left:
+                    i === 0 || i === 4 ? -133 : i === 1 || i === 3 ? -88 : -71,
+                }}
+              />
               <ScoreChip
                 score={it.score}
                 color={chipColor}
@@ -156,7 +177,7 @@ const BlindSpots = ({
             </div>
           ))}
         </div>
-      </div>,
+      </div>
     );
 
     return out;

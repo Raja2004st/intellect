@@ -101,8 +101,8 @@ function RadarLabels({ size = 420, labels = [] }) {
           Math.abs(Math.cos(a)) < 0.3
             ? "middle"
             : Math.cos(a) > 0
-              ? "start"
-              : "end";
+            ? "start"
+            : "end";
         return (
           <text
             key={i}
@@ -165,7 +165,8 @@ const SpiderChartSummary = ({
   manager = [4.5, 3.8, 4.0, 3.0, 3.0, 4.0, 4.0],
   others = [4.2, 4.0, 4.1, 4.0, 3.0, 4.0, 3.8],
 }) => {
-  const size = 460;
+  const size = 400;
+  const pad = 30; // extra padding to include labels within the viewBox
 
   const blocks = useMemo(() => {
     const out = [];
@@ -180,7 +181,7 @@ const SpiderChartSummary = ({
         <span className="content-page__title-text">
           LBSCORE Element Summary – Spider Chart
         </span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -217,7 +218,7 @@ const SpiderChartSummary = ({
             address in your development plan.
           </li>
         </ol>
-      </div>,
+      </div>
     );
 
     out.push(
@@ -228,17 +229,25 @@ const SpiderChartSummary = ({
             height={size}
             role="img"
             aria-label="LBSCORE spider chart"
+            viewBox={`${-pad} ${-pad} ${size + pad * 2} ${size + pad * 2}`}
+            preserveAspectRatio="xMidYMid meet"
+            style={{
+              width: size,
+              height: size,
+              objectFit: "contain",
+              overflow: "visible",
+              display: "block",
+            }}
           >
             <RadarGrid size={size} levels={5} spokes={categories.length} />
             <RadarLabels size={size} labels={categories} />
-            {/* Series order: Self (tan), Manager (dark green), Others (golden) */}
             <RadarSeries size={size} values={self} color="#caa785" />
             <RadarSeries size={size} values={manager} color="#0e4a2e" />
             <RadarSeries size={size} values={others} color="#b8860b" />
           </svg>
         </div>
         <Legend />
-      </div>,
+      </div>
     );
 
     return out;
