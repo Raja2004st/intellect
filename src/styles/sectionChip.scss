@@ -11,6 +11,32 @@
   position: relative;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
+// .section-chip::before {
+//   content: "";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   left: -22px;
+//   top: 55px;
+//   border: 21px solid;
+//   border-color: var(--chip-color, #0e4a2e) transparent transparent transparent;
+//   // bottom: 0;
+//   z-index: 1;
+//   // transform: translateY(-50%);
+// }
+
+// .section-chip::after {
+//   content: "";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   left: -18px;
+//   top: 0;
+//   border: 22px solid;
+//   border-color: white transparent transparent transparent;
+//   // bottom: 0;
+//   z-index: 2;
+// }
 
 .section-chip::before {
   content: "";

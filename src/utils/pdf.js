@@ -27,9 +27,89 @@ function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
     0,
     0,
     targetW,
-    targetH,
+    targetH
   );
   return dst;
+}
+
+// Wait for images inside a container to load (with a timeout safeguard)
+function waitForImages(rootEl, timeoutMs = 8000) {
+  const imgs = Array.from(rootEl.querySelectorAll("img"));
+  if (imgs.length === 0) return Promise.resolve();
+  let done = false;
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      if (!done) resolve();
+    }, timeoutMs);
+    let remaining = 0;
+    imgs.forEach((img) => {
+      if (img.complete && img.naturalWidth > 0) return;
+      remaining += 1;
+      const cleanup = () => {
+        if (done) return;
+        remaining -= 1;
+        if (remaining <= 0) {
+          done = true;
+          clearTimeout(timer);
+          resolve();
+        }
+      };
+      img.addEventListener("load", cleanup, { once: true });
+      img.addEventListener("error", cleanup, { once: true });
+    });
+    if (remaining === 0) {
+      done = true;
+      clearTimeout(timer);
+      resolve();
+    }
+  });
+}
+
+// Wait until the set of .pdf-section elements stabilizes (pagination finished)
+async function waitForStableSections({ timeoutMs = 8000, idleMs = 300 } = {}) {
+  const start = Date.now();
+  const getCount = () => document.querySelectorAll(".pdf-section").length;
+
+  // If none yet, wait a tick for initial render
+  if (getCount() === 0) {
+    await new Promise((r) =>
+      requestAnimationFrame(() => requestAnimationFrame(r))
+    );
+  }
+
+  return new Promise((resolve) => {
+    let lastCount = getCount();
+    let idleTimer = null;
+    const done = () => {
+      observer.disconnect();
+      if (idleTimer) clearTimeout(idleTimer);
+      resolve();
+    };
+
+    const resetIdle = () => {
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => done(), idleMs);
+    };
+
+    const observer = new MutationObserver(() => {
+      const now = Date.now();
+      if (now - start > timeoutMs) return done();
+      const current = getCount();
+      if (current !== lastCount) {
+        lastCount = current;
+        resetIdle();
+      }
+    });
+
+    // Start listening for any subtree changes that would add/remove pages
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Kick off initial idle window
+    resetIdle();
+  });
 }
 
 async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
@@ -81,7 +161,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       0,
       0,
       processedCanvas.width,
-      sliceCanvas.height,
+      sliceCanvas.height
     );
 
     const sliceImgData = sliceCanvas.toDataURL("image/jpeg", IMG_QUALITY);
@@ -93,7 +173,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       marginMm,
       marginMm,
       usableW,
-      sliceImgH,
+      sliceImgH
     );
 
     yPx += sliceHeightPx;
@@ -102,7 +182,20 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
 }
 
 export async function downloadPdfSplitByHeader() {
-  const sections = Array.from(document.querySelectorAll(".pdf-section"));
+  // Wait for fonts and give layout time to settle before measuring/collecting sections
+  try {
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready.catch(() => {});
+    }
+  } catch {}
+  await new Promise((r) =>
+    requestAnimationFrame(() => requestAnimationFrame(r))
+  );
+
+  // Ensure pagination and dynamic pages have finished rendering and stabilized
+  await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
+
+  let sections = Array.from(document.querySelectorAll(".pdf-section"));
   if (!sections.length) return;
 
   // Show loader while generating the PDF
@@ -117,6 +210,10 @@ export async function downloadPdfSplitByHeader() {
       compress: true,
     });
 
+    // Resolve again and re-wait in case pagination created more pages late
+    await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
+    sections = Array.from(document.querySelectorAll(".pdf-section"));
+
     for (let i = 0; i < sections.length; i++) {
       const el = sections[i];
 
@@ -127,23 +224,46 @@ export async function downloadPdfSplitByHeader() {
       }
 
       try {
-        // Give layout a frame to settle before capture
+        // Allow one more frame and ensure images are loaded. Do not scroll.
+        await waitForImages(el);
         await new Promise((r) => requestAnimationFrame(r));
 
-        const canvas = await html2canvas(el, {
-          scale: H2C_SCALE,
-          useCORS: true,
-          backgroundColor: "#ffffff", // force white background for consistent compression
-          scrollX: 0,
-          scrollY: 0,
-          removeContainer: true,
-          // Ensure the loader is not included in the cloned DOM used by html2canvas
-          onclone: (clonedDoc) => {
-            const loader = clonedDoc.getElementById("pdf-export-loader");
-            if (loader && loader.parentNode)
-              loader.parentNode.removeChild(loader);
-          },
-        });
+        let canvas;
+        try {
+          canvas = await html2canvas(el, {
+            scale: H2C_SCALE,
+            useCORS: true,
+            backgroundColor: "#ffffff", // force white background for consistent compression
+            scrollX: 0,
+            scrollY: 0,
+            removeContainer: true,
+            onclone: (clonedDoc) => {
+              const loader = clonedDoc.getElementById("pdf-export-loader");
+              if (loader && loader.parentNode)
+                loader.parentNode.removeChild(loader);
+            },
+          });
+        } catch (e1) {
+          console.warn(
+            `Retrying page ${i + 1} at lower scale/FO due to error`,
+            e1
+          );
+          // Retry with safer settings to reduce memory/layout failures
+          canvas = await html2canvas(el, {
+            scale: 1,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            scrollX: 0,
+            scrollY: 0,
+            removeContainer: true,
+            foreignObjectRendering: true,
+            onclone: (clonedDoc) => {
+              const loader = clonedDoc.getElementById("pdf-export-loader");
+              if (loader && loader.parentNode)
+                loader.parentNode.removeChild(loader);
+            },
+          });
+        }
 
         await addCanvasToPdf(pdf, canvas, 0.1 /* margin in mm */);
 

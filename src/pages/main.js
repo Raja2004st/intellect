@@ -411,7 +411,7 @@ const MainPage = () => {
             border: "none",
             borderRadius: 6,
             cursor: "pointer",
-            display: "none",
+            // display: "none",
           }}
         >
           Download PDF
