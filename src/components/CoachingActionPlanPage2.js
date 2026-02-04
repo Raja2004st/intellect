@@ -18,7 +18,9 @@ const CoachingActionPlanPage2 = ({
 
     out.push(
       <div key="takeaway" className="cap-block cap-block--mt8">
-        <div className="cap-block__header">{takeawayTitle}</div>
+        <div className="cap-block__header cap-block-box-border">
+          {takeawayTitle}
+        </div>
         <div className="cap-textarea cap-textarea--lg" />
       </div>
     );

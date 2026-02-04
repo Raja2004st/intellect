@@ -7,7 +7,7 @@ import "../styles/coachingActionPlan.scss";
 const IndividualDevelopmentPlan = ({
   startPage = 51,
   pageWidth = 794,
-  pageHeight = 900,
+  pageHeight = 1100,
   pagePadding = 10,
   titleIndex = "6.",
   titleText = "Individual Developmental Plan",
@@ -26,8 +26,8 @@ const IndividualDevelopmentPlan = ({
 
     out.push(
       <h2 key="title" className="content-page__title idp-title">
-        <span className="content-page__title-index">{titleIndex}</span>
-        <span className="content-page__title-text">{titleText}</span>
+        <span className="content-page__title-index-bold">{titleIndex}</span>
+        <span className="content-page__title-text-bold">{titleText}</span>
       </h2>
     );
 
@@ -100,7 +100,7 @@ const IndividualDevelopmentPlan = ({
       blocks={blocks}
       startPage={startPage}
       // pageWidth={pageWidth}
-      // pageHeight={pageHeight}
+      pageHeight={pageHeight}
       // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"

@@ -1,12 +1,4 @@
-// Colors
-$green-deep-1: rgba(9, 48, 28, 0.92);
-$green-deep-2: rgba(12, 61, 36, 0.88);
-$green-deep-3: rgba(16, 70, 40, 0.6);
-$green-deep-4: rgba(20, 80, 45, 0.25);
-$copper: #e8ae61;
-$heading: #e8ae61;
-$text: #e8f1ea;
-$white: #ffffff;
+// Using CSS variables from :root
 
 // Mixins
 @mixin cover-padding($x: 56px, $y: 48px) {
@@ -59,7 +51,7 @@ $white: #ffffff;
 
   &__left-rail {
     width: 5px;
-    background: $copper;
+    background: var(--color-copper);
     margin-top: 12px;
     height: 250px;
   }
@@ -77,14 +69,14 @@ $white: #ffffff;
     flex-direction: column;
     line-height: 1.2;
     letter-spacing: 1px;
-    color: $heading;
+    color: var(--color-warm-sand);
     font-weight: 700;
     font-size: 48px;
   }
 
   &__name {
     margin: 8px 0 0;
-    color: $text;
+    color: var(--cover-text);
     font-size: 22px;
     font-weight: 600;
   }
@@ -94,7 +86,7 @@ $white: #ffffff;
     background: transparent;
     border: none;
     outline: none;
-    color: $white;
+    color: var(--color-white);
     font: inherit;
     padding: 0 0 0 6px; // small gap after 'Name -'
     min-width: 220px;
@@ -111,7 +103,7 @@ $white: #ffffff;
     background: rgba(0, 0, 0, 0.35);
     padding: 10px 12px;
     border-radius: 6px;
-    color: $white;
+    color: var(--color-white);
 
     input {
       margin-left: 8px;
@@ -119,7 +111,7 @@ $white: #ffffff;
       border-radius: 4px;
       border: 1px solid rgba(255, 255, 255, 0.35);
       background: rgba(255, 255, 255, 0.1);
-      color: $white;
+      color: var(--color-white);
     }
   }
 

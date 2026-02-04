@@ -1,5 +1,4 @@
-$copper: #b3792e;
-$green: #0e4a2e;
+/* Using brand colors from :root */
 
 .report-header {
   width: 100%;
@@ -31,7 +30,7 @@ $green: #0e4a2e;
   &__title {
     font-weight: 800;
     letter-spacing: 1px;
-    color: $copper;
+    color: var(--color-copper);
     font-size: clamp(14px, 1.4vw, 18px);
     text-transform: uppercase;
   }

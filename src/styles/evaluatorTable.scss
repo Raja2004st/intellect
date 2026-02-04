@@ -1,37 +1,30 @@
-$green: #0e4a2e;
-$green-dark: #0b3a24;
-$green-mid: #35624b;
-$border: $green;
-$cell-pad-y: 8px;
-$cell-pad-x: 10px;
-
 .evaluator-table {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
   font-family: inherit;
-  color: #333;
-  border: 1px solid $border;
+  color: var(--color-text);
+  border: 1px solid var(--color-green);
 
   thead th {
-    border-bottom: 1px solid $border;
-    border-left: 1px solid $border;
+    border-bottom: 1px solid var(--color-green);
+    border-left: 1px solid var(--color-green);
     font-weight: 700;
     text-align: center;
-    color: $green-mid;
-    padding: 6px $cell-pad-x;
-    font-size: 12px;
+    color: var(--color-green-mid);
+    padding: 6px var(--cell-pad-x);
+    font-size: var(--fs-sm);
     &:first-child {
       border-left: none;
     }
   }
 
   tbody td {
-    border-top: 1px solid $border;
-    border-left: 1px solid $border;
-    padding: $cell-pad-y $cell-pad-x;
-    font-size: 13px;
+    border-top: 1px solid var(--color-green);
+    border-left: 1px solid var(--color-green);
+    padding: var(--cell-pad-y) var(--cell-pad-x);
+    font-size: var(--fs-md);
     vertical-align: middle;
     &:first-child {
       border-left: none;
@@ -61,7 +54,7 @@ $cell-pad-x: 10px;
 
   .et-label {
     font-weight: 700;
-    color: $green-mid;
+    color: var(--color-green-mid);
   }
 
   .et-na {
@@ -70,11 +63,11 @@ $cell-pad-x: 10px;
   .et-score,
   .et-gap {
     text-align: center;
-    font-weight: 700;
-    color: $green-mid;
+    font-weight: 500;
+    color: var(--color-green-mid);
   }
   .et-highlight {
-    color: $green-mid;
+    color: var(--color-green-mid);
   }
 
   // Scale track occupying 1..5 columns via colSpan
@@ -100,11 +93,12 @@ $cell-pad-x: 10px;
 .evaluator-table--compact {
   thead th {
     padding: 4px 6px;
-    font-size: 11px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
   }
   tbody td {
     padding: 6px 6px;
-    font-size: 12px;
+    font-size: var(--fs-sm);
   }
 
   .et-col-label {
@@ -139,6 +133,6 @@ $cell-pad-x: 10px;
   caption-side: top;
   text-align: left;
   font-weight: 700;
-  color: $green-mid;
+  color: var(--color-green-mid);
   margin-bottom: 8px;
 }

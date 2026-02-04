@@ -8,16 +8,16 @@ import "../styles/qualitativeFeedbackList.scss";
 
 const THEME = {
   green: {
-    borderColor: "#123b2b",
-    avatarBg: "#0e4a2e",
-    bubbleColor: "#ffffff",
-    textColor: "#333",
+    borderColor: "var(--color-green)",
+    avatarBg: "var(--color-green)",
+    bubbleColor: "var(--color-white)",
+    textColor: "var(--color-text)",
   },
   gold: {
-    borderColor: "#cc8b2c",
-    avatarBg: "#cc8b2c",
-    bubbleColor: "#ffffff",
-    textColor: "#333",
+    borderColor: "var(--color-gold)",
+    avatarBg: "var(--color-gold)",
+    bubbleColor: "var(--color-white)",
+    textColor: "var(--color-text)",
   },
 };
 

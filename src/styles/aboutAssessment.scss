@@ -1,6 +1,4 @@
-$green: #0e4a2e;
-$copper: #b3792e; // aligns with header color tweak
-$text: #222;
+/* Using CSS variables from :root */
 
 /* Top utility bar (breadcrumb left, page number right) */
 .about-topbar {
@@ -11,15 +9,15 @@ $text: #222;
   margin-bottom: 16px;
 
   &__crumb {
-    color: $green;
+    color: var(--color-green);
     font-weight: 700;
-    font-size: 14px;
+    font-size: var(--fs-md);
   }
 
   &__page {
-    color: $text;
+    color: var(--color-text);
     font-weight: 700;
-    font-size: 14px;
+    font-size: var(--fs-md);
   }
 }
 
@@ -28,10 +26,10 @@ $text: #222;
   display: flex;
   align-items: baseline;
   gap: 10px;
-  color: $green;
+  color: var(--color-green);
   margin: 14px 0 12px;
   font-weight: 800;
-  font-size: clamp(18px, 2.6vw, 22px);
+  font-size: var(--fs-xmd);
 
   &__num {
     font-weight: 900;
@@ -43,19 +41,19 @@ $text: #222;
 }
 
 .about-intro {
-  color: $text;
+  color: var(--color-text);
   margin: 0 0 18px;
-  line-height: 1.5;
-  font-size: 15px;
+  line-height: 1.3;
+  font-size: var(--fs-md);
   max-width: 92%;
   padding-left: 45px;
 }
 
 .about-subtitle {
-  color: $text;
+  color: var(--color-text);
   font-weight: 800;
   margin: 10px 0 20px;
-  font-size: 14px;
+  font-size: var(--fs-md);
   padding-left: 45px;
 }
 
@@ -67,16 +65,16 @@ $text: #222;
 .about-table {
   width: 100%;
   border-collapse: collapse;
-  border: 2px solid $copper; // outer border
-  background: #fff;
+  border: 2px solid var(--color-copper-dark); // outer border
+  background: var(--color-bg);
   table-layout: fixed;
 
   &__head {
     text-align: left;
     padding: 10px 12px;
-    color: #000;
+    color: var(--color-text);
     font-weight: 800;
-    border-bottom: 1px solid $copper;
+    border-bottom: 1px solid var(--color-copper-dark);
     &:first-child {
       width: 32%;
     }
@@ -85,10 +83,10 @@ $text: #222;
   &__cell {
     padding: 10px 12px;
     vertical-align: top;
-    border-bottom: 1px solid $copper;
-    border-left: 1px solid $copper;
-    font-size: 14px;
-    color: $text;
+    border-bottom: 1px solid var(--color-copper-dark);
+    border-left: 1px solid var(--color-copper-dark);
+    font-size: var(--fs-md);
+    color: var(--color-text);
 
     &:first-child {
       border-left: 0;
@@ -114,9 +112,9 @@ $text: #222;
 .about-purpose-title {
   margin-top: 24px;
   margin-bottom: 10px;
-  color: $text;
+  color: var(--color-text);
   font-weight: 800;
-  font-size: 14px;
+  font-size: var(--fs-md);
   padding-left: 40px;
 }
 
@@ -124,8 +122,8 @@ $text: #222;
   margin: 0;
   padding-left: 22px;
   max-width: 92%;
-  color: $text;
-  font-size: 14px;
+  color: var(--color-text);
+  font-size: var(--fs-md);
   line-height: 1.55;
   padding-left: 53px;
 
@@ -155,8 +153,8 @@ $text: #222;
   margin: 8px 0 0;
   padding-left: 18px; // bullet indent
   list-style: disc;
-  color: $text;
-  font-size: 14px;
+  color: var(--color-text);
+  font-size: var(--fs-md);
   line-height: 1.55;
   max-width: 92%;
 }

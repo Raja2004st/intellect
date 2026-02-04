@@ -52,13 +52,13 @@ const ReportInfoTable = ({
           <thead>
             <tr className="report-info__row">
               <th
-                className="report-info__cell report-info__cell--label"
+                className="report-info__cell report-info__cell--label report-info-header"
                 scope="col"
               >
                 {headers[0]}
               </th>
               <th
-                className={`report-info__cell ${
+                className={`report-info__cell report-info-header ${
                   hasThird
                     ? "report-info__cell--mid"
                     : "report-info__cell--value"
@@ -69,7 +69,7 @@ const ReportInfoTable = ({
               </th>
               {hasThird && (
                 <th
-                  className="report-info__cell report-info__cell--value"
+                  className="report-info__cell report-info-header report-info__cell--value"
                   scope="col"
                 >
                   {headers[2]}

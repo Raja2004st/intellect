@@ -1,5 +1,5 @@
 .qfl-title {
-  color: #0e4a2e;
+  color: var(--color-green);
 }
 
 .qfl-question {
@@ -10,7 +10,7 @@
   }
 
   &__header {
-    color: #0e4a2e;
+    color: var(--color-green);
     font-weight: 700;
     padding-left: 4px;
     margin-bottom: 30px;

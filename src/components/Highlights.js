@@ -22,7 +22,7 @@ const ChessIcon = ({ size = 120, color = "#0e4a2e" }) => (
 );
 
 const ScoreChip = ({ score = 2.5, color = "#c0943a", scoreShip = false }) => (
-  <div className="hl-chip">{scoreShip && <span>{score}</span>}</div>
+  <div className="hl-chip">{<span>{score}</span>}</div>
 );
 
 const LeftIcon = ({ leftIcon, arcColor }) => {
@@ -43,9 +43,9 @@ const Highlights = ({
   subIndex = "4.1.",
   subText = "Strengths",
   note = "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
-  arcColor = "#c0943a",
-  chipColor = "#c0943a",
-  dotsColor = "#c0943a",
+  arcColor = "var(--color-gold)",
+  chipColor = "var(--color-gold)",
+  dotsColor = "var(--color-gold)",
   leftIcon = null,
   scoreShip = false,
   items = [

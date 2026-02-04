@@ -11,12 +11,12 @@ const SectionChip = ({
   return (
     <div
       className={`section-chip ${className}`.trim()}
-      style={{
-        backgroundColor: color,
-        color: textColor,
-        borderRadius: radius,
-        ["--chip-color"]: color,
-      }}
+      // style={{
+      //   backgroundColor: color,
+      //   color: textColor,
+      //   borderRadius: radius,
+      //   ["--chip-color"]: color,
+      // }}
     >
       {text}
     </div>

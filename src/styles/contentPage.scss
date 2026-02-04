@@ -1,6 +1,3 @@
-$green: #0e4a2e;
-$copper: #e8ae61;
-
 .content-page {
   padding: 24px 48px 48px;
   // height: 803px;
@@ -13,19 +10,28 @@ $copper: #e8ae61;
     display: flex;
     align-items: baseline;
     gap: 14px;
-    color: black;
+    color: var(--color-text);
     // font-weight: 800;
     letter-spacing: 0.4px;
     line-height: 1.2;
-    font-size: 23px;
+    font-size: var(--fs-xl);
   }
 
   &__title-index {
     font-weight: 900;
   }
 
+  &__title-index-bold {
+    font-weight: 900;
+    font-size: var(--fs-xls);
+  }
+
   &__title-text {
     font-weight: 600;
+  }
+  &__title-text-bold {
+    font-weight: 600;
+    font-size: var(--fs-xls);
   }
 
   &__table {

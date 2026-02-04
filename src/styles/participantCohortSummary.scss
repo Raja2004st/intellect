@@ -1,14 +1,15 @@
 .pcs-title {
-  color: #0e4a2e;
+  color: var(--color-green);
 }
 
 .pcs-note {
   margin-top: -6px;
   margin-bottom: 12px;
-  color: #333;
+  color: var(--color-text);
 
   &__em {
-    font-size: 13px;
+    font-size: var(--fs-md);
+    font-weight: 500;
   }
 }
 

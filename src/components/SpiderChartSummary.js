@@ -124,9 +124,9 @@ const Legend = () => (
   <div className="scs-legend">
     <div className="scs-legend__title">Legend</div>
     {[
-      { label: "Self", color: "#caa785" },
-      { label: "Manager", color: "#0e4a2e" },
-      { label: "Others", color: "#b8860b" },
+      { label: "Self", color: "var(--surface-clay)" },
+      { label: "Manager", color: "var(--color-green)" },
+      { label: "Others", color: "var(--color-gold)" },
     ].map((it) => (
       <div key={it.label} className="scs-legend__item">
         <span className="scs-legend__color" style={{ background: it.color }} />

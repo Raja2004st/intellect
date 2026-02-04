@@ -43,8 +43,8 @@ const OverviewSummary = ({
     out.push(
       <div key="note" className="os-note">
         <em className="os-note__em">
-          Note: For categories with more than one respondent, scores represent
-          the mean of all individual ratings.
+          <strong> Note:</strong> For categories with more than one respondent,
+          scores represent the mean of all individual ratings.
         </em>
       </div>
     );

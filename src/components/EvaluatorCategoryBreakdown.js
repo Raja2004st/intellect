@@ -62,8 +62,8 @@ const EvaluatorCategoryBreakdown = ({
     out.push(
       <div key="note" className="ecb-note">
         <em className="ecb-note__em">
-          Note: For categories with more than one respondent, scores represent
-          the mean of all individual ratings.
+          <strong> Note:</strong> For categories with more than one respondent,
+          scores represent the mean of all individual ratings.
         </em>
       </div>
     );

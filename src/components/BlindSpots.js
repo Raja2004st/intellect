@@ -6,7 +6,7 @@ import "../styles/contentPage.scss";
 import "../styles/blindSpots.scss";
 
 const ScoreChip = ({ score = 2.5, scoreShip = false }) => (
-  <div className="bs-chip">{scoreShip && <span>{score}</span>}</div>
+  <div className="bs-chip">{<span>{score}</span>}</div>
 );
 
 const LeftIcon = ({ leftIcon }) => {
@@ -20,7 +20,13 @@ const RatingBars = ({ self = 4, others = 2 }) => {
   const max = 5;
   const selfPct = Math.max(0, Math.min(100, (self / max) * 100));
   const othersPct = Math.max(0, Math.min(100, (others / max) * 100));
-  const colorPicker = ["#0e4a2e", "#b37b2f", "#b8860b", "#a9d0b8", "#b3792e"];
+  const colorPicker = [
+    "var(--color-warm-sand)",
+    "var(--color-copper)",
+    "var(--color-mint)",
+    "var(--color-mint)",
+    "var(--color-green)",
+  ];
   return (
     <div className="bs-bars-row">
       {/* Left: Others green bar with centered value */}
@@ -55,8 +61,8 @@ const BlindSpots = ({
   titleIndex = "4.4.",
   titleText = "Blind Spots",
   description = "Blind Spots are behaviours/ competencies where you have rated yourself higher than others with a difference of ≥ 0.5 between your self-rating and the rating given by others. These are highlighted only when self-rating is ≥3.5, indicating areas where you may be overestimating your effectiveness compared to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
-  arcColor = "#b37b2f",
-  chipColor = "#b37b2f",
+  arcColor = "var(--color-gold)",
+  chipColor = "var(--color-gold)",
   leftIcon = null,
   scoreShip = false,
   items = [

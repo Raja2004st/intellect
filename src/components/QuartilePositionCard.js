@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import "../styles/quartilePositionCard.scss";
 
 const headers5 = [
   "Score",
@@ -34,38 +35,18 @@ const QuartilePositionCard = ({
   };
 
   return (
-    <div>
-      <div style={{ textAlign: "center", fontWeight: 800, marginBottom: 8 }}>
-        {title}
-      </div>
+    <div className="qpc">
+      <div className="qpc-title">{title}</div>
 
       {/* Tabs 1-4 */}
-      <div
-        role="tablist"
-        aria-label="Quartile tabs"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 4,
-          marginBottom: 8,
-        }}
-      >
+      <div role="tablist" aria-label="Quartile tabs" className="qpc-tabs">
         {[1, 2, 3, 4].map((q) => (
           <button
             key={q}
             role="tab"
             aria-selected={selected === q}
             onClick={() => handleSelect(q)}
-            style={{
-              minWidth: 36,
-              height: 28,
-              border: "1px solid #e6d4c3",
-              background: selected === q ? "#0e4a2e" : "#f7e8db",
-              color: selected === q ? "#fff" : "#0e4a2e",
-              borderRadius: 3,
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
+            className={`qpc-tab ${selected === q ? "qpc-tab--active" : ""}`}
           >
             {q}
           </button>
@@ -73,48 +54,17 @@ const QuartilePositionCard = ({
       </div>
 
       {/* Quartile band chip */}
-      <div style={{ textAlign: "center", marginBottom: 8 }}>
-        <span
-          style={{
-            background: "#0e4a2e",
-            color: "#fff",
-            padding: "8px 16px",
-            borderRadius: 18,
-            display: "inline-block",
-            minWidth: 180,
-          }}
-        >
-          {QUARTILE_LABELS[selected]}
-        </span>
+      <div className="qpc-chip-wrap">
+        <span className="qpc-chip">{QUARTILE_LABELS[selected]}</span>
       </div>
 
       {/* Values table - 5 columns to match headers */}
-      <div style={{ border: "1px solid #c9d5cf" }}>
-        <table
-          role="table"
-          style={{
-            // width: "100%",
-            borderCollapse: "collapse",
-            tableLayout: "fixed",
-          }}
-        >
+      <div className="qpc-table-wrap">
+        <table role="table" className="qpc-table">
           <thead>
             <tr>
               {headers.map((h, i) => (
-                <th
-                  key={`h-${i}`}
-                  scope="col"
-                  style={{
-                    borderBottom: "1px solid #c9d5cf",
-                    borderRight:
-                      i < headers.length - 1 ? "1px solid #c9d5cf" : "none",
-                    padding: "6px 8px",
-                    textAlign: "center",
-                    fontWeight: 700,
-                    fontSize: 12,
-                    color: "#333",
-                  }}
-                >
+                <th key={`h-${i}`} scope="col" className="qpc-th">
                   {h}
                 </th>
               ))}
@@ -125,13 +75,7 @@ const QuartilePositionCard = ({
               {headers.map((_, i) => (
                 <td
                   key={`v-${i}`}
-                  style={{
-                    borderRight:
-                      i < headers.length - 1 ? "1px solid #c9d5cf" : "none",
-                    padding: "8px 10px",
-                    textAlign: i === 0 ? "left" : "center",
-                    fontSize: 12,
-                  }}
+                  className={`qpc-td ${i === 0 ? "qpc-td--left" : ""}`}
                 >
                   {values?.[i] ?? ""}
                 </td>

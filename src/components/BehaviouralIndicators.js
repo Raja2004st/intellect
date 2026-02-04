@@ -1244,9 +1244,9 @@ const defaultSections = [
 const BehaviouralIndicators = ({
   startPage = 17,
   pageWidth = 794,
-  pageHeight = 1002,
+  pageHeight = 952,
   pagePadding = 10,
-  note = "Note: For categories with more than one respondent, scores represent the mean of all individual ratings.",
+  note = "For categories with more than one respondent, scores represent the mean of all individual ratings.",
   sections = defaultSections,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -1285,7 +1285,9 @@ const BehaviouralIndicators = ({
     // Note
     out.push(
       <div key="note" className="bi-note">
-        <em className="bi-note__em">{note}</em>
+        <em className="bi-note__em">
+          <strong>Note: </strong> {note}
+        </em>
       </div>
     );
 

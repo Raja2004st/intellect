@@ -38,11 +38,13 @@ const ParticipantCohortTable = ({
               <td className="pc-cell" />
             </tr>
             <tr>
-              <td className="pc-cell pc-cohort">Cohort Rating (Avg.)</td>
-              <td className="pc-cell" />
-              <td className="pc-cell" />
-              <td className="pc-cell" />
-              <td className="pc-cell" />
+              <td className="pc-cell pc-cohort pc-cohort-color">
+                Cohort Rating (Avg.)
+              </td>
+              <td className="pc-cell pc-cohort-color" />
+              <td className="pc-cell pc-cohort-color" />
+              <td className="pc-cell pc-cohort-color" />
+              <td className="pc-cell pc-cohort-color" />
             </tr>
           </React.Fragment>
         ))}

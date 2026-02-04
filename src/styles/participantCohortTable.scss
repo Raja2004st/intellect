@@ -1,9 +1,4 @@
-$green: #0e4a2e;
-$green-mid: #35624b;
-$green-header: #1f5a36;
-$border: #cc8b2c; // warm border similar to other tables
-$bg-label: #e2efe6; // subtle green tint for label column
-$bg-header: $green-header;
+/* Using CSS variables from :root */
 
 .pc-table {
   width: 100%;
@@ -11,21 +6,21 @@ $bg-header: $green-header;
   border-collapse: collapse;
   table-layout: fixed;
   font-family: inherit;
-  color: #222;
+  color: var(--color-text);
 
   thead th {
-    background: $bg-header;
+    background: var(--color-green-header);
     color: #fff;
     font-weight: 700;
     text-align: center;
     padding: 10px 8px;
-    border: 1px solid $border;
-    font-size: 12px;
+    border: 1px solid var(--color-table-border);
+    font-size: var(--fs-sm);
   }
 
   // Column sizing
   .pc-col-label {
-    width: 190px;
+    width: var(--pc-col-label-w, 230px);
     text-align: left;
   }
   .pc-col-self {
@@ -42,37 +37,42 @@ $bg-header: $green-header;
   }
 
   tbody td {
-    border: 1px solid $border;
+    border: 1px solid var(--color-table-border);
     padding: 8px 10px;
     vertical-align: middle;
-    font-size: 13px;
+    font-size: var(--fs-md);
+    // min-height: 20px;
   }
 
   .pc-label {
-    background: $bg-label;
+    background: var(--color-sage);
     font-weight: 700;
-    color: $green-mid;
+    color: var(--color-text);
     text-align: left;
     white-space: normal;
   }
 
   .pc-gutter {
     width: 12px;
-    background: #f4fff7;
-    border-left: 1px solid $border;
-    border-right: 1px solid $border;
+    background: var(--table-gutter-bg);
+    border-left: 1px solid var(--color-table-border);
+    border-right: 1px solid var(--color-table-border);
     padding: 0;
   }
 
   .pc-cell {
-    background: #fff;
+    background: var(--color-white);
   }
   .pc-your {
-    color: #000;
+    color: var(--color-text);
     font-weight: 600;
   }
+  .pc-cohort-color {
+    background: var(--surface-cream);
+  }
   .pc-cohort {
-    color: #000;
+    color: var(--color-text);
     font-weight: 600;
+    // background: var(--color-sage);
   }
 }

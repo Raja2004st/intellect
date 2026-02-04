@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/horizontalCompareBar.scss";
 
 const HorizontalCompareBar = ({
   selfLabel = "Self",
@@ -9,10 +10,10 @@ const HorizontalCompareBar = ({
   width = "100%",
   height = 70,
   colors = {
-    self: "#0e4a2e", // dark green for Self
-    others: "#b37b2f", // gold for managers/team
-    track: "#ffffff",
-    border: "#d9d9d9",
+    self: "var(--color-green)", // dark green for Self
+    others: "var(--color-gold)", // gold for managers/team
+    track: "var(--color-bg)",
+    border: "var(--color-muted)",
   },
   rows,
   showTicks = true,
@@ -20,37 +21,38 @@ const HorizontalCompareBar = ({
   const isNumericWidth = typeof width === "number";
   const containerStyle = {
     width: isNumericWidth ? width : "100%",
-    border: `1px solid ${colors.border}`,
-    background: colors.track,
+    "--hcb-border": colors.border,
+    "--hcb-track": colors.track,
   };
 
   const barHeight = 18;
   const padX = 12;
   const colorPicker = (value) => {
     if (value < 3.5) {
-      return "#AE7F2E";
+      return "var(--color-gold)";
     } else if (value >= 3.5 && value < 4) {
-      return "#B5D3BB";
+      return "var(--color-mint)";
     } else if (value >= 4) {
-      return "#21552F";
+      return "var(--color-green-mid)";
     }
     return "#ffffff";
   };
 
-  const widthStyleFor = (value) => {
+  const widthCSSVarFor = (value) => {
     if (isNumericWidth) {
       const innerWidth = width - 2; // border
       const trackWidth = innerWidth - padX * 2;
       const w = Math.max(0, Math.min(1, value / max)) * trackWidth;
-      return { width: w };
+      return `${w}px`;
     }
     const pct = Math.max(0, Math.min(1, value / max)) * 100;
-    return { width: `${pct}%` };
+    return `${pct}%`;
   };
 
   const labelColorFor = (hex) => {
     try {
-      const h = hex.replace("#", "");
+      const h = (hex || "").replace("#", "");
+      if (h.length !== 6) return "#ffffff";
       const r = parseInt(h.substring(0, 2), 16) / 255;
       const g = parseInt(h.substring(2, 4), 16) / 255;
       const b = parseInt(h.substring(4, 6), 16) / 255;
@@ -66,60 +68,41 @@ const HorizontalCompareBar = ({
       <div
         role="figure"
         aria-label={`Horizontal bars up to ${max}`}
-        style={containerStyle}
+        className="hcb"
+        style={{
+          ...containerStyle,
+          "--hcb-pad-x": `${padX}px`,
+          "--hcb-bar-h": `${barHeight}px`,
+        }}
       >
-        {/* Bars area with inner grid lines (no outer padding; per-row inner margin) */}
-        <div>
+        <div className="hcb-rows">
           {rows.map((r, idx) => {
             const fill =
               r.value < 3.5
-                ? "#AE7F2E"
+                ? "var(--color-gold)"
                 : r.value >= 3.5 && r.value < 4
-                ? "#B5D3BB"
+                ? "var(--color-mint)"
                 : r.value >= 4
-                ? "#21552F"
+                ? "var(--color-green-mid)"
                 : null;
             const textColor = r.textColor || labelColorFor(fill);
             return (
               <div
                 key={idx}
-                style={{
-                  position: "relative",
-                  height: barHeight + 15,
-                  background: "#ffffff",
-                  borderTop: idx === 0 ? "none" : `1px solid ${colors.border}`,
-                }}
+                className={`hcb-row ${idx === 0 ? "hcb-row--first" : ""}`}
+                style={{ "--hcb-row-h": `${barHeight + 15}px` }}
               >
-                {/* inner track */}
-                <div
-                  style={{
-                    position: "relative",
-                    height: barHeight,
-                    marginTop: 7,
-                  }}
-                >
-                  {/* fill */}
+                <div className="hcb-track">
                   <div
+                    className="hcb-fill"
                     style={{
-                      position: "absolute",
-                      left: 0,
-                      top: 0,
-                      height: barHeight,
-                      background: fill,
-                      ...widthStyleFor(r.value ?? 0),
+                      "--hcb-fill-w": widthCSSVarFor(r.value ?? 0),
+                      "--hcb-fill-color": fill,
                     }}
                   />
-                  {/* label inside bar */}
                   <span
-                    style={{
-                      position: "absolute",
-                      left: 6,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: textColor,
-                    }}
+                    className="hcb-label"
+                    style={{ "--hcb-label-color": textColor }}
                   >
                     {r.label}
                   </span>
@@ -127,21 +110,11 @@ const HorizontalCompareBar = ({
               </div>
             );
           })}
-          {/* bottom border to close the grid */}
-          <div style={{ borderTop: `1px solid ${colors.border}` }} />
+          <div className="hcb-bottom" />
         </div>
 
-        {/* X-axis ticks under the bars */}
         {showTicks && (
-          <div
-            style={{
-              padding: `6px ${padX}px 6px`,
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: 12,
-              color: "#666",
-            }}
-          >
+          <div className="hcb-ticks" style={{ padding: `6px ${padX}px 6px` }}>
             {Array.from({ length: max + 1 }).map((_, i) => (
               <span key={i}>{i}</span>
             ))}
@@ -151,60 +124,50 @@ const HorizontalCompareBar = ({
     );
   }
 
-  let selfStyle, othersStyle;
+  let selfWidth, othersWidth;
   if (isNumericWidth) {
     const innerWidth = width - 2; // border
     const trackWidth = innerWidth - padX * 2;
     const selfW = Math.max(0, Math.min(1, self / max)) * trackWidth;
     const othersW = Math.max(0, Math.min(1, others / max)) * trackWidth;
-    selfStyle = { width: selfW };
-    othersStyle = { width: othersW };
+    selfWidth = `${selfW}px`;
+    othersWidth = `${othersW}px`;
   } else {
     const selfPct = Math.max(0, Math.min(1, self / max)) * 100;
     const othersPct = Math.max(0, Math.min(1, others / max)) * 100;
-    selfStyle = { width: `${selfPct}%` };
-    othersStyle = { width: `${othersPct}%` };
+    selfWidth = `${selfPct}%`;
+    othersWidth = `${othersPct}%`;
   }
 
   return (
     <div
       role="figure"
       aria-label={`${selfLabel} ${self} vs ${othersLabel} ${others} out of ${max}`}
-      style={{ ...containerStyle, padding: "4px 0 6px" }}
+      className="hcb"
+      style={{
+        ...containerStyle,
+        padding: "0 0 6px",
+        "--hcb-pad-x": `${padX}px`,
+        "--hcb-bar-h": `${barHeight}px`,
+      }}
     >
-      {/* bars (rows-style, labels inside, no outer padding) */}
-      <div>
+      <div className="hcb-rows">
         {/* Self row */}
         <div
-          style={{
-            position: "relative",
-            height: barHeight + 8,
-            background: "#ffffff",
-          }}
+          className="hcb-row hcb-row--self"
+          // style={{ "--hcb-row-h": `${barHeight + 8}px` }}
         >
-          <div
-            style={{ position: "relative", height: barHeight, marginTop: 7 }}
-          >
+          <div className="hcb-track">
             <div
+              className="hcb-fill"
               style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                height: barHeight,
-                background: colorPicker(self),
-                ...selfStyle,
+                "--hcb-fill-w": selfWidth,
+                "--hcb-fill-color": colorPicker(self),
               }}
             />
             <span
-              style={{
-                position: "absolute",
-                left: 6,
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: 12,
-                fontWeight: 700,
-                color: labelColorFor(colors.self),
-              }}
+              className="hcb-label"
+              style={{ "--hcb-label-color": labelColorFor(colors.self) }}
             >
               {selfLabel}
             </span>
@@ -213,53 +176,29 @@ const HorizontalCompareBar = ({
 
         {/* Others row */}
         <div
-          style={{
-            position: "relative",
-            height: barHeight + 15,
-            background: "#ffffff",
-            borderTop: `1px solid ${colors.border}`,
-          }}
+          className="hcb-row hcb-row--others"
+          style={{ "--hcb-row-h": `${barHeight + 15}px` }}
         >
-          <div
-            style={{ position: "relative", height: barHeight, marginTop: 7 }}
-          >
+          <div className="hcb-track">
             <div
+              className="hcb-fill"
               style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                height: barHeight,
-                background: colorPicker(others),
-                ...othersStyle,
+                "--hcb-fill-w": othersWidth,
+                "--hcb-fill-color": colorPicker(others),
               }}
             />
             <span
-              style={{
-                position: "absolute",
-                left: 6,
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: 12,
-                fontWeight: 700,
-                color: labelColorFor(colors.others),
-              }}
+              className="hcb-label"
+              style={{ "--hcb-label-color": labelColorFor(colors.others) }}
             >
               {othersLabel}
             </span>
           </div>
         </div>
       </div>
-      {/* ticks */}
+
       {showTicks && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: `6px ${padX}px 0`,
-            fontSize: 12,
-            color: "#666",
-          }}
-        >
+        <div className="hcb-ticks" style={{ padding: `6px ${padX}px 0` }}>
           {Array.from({ length: max + 1 }).map((_, i) => (
             <span key={i}>{i}</span>
           ))}

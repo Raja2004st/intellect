@@ -18,9 +18,9 @@ const FeedbackBubble = ({
   text = "Sample",
   icon,
   bubbleColor = "#fff",
-  borderColor = "#123b2b",
-  avatarBg = "#0e4a2e",
-  textColor = "#333",
+  borderColor = "var(--color-green)",
+  avatarBg = "var(--color-green)",
+  textColor = "var(--color-text)",
   compact = false,
   style,
   className = "",
@@ -37,10 +37,10 @@ const FeedbackBubble = ({
       } ${className}`.trim()}
       style={style}
     >
-      <div style={{ paddingTop: "10px" }}>
+      <div className="fb-avatar-wrap">
         <div
           className="fb-avatar"
-          style={{ background: avatarBg, borderColor }}
+          style={{ "--fb-avatar-bg": avatarBg, "--fb-border": borderColor }}
         >
           {icon || <PersonIcon size={20} color="#fff" />}
         </div>
@@ -48,14 +48,13 @@ const FeedbackBubble = ({
       <div
         className="fb-bubble"
         style={{
-          background: bubbleColor,
-          color: textColor,
+          "--fb-bubble-bg": bubbleColor,
+          "--fb-text-color": textColor,
           "--fb-border": borderColor,
         }}
       >
         <textarea
           className="fb-textarea"
-          style={{ color: textColor, fontSize: 14 }}
           value={typeof value === "string" ? value : undefined}
           onChange={onChange}
           defaultValue={typeof value === "string" ? undefined : text}

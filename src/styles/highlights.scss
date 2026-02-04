@@ -1,4 +1,4 @@
-$green: #0e4a2e;
+/* Using CSS variables from :root */
 
 .hl-grid {
   display: grid;
@@ -53,7 +53,7 @@ $green: #0e4a2e;
 
 .hl-row-line {
   height: 2px;
-  background: var(--arc-color, $green);
+  background: var(--arc-color, var(--color-green));
   position: absolute;
 }
 
@@ -64,10 +64,10 @@ $green: #0e4a2e;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--chip-color, $green);
+  background: var(--chip-color, var(--color-green));
   color: #fff;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--fs-md, 14px);
 }
 
 .hl-row-text {
@@ -78,22 +78,22 @@ $green: #0e4a2e;
 
 .hl-row-title {
   font-weight: 700;
-  color: var(--arc-color, $green);
-  font-size: 14px;
+  color: var(--arc-color, var(--color-green));
+  font-size: var(--fs-md, 14px);
 }
 
 .hl-row-desc {
-  color: #333;
+  color: var(--color-text, #333);
   line-height: 1.4;
-  font-size: 13px;
+  font-size: var(--fs-md, 13px);
 }
 
 .hl-title {
-  color: $green;
+  color: var(--color-green);
 }
 
 .hl-subtitle {
-  color: $green;
+  color: var(--color-green);
   margin-top: 8px;
 
   &__index {
@@ -104,9 +104,9 @@ $green: #0e4a2e;
 .hl-note {
   margin-top: 10px;
   margin-bottom: 36px;
-  color: #333;
+  color: var(--color-text, #333);
 
   &__em {
-    font-size: 13px;
+    font-size: var(--fs-md, 13px);
   }
 }

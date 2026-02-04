@@ -1,14 +1,15 @@
 .ecb-title {
-  color: #0e4a2e;
+  color: var(--color-green);
 }
 
 .ecb-note {
   margin-top: -8px;
   margin-bottom: 16px;
-  color: #333;
+  color: var(--color-text);
 
   &__em {
-    font-size: 13px;
+    font-size: var(--fs-md);
+    font-weight: 500;
   }
 }
 
@@ -20,7 +21,7 @@
   }
 
   &__heading {
-    color: #0e4a2e;
+    color: var(--color-green-mid);
     margin: 0;
   }
 }
@@ -33,8 +34,8 @@
 }
 
 .ecb-values {
-  font-size: 13px;
-  color: #0e4a2e;
+  font-size: var(--fs-md);
+  color: var(--color-green);
   font-weight: 700;
   line-height: 2.23;
   display: flex;

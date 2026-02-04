@@ -1,0 +1,59 @@
+.hcb {
+  border: 1px solid var(--hcb-border, var(--color-muted));
+  background: var(--hcb-track, var(--color-bg));
+}
+
+.hcb-rows {
+  /* container for rows */
+}
+
+.hcb-row {
+  position: relative;
+  height: var(--hcb-row-h, 32px);
+  background: var(--color-bg);
+
+  &--first {
+    border-top: none;
+  }
+
+  &:not(&--first) {
+    border-top: 1px solid var(--hcb-border, var(--color-muted));
+  }
+}
+
+.hcb-track {
+  position: relative;
+  height: var(--hcb-bar-h, 18px);
+  margin-top: 7px;
+}
+
+.hcb-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: var(--hcb-bar-h, 18px);
+  width: var(--hcb-fill-w, 0%);
+  background: var(--hcb-fill-color, var(--color-green));
+}
+
+.hcb-label {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--hcb-label-color, #fff);
+}
+
+.hcb-bottom {
+  border-top: 1px solid var(--hcb-border, var(--color-muted));
+}
+
+.hcb-ticks {
+  padding: 6px var(--hcb-pad-x, 12px) 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-sm);
+  color: #666;
+}

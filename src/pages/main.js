@@ -287,9 +287,9 @@ const MainPage = () => {
       subIndex: "4.1.",
       subText: "Strengths",
       note: "Below are the top 5 statements where you received the highest ratings and are considered your key strengths.",
-      arcColor: "#0e4a2e",
-      chipColor: "#0e4a2e",
-      dotsColor: "#0e4a2e",
+      arcColor: "var(--color-green)",
+      chipColor: "var(--color-green)",
+      dotsColor: "var(--color-green)",
       leftIcon: ChessKingIcon,
       scoreShip: false,
       items: [
@@ -327,9 +327,9 @@ const MainPage = () => {
       subIndex: "4.2.",
       subText: "Areas of Improvement",
       note: "Below are the 5 statements where you received the lowest ratings and are considered your areas of improvements.",
-      arcColor: "#b37b2f",
-      chipColor: "#b37b2f",
-      dotsColor: "#b37b2f",
+      arcColor: "var(--color-gold)",
+      chipColor: "var(--color-gold)",
+      dotsColor: "var(--color-gold)",
       scoreShip: true,
       leftIcon: MarketingIcon,
       items: [
@@ -367,8 +367,8 @@ const MainPage = () => {
       subIndex: "4.3.",
       subText: "Hidden Strengths",
       note: "Hidden Strengths are behaviours/competencies where you have rated yourself lower than others, with a difference of ≥ 0.5 between your self-rating and the rating given by other raters. These are highlighted only when your self-rating is ≤ 3, meaning you tend to underrate yourself relative to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
-      arcColor: "#0e4a2e",
-      chipColor: "#0e4a2e",
+      arcColor: "var(--color-green)",
+      chipColor: "var(--color-green)",
       leftIcon: ChessIcon,
       scoreShip: false,
       items: [
@@ -384,8 +384,8 @@ const MainPage = () => {
       subIndex: "4.4.",
       subText: "Blind Spots",
       note: "Blind Spots are behaviours/ competencies where you have rated yourself higher than others with a difference of ≥ 0.5 between your self-rating and the rating given by others. These are highlighted only when self-rating is ≥3.5, indicating areas where you may be overestimating your effectiveness compared to how others experience you. Only the top 5 statements with the largest rating gaps are indicated.",
-      arcColor: "#b37b2f",
-      chipColor: "#b37b2f",
+      arcColor: "var(--color-gold)",
+      chipColor: "var(--color-gold)",
       scoreShip: true,
       leftIcon: EyeIcon,
       items: [
@@ -412,7 +412,7 @@ const MainPage = () => {
           onClick={downloadPdfSplitByHeader}
           style={{
             padding: "8px 14px",
-            background: "#0e4a2e",
+            background: "var(--color-green)",
             color: "#fff",
             border: "none",
             borderRadius: 6,
@@ -426,7 +426,7 @@ const MainPage = () => {
           // onClick={downloadDocxSplitByHeader}
           style={{
             padding: "8px 14px",
-            background: "#1a5fb4",
+            background: "var(--color-accent)",
             color: "#fff",
             border: "none",
             borderRadius: 6,

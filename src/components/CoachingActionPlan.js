@@ -81,7 +81,7 @@ const CoachingActionPlan = ({
     out.push(
       <div key="cap2" className="cap cap--padded">
         <div className="cap-block">
-          <div className="cap-block__header cap-label--green">
+          <div className="cap-block__header cap-label--green cap-block-box-border">
             {labels.reportFeedback}
           </div>
           <div className="cap-textarea" />
