@@ -100,8 +100,8 @@ const AboutAssessmentPages = ({
         <ReportInfoTable
           headers={["Element", "What it's really about"]}
           rows={elementRows}
-          leftWidth="32%"
-          rightWidth="68%"
+          leftWidth="26%"
+          rightWidth="74%"
           rowHeight={52}
         />
       </div>,

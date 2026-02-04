@@ -17,30 +17,30 @@
 
   /* Primary colours (Brand Core) */
   --color-green: #12341d;
-  --color-green-mid: #21552f; /* Rich Evergreen */
-  --color-green-header: #21552f; /* Use evergreen for headers */
-  --color-gold: #ae7f2e; /* Golden Mustard */
-  --color-warm-sand: #dca972; /* Warm Sand Beige */
+  --color-green-mid: #21552f;
+  --color-green-header: #21552f;
+  --color-gold: #ae7f2e;
+  --color-warm-sand: #dca972;
 
   /* Keep legacy names mapped to brand palette */
-  --color-border: #123b2b; /* can be tuned if needed */
-  --color-accent: #21552f; /* use Rich Evergreen as accent */
-  --color-copper: #ae7f2e; /* map copper to Golden Mustard */
-  --color-copper-dark: #dca972; /* use Warm Sand Beige for darker copper usage */
+  --color-border: #123b2b;
+  --color-accent: #21552f;
+  --color-copper: #ae7f2e;
+  --color-copper-dark: #dca972;
   --color-white: #ffffff;
 
   /* Secondary colours (Supporting UI Shades) */
-  --color-muted-green: #478159; /* Muted Green */
-  --color-sage: #81b48d; /* Soft Sage Green */
-  --color-mint: #b5d3bb; /* Pale Mint Grey */
+  --color-muted-green: #478159;
+  --color-sage: #81b48d;
+  --color-mint: #b5d3bb;
 
   /* Neutral warm tones (UI Background & Surface Colors) */
-  --surface-clay: #e1b58e; /* Clay Beige */
-  --surface-peach: #f0d0b4; /* Light Peach Sand */
-  --surface-cream: #fee7da; /* Cream Blush White */
+  --surface-clay: #e1b58e;
+  --surface-peach: #f0d0b4;
+  --surface-cream: #fee7da;
 
   /* Tables specific */
-  --color-table-border: #ae7f2e; /* align table borders with Golden Mustard */
+  --color-table-border: #ae7f2e;
   --bg-label: #e2efe6;
   --table-gutter-bg: #f4fff7;
   --cell-pad-y: 8px;
@@ -55,8 +55,8 @@
 
   /* Bar colors */
   --bar-bg: #e5e7e9;
-  --bar-self: #81b48d; /* Soft Sage */
-  --bar-self-tail: #b5d3bb; /* Pale Mint Grey */
+  --bar-self: #81b48d;
+  --bar-self-tail: #b5d3bb;
 
   /* Component theming hooks (defaults) */
   --arc-color: var(--color-green-mid);

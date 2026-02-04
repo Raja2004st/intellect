@@ -77,13 +77,13 @@ const ScoringDefinition = ({
     );
 
     out.push(
-      <div key="table" className="content-page__table">
+      <div key="table" className="content-page__table-score">
         <ReportInfoTable
           rows={ratingRows}
           headers={["Score", "Label", "What it means in practice"]}
-          leftWidth="16%"
-          midWidth="28%"
-          rightWidth="56%"
+          leftWidth="12%"
+          midWidth="20%"
+          rightWidth="68%"
           rowHeight={undefined}
           extraKey="meaning"
         />
@@ -184,7 +184,7 @@ const ScoringDefinition = ({
       blocks={blocks}
       startPage={startPage}
       // pageWidth={pageWidth}
-      // pageHeight={pageHeight}
+      pageHeight={pageHeight}
       // pagePadding={pagePadding}
       HeaderComponent={Header}
       contentClassName="content-page"
