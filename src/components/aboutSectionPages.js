@@ -127,10 +127,9 @@ const AboutSectionPages = ({
         ],
       },
     ],
-    [],
+    []
   );
 
-  // Use provided sections if passed, else the defaults above
   const sections =
     sectionsProp && sectionsProp.length ? sectionsProp : defaultSections;
 
@@ -141,7 +140,7 @@ const AboutSectionPages = ({
       <h2 key="title-sections" className="about-title">
         <span className="about-title__num">{titleIndex}</span>
         <span className="about-title__text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     sections.forEach((s, idx) => {
@@ -156,7 +155,7 @@ const AboutSectionPages = ({
               </li>
             ))}
           </ul>
-        </div>,
+        </div>
       );
     });
 

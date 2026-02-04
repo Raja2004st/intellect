@@ -16,15 +16,13 @@ const CoachingActionPlanPage2 = ({
   const blocks = useMemo(() => {
     const out = [];
 
-    // Takeaway section (green header + big box)
     out.push(
-      <div key="takeaway" className="cap-block" style={{ marginTop: 8 }}>
+      <div key="takeaway" className="cap-block cap-block--mt8">
         <div className="cap-block__header">{takeawayTitle}</div>
         <div className="cap-textarea cap-textarea--lg" />
-      </div>,
+      </div>
     );
 
-    // Two-column goals table with header
     const rows = Array.from({ length: tableRows });
     out.push(
       <div key="goals" className="cap-grid2">
@@ -38,7 +36,7 @@ const CoachingActionPlanPage2 = ({
             <div className="cap-grid2__td" />
           </div>
         ))}
-      </div>,
+      </div>
     );
 
     // Signatures
@@ -52,7 +50,7 @@ const CoachingActionPlanPage2 = ({
           <div className="cap-signature__line" />
           <div className="cap-signature__label">Coach Signature</div>
         </div>
-      </div>,
+      </div>
     );
 
     return out;

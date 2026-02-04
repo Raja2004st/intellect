@@ -4,6 +4,7 @@ import Header from "./header";
 import FeedbackBubble from "./FeedbackBubble";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/qualitativeFeedbackList.scss";
 
 const THEME = {
   green: {
@@ -34,40 +35,26 @@ const QualitativeFeedbackList = ({
 
     // Title
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title qfl-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     questions.forEach((q, qi) => {
       const theme = THEME[q.colorTheme] || THEME.green;
       out.push(
-        <div key={`q-${qi}`} style={{ marginTop: qi === 0 ? 6 : 16 }}>
-          <div
-            style={{
-              color: "#0e4a2e",
-              fontWeight: 700,
-              paddingLeft: 4,
-              marginBottom: 30,
-            }}
-          >
-            <span style={{ marginRight: 8 }}>{q.index || `${qi + 1}.`}</span>
+        <div
+          key={`q-${qi}`}
+          className={`qfl-question ${qi === 0 ? "qfl-question--first" : ""}`}
+        >
+          <div className="qfl-question__header">
+            <span className="qfl-question__index">
+              {q.index || `${qi + 1}.`}
+            </span>
             <span>{q.text}</span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 14,
-              paddingLeft: 8,
-              paddingRight: 8,
-            }}
-          >
+          <div className="qfl-comments">
             {(q.comments || []).map((c, i) => (
               <FeedbackBubble
                 key={i}
@@ -80,7 +67,7 @@ const QualitativeFeedbackList = ({
               />
             ))}
           </div>
-        </div>,
+        </div>
       );
     });
 

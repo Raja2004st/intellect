@@ -3,6 +3,7 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/spiderChartSummary.scss";
 
 const categoriesDefault = [
   "Leadership",
@@ -120,36 +121,16 @@ function RadarLabels({ size = 420, labels = [] }) {
 }
 
 const Legend = () => (
-  <div
-    style={{
-      position: "absolute",
-      top: 110,
-      right: 58,
-      background: "#f3f3f3",
-      padding: "12px 16px",
-      borderRadius: 2,
-    }}
-  >
-    <div style={{ fontSize: 13, marginBottom: 6, fontWeight: 600 }}>Legend</div>
+  <div className="scs-legend">
+    <div className="scs-legend__title">Legend</div>
     {[
       { label: "Self", color: "#caa785" },
       { label: "Manager", color: "#0e4a2e" },
       { label: "Others", color: "#b8860b" },
     ].map((it) => (
-      <div
-        key={it.label}
-        style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}
-      >
-        <span
-          style={{
-            display: "inline-block",
-            width: 12,
-            height: 12,
-            background: it.color,
-            borderRadius: 2,
-          }}
-        />
-        <span style={{ fontSize: 13 }}>{it.label}</span>
+      <div key={it.label} className="scs-legend__item">
+        <span className="scs-legend__color" style={{ background: it.color }} />
+        <span className="scs-legend__label">{it.label}</span>
       </div>
     ))}
   </div>
@@ -172,11 +153,7 @@ const SpiderChartSummary = ({
     const out = [];
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title scs-title">
         <span className="content-page__title-index">2.3.</span>
         <span className="content-page__title-text">
           LBSCORE Element Summary – Spider Chart
@@ -185,8 +162,8 @@ const SpiderChartSummary = ({
     );
 
     out.push(
-      <div key="desc" style={{ marginTop: 10, color: "#222" }}>
-        <p style={{ lineHeight: 1.55, fontSize: 14 }}>
+      <div key="desc" className="scs-desc">
+        <p className="scs-desc__text">
           The spider chart below plots each of the seven LBSCORE elements —
           Leadership, Bandwidth, Sales & Customer Centricity, Collaboration,
           Operational Excellence, Results Orientation, and Expertise &
@@ -194,25 +171,18 @@ const SpiderChartSummary = ({
           coloured line for each rater group - Self, Manager(s), and Others
           [Team Member(s) and Peer(s)].
         </p>
-        <ol
-          style={{
-            marginTop: 12,
-            paddingLeft: 20,
-            lineHeight: 1.6,
-            fontSize: 14,
-          }}
-        >
-          <li style={{ fontSize: 14 }}>
+        <ol className="scs-desc__list">
+          <li className="scs-desc__item">
             <strong>Quick-gap spotting:</strong> Diverging shapes make it easy
             to see where your own view or one rater group's perception differs
             from the rest.
           </li>
-          <li style={{ marginTop: 10, fontSize: 14 }}>
+          <li className="scs-desc__item scs-desc__item--mt10">
             <strong>Score direction:</strong> Points closer to the outer rim
             indicate more consistent demonstration of the behaviour; points
             nearer the hub show less frequent or less visible practice.
           </li>
-          <li style={{ marginTop: 10, fontSize: 14 }}>
+          <li className="scs-desc__item scs-desc__item--mt10">
             <strong>Action cues:</strong> Look for spokes where the lines pull
             inward or spread widely apart — these highlight the priority gaps to
             address in your development plan.
@@ -222,22 +192,16 @@ const SpiderChartSummary = ({
     );
 
     out.push(
-      <div key="chartwrap" style={{ position: "relative", marginTop: 12 }}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+      <div key="chartwrap" className="scs-chartwrap">
+        <div className="scs-chartwrap__center">
           <svg
+            className="scs-chart"
             width={size}
             height={size}
             role="img"
             aria-label="LBSCORE spider chart"
             viewBox={`${-pad} ${-pad} ${size + pad * 2} ${size + pad * 2}`}
             preserveAspectRatio="xMidYMid meet"
-            style={{
-              width: size,
-              height: size,
-              objectFit: "contain",
-              overflow: "visible",
-              display: "block",
-            }}
           >
             <RadarGrid size={size} levels={5} spokes={categories.length} />
             <RadarLabels size={size} labels={categories} />

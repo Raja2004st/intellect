@@ -32,6 +32,12 @@ import ChessIcon from "../assets/png/chessIcon.png";
 import EyeIcon from "../assets/png/eye.png";
 
 const MainPage = () => {
+  // const [assessementLastPage, setAssessementLastPage] = useState(5)
+  // const [aboutSectionLastPage, setaboutSectionLastPage] = useState(7)
+  // const [scoreLastPage, setScoreLastPage] = useState(9)
+  // const [aboutSectionTwoLastPage, setAboutSectionTwoLastPage] = useState(11)
+  // const [compentencyLastPage, setCompentencyLastPage] = useState(12)
+  // const [overviewSummaryLastPage, setOverviewSummaryLastPage] = useState(13)
   const qualitativeSections = [
     {
       titleIndex: "3.1.",
@@ -317,7 +323,7 @@ const MainPage = () => {
     {
       startPage: 46,
       titleIndex: "4.",
-      titleText: "Highlights",
+      // titleText: "Highlights",
       subIndex: "4.2.",
       subText: "Areas of Improvement",
       note: "Below are the 5 statements where you received the lowest ratings and are considered your areas of improvements.",

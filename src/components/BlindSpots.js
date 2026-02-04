@@ -5,22 +5,14 @@ import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 import "../styles/blindSpots.scss";
 
-const ScoreChip = ({ score = 2.5, color = "#b37b2f", scoreShip = false }) => (
-  <div className="bs-chip" style={{ background: color }}>
-    {scoreShip && <span>{score}</span>}
-  </div>
+const ScoreChip = ({ score = 2.5, scoreShip = false }) => (
+  <div className="bs-chip">{scoreShip && <span>{score}</span>}</div>
 );
 
 const LeftIcon = ({ leftIcon }) => {
   if (!leftIcon) return null;
   if (typeof leftIcon === "string")
-    return (
-      <img
-        src={leftIcon}
-        alt="left"
-        style={{ width: 120, height: 120, objectFit: "contain" }}
-      />
-    );
+    return <img src={leftIcon} alt="left" className="bs-left-img" />;
   return leftIcon;
 };
 
@@ -83,14 +75,10 @@ const BlindSpots = ({
     const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title bs-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -98,11 +86,15 @@ const BlindSpots = ({
         <p>
           <strong>Blind Spots</strong> {description}
         </p>
-      </div>,
+      </div>
     );
 
     out.push(
-      <div key="grid" className="bs-grid">
+      <div
+        key="grid"
+        className="bs-grid"
+        style={{ "--bs-arc": arcColor, "--bs-chip": chipColor }}
+      >
         <div className="bs-left" style={{ minHeight: arcHeight }}>
           <svg
             className="bs-arc"
@@ -111,7 +103,7 @@ const BlindSpots = ({
           >
             <path
               d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
-                arcHeight * 0.77,
+                arcHeight * 0.77
               )}, 20 ${arcHeight}`}
               stroke={arcColor}
               strokeWidth="3.0"
@@ -131,14 +123,7 @@ const BlindSpots = ({
             ))}
           </svg>
           {leftIcon && (
-            <div
-              className="bs-left-icon"
-              style={
-                {
-                  // top: topOffset + Math.floor(items.length / 2) * rowSpacing - 80,
-                }
-              }
-            >
+            <div className="bs-left-icon">
               <div className="bs-left-icon-card">
                 <LeftIcon leftIcon={leftIcon} />
               </div>
@@ -147,26 +132,17 @@ const BlindSpots = ({
         </div>
         <div className="bs-right">
           {items.map((it, i) => (
-            <div
-              key={`row-${i}`}
-              className="bs-row"
-              style={{ minHeight: rowSpacing - 10 }}
-            >
+            <div key={`row-${i}`} className="bs-row">
               <div
                 className="bs-connector"
                 style={{
-                  background: arcColor,
                   width:
                     i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
                   left:
                     i === 0 || i === 4 ? -133 : i === 1 || i === 3 ? -88 : -71,
                 }}
               />
-              <ScoreChip
-                score={it.score}
-                color={chipColor}
-                scoreShip={scoreShip}
-              />
+              <ScoreChip score={it.score} scoreShip={scoreShip} />
               <div className="bs-row-main">
                 <div className="bs-row-top">
                   <div className="bs-row-title">Your Rating</div>
@@ -177,7 +153,7 @@ const BlindSpots = ({
             </div>
           ))}
         </div>
-      </div>,
+      </div>
     );
 
     return out;

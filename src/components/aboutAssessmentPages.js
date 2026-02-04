@@ -35,7 +35,7 @@ const AboutAssessmentPages = ({
         tail: "Feed de-identified trends to L&D to focus organisation-wide capability-building where it matters most.",
       },
     ],
-    [],
+    []
   );
 
   const ELEMENTS = useMemo(
@@ -69,12 +69,12 @@ const AboutAssessmentPages = ({
         desc: "Applying structured thinking, communicating with clarity and impact",
       },
     ],
-    [],
+    []
   );
 
   const elementRows = useMemo(
     () => ELEMENTS.map((e) => ({ label: e.label, value: e.desc })),
-    [ELEMENTS],
+    [ELEMENTS]
   );
 
   // Build blocks (excluding Header so it repeats automatically on each page)
@@ -117,7 +117,7 @@ const AboutAssessmentPages = ({
         ))}
       </ol>,
     ],
-    [elementRows, purposes],
+    [elementRows, purposes]
   );
 
   return (

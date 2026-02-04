@@ -4,6 +4,7 @@ import Header from "./header";
 import HorizontalCompareBar from "./HorizontalCompareBar";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/evaluatorCategoryBreakdown.scss";
 
 const PALETTE = {
   self: "#0e4a2e",
@@ -50,11 +51,7 @@ const EvaluatorCategoryBreakdown = ({
     const out = [];
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title ecb-title">
         <span className="content-page__title-index">2.4.</span>
         <span className="content-page__title-text">
           LBSCORE Broken Down by Evaluator Category
@@ -63,11 +60,8 @@ const EvaluatorCategoryBreakdown = ({
     );
 
     out.push(
-      <div
-        key="note"
-        style={{ marginTop: -8, marginBottom: 16, color: "#333" }}
-      >
-        <em style={{ fontSize: 13 }}>
+      <div key="note" className="ecb-note">
+        <em className="ecb-note__em">
           Note: For categories with more than one respondent, scores represent
           the mean of all individual ratings.
         </em>
@@ -76,21 +70,16 @@ const EvaluatorCategoryBreakdown = ({
 
     items.forEach((row, idx) => {
       out.push(
-        <div key={`sec-${idx}`} style={{ marginTop: idx === 0 ? 8 : 24 }}>
-          <h3 style={{ color: "#0e4a2e", margin: 0 }}>
+        <div
+          key={`sec-${idx}`}
+          className={`ecb-sec ${idx === 0 ? "ecb-sec--first" : ""}`}
+        >
+          <h3 className="ecb-sec__heading">
             {idx === 0
               ? `Overall Rating: ${row.label}`
               : `Rating: ${row.label}`}
           </h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 56px",
-              // alignItems: "center",
-              gap: 12,
-              marginTop: 10,
-            }}
-          >
+          <div className="ecb-grid">
             <HorizontalCompareBar
               rows={[
                 { label: "Self", value: row.values.self, color: PALETTE.self },
@@ -113,22 +102,11 @@ const EvaluatorCategoryBreakdown = ({
               max={5}
               showTicks={true}
             />
-            <div
-              style={{
-                fontSize: 13,
-                color: "#0e4a2e",
-                fontWeight: 700,
-                lineHeight: 2.23,
-                display: "flex",
-                flexDirection: "column",
-                gap: 6,
-                marginTop: 10,
-              }}
-            >
-              <div style={{ textAlign: "right" }}>{row.values.self}</div>
-              <div style={{ textAlign: "right" }}>{row.values.manager}</div>
-              <div style={{ textAlign: "right" }}>{row.values.team}</div>
-              <div style={{ textAlign: "right" }}>{row.values.peers}</div>
+            <div className="ecb-values">
+              <div className="ecb-values__item">{row.values.self}</div>
+              <div className="ecb-values__item">{row.values.manager}</div>
+              <div className="ecb-values__item">{row.values.team}</div>
+              <div className="ecb-values__item">{row.values.peers}</div>
             </div>
           </div>
         </div>

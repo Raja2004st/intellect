@@ -5,6 +5,19 @@ $gold: #b37b2f;
   margin-top: 8px;
 }
 
+.cap-title {
+  color: #0e4a2e;
+  margin-top: 10px;
+}
+
+.idp-title {
+  color: #0e4a2e;
+}
+
+.cap--padded {
+  padding-left: 40px;
+}
+
 .cap-row {
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -43,6 +56,10 @@ $gold: #b37b2f;
     font-weight: 600;
     background: $green;
     color: #fff;
+  }
+
+  &--mt8 {
+    margin-top: 8px;
   }
 }
 

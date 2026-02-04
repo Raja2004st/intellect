@@ -1,0 +1,48 @@
+.ecb-title {
+  color: #0e4a2e;
+}
+
+.ecb-note {
+  margin-top: -8px;
+  margin-bottom: 16px;
+  color: #333;
+
+  &__em {
+    font-size: 13px;
+  }
+}
+
+.ecb-sec {
+  margin-top: 24px;
+
+  &--first {
+    margin-top: 8px;
+  }
+
+  &__heading {
+    color: #0e4a2e;
+    margin: 0;
+  }
+}
+
+.ecb-grid {
+  display: grid;
+  grid-template-columns: 1fr 56px;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.ecb-values {
+  font-size: 13px;
+  color: #0e4a2e;
+  font-weight: 700;
+  line-height: 2.23;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+
+  &__item {
+    text-align: right;
+  }
+}

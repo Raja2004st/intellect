@@ -42,6 +42,13 @@ $bar-self-tail: #c8d8cd; // muted segment
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
 }
 
+/* ensure img sizing when provided as string */
+.bs-left-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
 .bs-right {
   display: flex;
   flex-direction: column;
@@ -55,11 +62,12 @@ $bar-self-tail: #c8d8cd; // muted segment
   align-items: center;
   column-gap: 16px;
   position: relative;
+  min-height: 90px; // align with previous inline spacing
 }
 
 .bs-connector {
   height: 2px;
-  background: $gold;
+  background: var(--bs-arc, $gold);
   // width: 20%;
   position: absolute;
   // left: 0;
@@ -72,7 +80,7 @@ $bar-self-tail: #c8d8cd; // muted segment
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $gold;
+  background: var(--bs-chip, $gold);
   color: #fff;
   font-weight: 600;
   font-size: 14px;
@@ -241,4 +249,9 @@ $bar-self-tail: #c8d8cd; // muted segment
   right: auto;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+/* Title color class extracted from inline */
+.bs-title {
+  color: $green;
 }

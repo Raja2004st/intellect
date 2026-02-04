@@ -51,7 +51,7 @@ const QualitativeFeedbackSection = ({
       >
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -67,7 +67,7 @@ const QualitativeFeedbackSection = ({
       >
         <span style={{ marginRight: 8 }}>{questionIndex}</span>
         <span style={{ color: "#0e4a2e" }}>{questionText}</span>
-      </div>,
+      </div>
     );
 
     const theme = THEME[colorTheme] || THEME.green;
@@ -85,7 +85,7 @@ const QualitativeFeedbackSection = ({
             readOnly: !!c.readOnly,
             placeholder: c.placeholder,
             rows: c.rows,
-          },
+          }
     );
 
     out.push(
@@ -114,7 +114,7 @@ const QualitativeFeedbackSection = ({
             textColor={textColor}
           />
         ))}
-      </div>,
+      </div>
     );
 
     return out;

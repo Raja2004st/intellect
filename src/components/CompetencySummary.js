@@ -5,6 +5,7 @@ import ReportInfoTable from "./reportInfoTable";
 import QuartilePositionCard from "./QuartilePositionCard";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/competencySummary.scss";
 
 const Gauge = ({ score = 383, max = 500, size = 240 }) => {
   const center = size / 2;
@@ -17,6 +18,7 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
 
   return (
     <svg
+      className="gauge"
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}
@@ -49,6 +51,7 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
 
       {/* Progress arc with gradient + shadow */}
       <circle
+        className="gauge__progress"
         cx={center}
         cy={center}
         r={radius}
@@ -58,10 +61,6 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
         strokeDasharray={`${dash} ${gap}`}
         transform={`rotate(-90 ${center} ${center})`}
         strokeLinecap="round"
-        style={{
-          filter: "url(#gaugeShadow)",
-          transition: "stroke-dasharray 600ms ease",
-        }}
       />
 
       {/* Center disc */}
@@ -69,6 +68,7 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
 
       {/* Score */}
       <text
+        className="gauge__score"
         x="50%"
         y="50%"
         dominantBaseline="middle"
@@ -76,7 +76,6 @@ const Gauge = ({ score = 383, max = 500, size = 240 }) => {
         fontSize={Math.round(size * 0.185)}
         fontWeight="700"
         fill="#fff"
-        style={{ fontFamily: "'Arial', sans-serif" }}
       >
         {score}
       </text>
@@ -100,7 +99,7 @@ const CompetencySummary = ({
       { label: "Third quartile (75th percentile)", value: "425.5", extra: "" },
       { label: "Max Score", value: "483.0", extra: "" },
     ],
-    [],
+    []
   );
 
   const streamRows = cohortRows;
@@ -112,7 +111,7 @@ const CompetencySummary = ({
       3: ["310.0", "380.0", "405.0", "440.0", "490.0"],
       4: ["335.0", "395.0", "415.0", "455.0", "500.0"],
     }),
-    [],
+    []
   );
   const defaultStreamMap = useMemo(
     () => ({
@@ -121,7 +120,7 @@ const CompetencySummary = ({
       3: ["305.0", "378.0", "402.0", "438.0", "488.0"],
       4: ["330.0", "392.0", "412.0", "452.0", "498.0"],
     }),
-    [],
+    []
   );
   const cohortMap =
     (cohortQuartiles && cohortQuartiles.map) || defaultCohortMap;
@@ -132,43 +131,30 @@ const CompetencySummary = ({
     const out = [];
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title cs-title">
         <span className="content-page__title-index">2.</span>
         <span className="content-page__title-text">Competency Summary</span>
-      </h2>,
+      </h2>
     );
 
     out.push(
-      <div key="overall" style={{ paddingLeft: 40 }}>
-        <h3 className="about-subtitle" style={{ margin: 0, paddingLeft: 0 }}>
+      <div key="overall" className="cs-overall">
+        <h3 className="about-subtitle cs-overall__subtitle">
           2.1. Your Overall Score
         </h3>
-        <div style={{ fontSize: 13, marginTop: 6 }}>
+        <div className="cs-overall__note">
           <em>
             Note: The overall score is calculated on a total score of 500 using
             weightages applicable for your respective streams.
           </em>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 24,
-            marginBottom: 12,
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <div style={{ marginBottom: 6, fontWeight: 700 }}>
-              Your Overall Score
-            </div>
+        <div className="cs-gauge-wrap">
+          <div className="cs-gauge">
+            <div className="cs-gauge__label">Your Overall Score</div>
             <Gauge />
           </div>
         </div>
-        <ul style={{ marginTop: 10, lineHeight: 1.55, fontSize: 14 }}>
+        <ul className="cs-overall__bullets">
           <li>
             The overall score is calculated on a total score of 500 using
             weightages applicable for <strong>DELIVERY</strong>
@@ -181,39 +167,25 @@ const CompetencySummary = ({
             </em>
           </li>
         </ul>
-      </div>,
+      </div>
     );
 
     out.push(
-      <div key="quartiles" style={{ marginTop: 18 }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 4px 1fr",
-            alignItems: "start",
-            gap: 12,
-          }}
-        >
+      <div key="quartiles" className="cs-quartiles">
+        <div className="cs-quartiles__grid">
           <QuartilePositionCard
             title="Your Quartile Position Cohort"
             valuesByQuartile={cohortMap}
             initialSelected={2}
           />
-          <div
-            style={{
-              width: 1,
-              height: "100%",
-              background: "#c9d5cf",
-              justifySelf: "center",
-            }}
-          />
+          <div className="cs-quartiles__divider" />
           <QuartilePositionCard
             title="Your Quartile Position Stream"
             valuesByQuartile={streamMap}
             initialSelected={2}
           />
         </div>
-      </div>,
+      </div>
     );
 
     return out;

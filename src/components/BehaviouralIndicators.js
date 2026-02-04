@@ -4,6 +4,7 @@ import Header from "./header";
 import EvaluatorRatingsTable from "./EvaluatorRatingsTable";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/behaviouralIndicators.scss";
 
 const defaultSections = [
   {
@@ -1269,30 +1270,9 @@ const BehaviouralIndicators = ({
 
     // Title block
     out.push(
-      <div
-        key="title"
-        style={{
-          marginTop: 0,
-          pageBreakInside: "avoid",
-          breakInside: "avoid",
-        }}
-      >
-        <h2
-          className="content-page__title"
-          style={{
-            display: "inline-block",
-            padding: "6px 10px",
-            borderRadius: 2,
-            margin: 0,
-            color: "#0e4a2e",
-            pageBreakAfter: "avoid",
-            breakAfter: "avoid",
-          }}
-        >
-          <span
-            className="content-page__title-index"
-            style={{ color: "#0e4a2e", marginRight: 6 }}
-          >
+      <div key="title" className="bi-title-wrap">
+        <h2 className="content-page__title bi-title">
+          <span className="content-page__title-index bi-title__index">
             2.5.
           </span>
           <span className="content-page__title-text">
@@ -1304,35 +1284,16 @@ const BehaviouralIndicators = ({
 
     // Note
     out.push(
-      <div
-        key="note"
-        style={{
-          marginTop: 10,
-          color: "#333",
-          pageBreakInside: "avoid",
-          breakInside: "avoid",
-        }}
-      >
-        <em style={{ fontSize: 13 }}>{note}</em>
+      <div key="note" className="bi-note">
+        <em className="bi-note__em">{note}</em>
       </div>
     );
 
-    // Process sections with pagination-friendly structure
     sections.forEach((sec, secIdx) => {
-      // Section header - keep with first indicator if possible
       out.push(
-        <div
-          key={`sec-header-${secIdx}`}
-          style={{
-            marginTop: 18,
-            pageBreakInside: "avoid",
-            breakInside: "avoid",
-            pageBreakAfter: "avoid",
-            breakAfter: "avoid",
-          }}
-        >
-          <h3 style={{ color: "#0e4a2e", margin: 0 }}>
-            <span style={{ marginRight: 6 }}>{sec.titleIndex}</span>
+        <div key={`sec-header-${secIdx}`} className="bi-sec-header">
+          <h3 className="bi-sec-header__title">
+            <span className="bi-sec-header__index">{sec.titleIndex}</span>
             <span>{sec.title}</span>
           </h3>
         </div>
@@ -1340,38 +1301,12 @@ const BehaviouralIndicators = ({
 
       sec.indicators.forEach((ind, indIdx) => {
         out.push(
-          <div
-            key={`ind-${secIdx}-${indIdx}`}
-            style={{
-              marginTop: 10,
-              pageBreakInside: "avoid",
-              breakInside: "avoid",
-            }}
-          >
-            <div
-              style={{
-                color: "#0e4a2e",
-                fontWeight: 600,
-                display: "flex",
-                gap: 8,
-                marginBottom: 4,
-              }}
-            >
-              <span style={{ whiteSpace: "nowrap", fontSize: 14 }}>
-                {ind.label}
-              </span>
-              <span style={{ color: "#333", fontWeight: 400, fontSize: 14 }}>
-                {ind.text}
-              </span>
+          <div key={`ind-${secIdx}-${indIdx}`} className="bi-indicator">
+            <div className="bi-indicator__header">
+              <span className="bi-indicator__label">{ind.label}</span>
+              <span className="bi-indicator__text">{ind.text}</span>
             </div>
-            <div
-              style={{
-                width: "100%",
-                maxWidth: "100%",
-                overflow: "hidden",
-                marginTop: 8,
-              }}
-            >
+            <div className="bi-table-wrap">
               <EvaluatorRatingsTable
                 title={`${sec.title} ${ind.label}`}
                 rows={ind.rows}
@@ -1393,9 +1328,7 @@ const BehaviouralIndicators = ({
         style={{ padding: pagePadding }}
       >
         <div className="content-page">
-          <div style={{ padding: "40px", textAlign: "center", color: "#999" }}>
-            Loading behavioural indicators...
-          </div>
+          <div className="bi-loading">Loading behavioural indicators...</div>
         </div>
       </section>
     );

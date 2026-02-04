@@ -31,19 +31,15 @@ const CoachingActionPlan = ({
 
     // Title
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e", marginTop: 10 }}
-      >
+      <h2 key="title" className="content-page__title cap-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     // Form grid
     out.push(
-      <div key="cap" className="cap" style={{ paddingLeft: 40 }}>
+      <div key="cap1" className="cap cap--padded">
         <div className="cap-row cap-row--tight">
           <div className="cap-label cap-label--green">{labels.date}</div>
           <div className="cap-cell" />
@@ -79,17 +75,18 @@ const CoachingActionPlan = ({
           </div>
           <div className="cap-textarea" />
         </div> */}
-      </div>,
+      </div>
     );
+
     out.push(
-      <div key="cap" className="cap" style={{ paddingLeft: 40 }}>
+      <div key="cap2" className="cap cap--padded">
         <div className="cap-block">
           <div className="cap-block__header cap-label--green">
             {labels.reportFeedback}
           </div>
           <div className="cap-textarea" />
         </div>
-      </div>,
+      </div>
     );
 
     return out;

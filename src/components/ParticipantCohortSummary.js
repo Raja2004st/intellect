@@ -4,6 +4,7 @@ import Header from "./header";
 import ParticipantCohortTable from "./ParticipantCohortTable";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/participantCohortSummary.scss";
 
 const ParticipantCohortSummary = ({
   startPage = 26,
@@ -25,37 +26,27 @@ const ParticipantCohortSummary = ({
   const blocks = useMemo(() => {
     const out = [];
 
-    // Title
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title pcs-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
-    // Note
     out.push(
-      <div
-        key="note"
-        style={{ marginTop: -6, marginBottom: 12, color: "#333" }}
-      >
-        <em style={{ fontSize: 13 }}>{note}</em>
-      </div>,
+      <div key="note" className="pcs-note">
+        <em className="pcs-note__em">{note}</em>
+      </div>
     );
 
-    // Table
     out.push(
-      <div key="table" style={{ marginTop: 10 }}>
+      <div key="table" className="pcs-table">
         <ParticipantCohortTable
           competencies={competencies}
           selfRatings={selfRatings}
           cohortRatings={cohortRatings}
         />
-      </div>,
+      </div>
     );
 
     return out;

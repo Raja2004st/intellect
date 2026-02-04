@@ -22,26 +22,13 @@ const ChessIcon = ({ size = 120, color = "#0e4a2e" }) => (
 );
 
 const ScoreChip = ({ score = 2.5, color = "#c0943a", scoreShip = false }) => (
-  <div className="hl-chip" style={{ background: color }}>
-    {scoreShip && <span>{score}</span>}
-  </div>
+  <div className="hl-chip">{scoreShip && <span>{score}</span>}</div>
 );
 
 const LeftIcon = ({ leftIcon, arcColor }) => {
   if (!leftIcon) return null;
   if (typeof leftIcon === "string") {
-    return (
-      <img
-        src={leftIcon}
-        alt="left"
-        style={{
-          width: 106,
-          height: 106,
-          objectFit: "contain",
-          filter: arcColor ? undefined : undefined,
-        }}
-      />
-    );
+    return <img src={leftIcon} alt="left" className="hl-left-img" />;
   }
   return leftIcon;
 };
@@ -103,11 +90,7 @@ const Highlights = ({
     // Title
     if (titleIndex && titleText) {
       out.push(
-        <h2
-          key="title"
-          className="content-page__title"
-          style={{ color: "#0e4a2e" }}
-        >
+        <h2 key="title" className="content-page__title hl-title">
           <span className="content-page__title-index">{titleIndex}</span>
           <span className="content-page__title-text">{titleText}</span>
         </h2>
@@ -115,27 +98,27 @@ const Highlights = ({
     }
 
     out.push(
-      <h3
-        key="subtitle"
-        className="content-page__subtitle"
-        style={{ color: "#0e4a2e", marginTop: 8 }}
-      >
-        <span style={{ marginRight: 8 }}>{subIndex}</span>
+      <h3 key="subtitle" className="content-page__subtitle hl-subtitle">
+        <span className="hl-subtitle__index">{subIndex}</span>
         <span>{subText}</span>
       </h3>
     );
 
     out.push(
-      <div
-        key="note"
-        style={{ marginTop: 10, color: "#333", marginBottom: 36 }}
-      >
-        <em style={{ fontSize: 13 }}>{note}</em>
+      <div key="note" className="hl-note">
+        <em className="hl-note__em">{note}</em>
       </div>
     );
 
     out.push(
-      <div key="grid" className="hl-grid">
+      <div
+        key="grid"
+        className="hl-grid"
+        style={{
+          "--arc-color": arcColor,
+          "--chip-color": chipColor,
+        }}
+      >
         <div className="hl-left" style={{ minHeight: arcHeight }}>
           <svg
             className="hl-arc"
@@ -164,29 +147,17 @@ const Highlights = ({
             ))}
           </svg>
           {leftIcon && (
-            <div
-              className="hl-chess"
-              style={{
-                // top: topOffset + Math.floor(items.length / 2) * rowSpacing - 60,
-                width: 106,
-                height: 106,
-              }}
-            >
+            <div className="hl-chess">
               <LeftIcon leftIcon={leftIcon} arcColor={arcColor} />
             </div>
           )}
         </div>
         <div className="hl-right">
           {items.map((it, i) => (
-            <div
-              key={`it-${i}`}
-              className="hl-row"
-              style={{ minHeight: rowSpacing - 10 }}
-            >
+            <div key={`it-${i}`} className="hl-row">
               <div
                 className="hl-row-line"
                 style={{
-                  background: arcColor,
                   width:
                     i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
                   left:
@@ -199,9 +170,7 @@ const Highlights = ({
                 scoreShip={scoreShip}
               />
               <div className="hl-row-text">
-                <div className="hl-row-title" style={{ color: arcColor }}>
-                  {it.title}
-                </div>
+                <div className="hl-row-title">{it.title}</div>
                 <div className="hl-row-desc">{it.desc}</div>
               </div>
             </div>

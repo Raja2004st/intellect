@@ -5,6 +5,7 @@ import SectionChip from "./SectionChip";
 import ReportInfoTable from "./reportInfoTable";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/scoringDefinition.scss";
 
 const ScoringDefinition = ({
   startPage = 8,
@@ -51,7 +52,7 @@ const ScoringDefinition = ({
           "Behaviour is fully mastered and role-modelled; others look to this leader for guidance.",
       },
     ],
-    [],
+    []
   );
 
   const blocks = useMemo(() => {
@@ -63,7 +64,7 @@ const ScoringDefinition = ({
         <span className="content-page__title-text">
           Scoring Definition & Rating Scale
         </span>
-      </h2>,
+      </h2>
     );
 
     out.push(
@@ -72,7 +73,7 @@ const ScoringDefinition = ({
         statement is rated on a <strong>six-point scale</strong>: five
         performance levels plus one “not observed” option for behaviours raters
         have not witnessed.
-      </p>,
+      </p>
     );
 
     out.push(
@@ -86,30 +87,23 @@ const ScoringDefinition = ({
           rowHeight={undefined}
           extraKey="meaning"
         />
-      </div>,
+      </div>
     );
 
     out.push(
-      <div key="usage" style={{ marginTop: 28 }}>
+      <div key="usage" className="sd-usage">
         <SectionChip text="How the scores are used in the report:" />
-        <ul
-          style={{
-            marginTop: 14,
-            paddingLeft: 56,
-            lineHeight: 1.55,
-            fontSize: 15,
-          }}
-        >
+        <ul className="sd-usage__list">
           <li>
             <strong>Raw scores –</strong>
-            <div style={{ marginTop: 8 }}>
+            <div className="sd-usage__note">
               Every element and behavioural indicator shows the score from each
               rater group (Self, Manager, Peers & Team members).
             </div>
           </li>
-          <li style={{ marginTop: 14 }}>
+          <li className="sd-usage__item sd-usage__item--spaced">
             <strong>Use of Mean Scores in Evaluation –</strong>
-            <div style={{ marginTop: 8 }}>
+            <div className="sd-usage__note">
               To maintain consistency and fairness in assessment, each score is
               calculated by taking the <strong>mean (average)</strong> of
               ratings provided within each respondent category. If a category
@@ -120,15 +114,15 @@ const ScoringDefinition = ({
             </div>
           </li>
         </ul>
-      </div>,
+      </div>
     );
 
     out.push(
-      <div key="more-usage" style={{ marginTop: 28, paddingLeft: 40 }}>
-        <ul style={{ lineHeight: 1.55, paddingLeft: 16, fontSize: 15 }}>
-          <li style={{ marginTop: 8 }}>
+      <div key="more-usage" className="sd-more-usage">
+        <ul className="sd-more-usage__list">
+          <li className="sd-more-usage__item sd-more-usage__item--mt8">
             <strong>Colour bands for quick insight –</strong>
-            <ul style={{ marginTop: 10, paddingLeft: 18 }}>
+            <ul className="sd-more-usage__sublist">
               <li>
                 ≤ 3.5 → <em>Developmental Opportunity</em> (flagged amber)
               </li>
@@ -141,17 +135,17 @@ const ScoringDefinition = ({
             </ul>
           </li>
 
-          <li style={{ marginTop: 18 }}>
+          <li className="sd-more-usage__item sd-more-usage__item--mt18">
             <strong>Overall Score by Stream –</strong>
-            <div style={{ marginTop: 8 }}>
+            <div className="sd-more-usage__note">
               The overall score is derived for each Leader based on the
               importance/weightage of each parameter based on the stream.
             </div>
           </li>
 
-          <li style={{ marginTop: 18 }}>
+          <li className="sd-more-usage__item sd-more-usage__item--mt18">
             <strong>Quartile Positioning –</strong>
-            <ul style={{ marginTop: 10, paddingLeft: 18 }}>
+            <ul className="sd-more-usage__sublist">
               <li>
                 <strong>First quartile</strong> : Scores that fall below the
                 25th Percentile of total scores obtained by the population
@@ -171,15 +165,15 @@ const ScoringDefinition = ({
             </ul>
           </li>
 
-          <li style={{ marginTop: 18 }}>
+          <li className="sd-more-usage__item sd-more-usage__item--mt18">
             <strong>Benchmark reference –</strong>
-            <div style={{ marginTop: 8 }}>
+            <div className="sd-more-usage__note">
               Your element averages are also compared to the EVP-plus cohort
               norm to indicate relative standing (e.g., percentile position).
             </div>
           </li>
         </ul>
-      </div>,
+      </div>
     );
 
     return out;

@@ -25,6 +25,14 @@ $green: #0e4a2e;
   position: absolute;
   left: 4px;
   top: 256px;
+  width: 106px;
+  height: 106px;
+}
+
+.hl-left-img {
+  width: 106px;
+  height: 106px;
+  object-fit: contain;
 }
 
 .hl-right {
@@ -40,12 +48,12 @@ $green: #0e4a2e;
   align-items: center;
   column-gap: 16px;
   position: relative;
+  min-height: 80px;
 }
 
 .hl-row-line {
   height: 2px;
-  background: $green;
-  // width: 100%;
+  background: var(--arc-color, $green);
   position: absolute;
 }
 
@@ -56,7 +64,7 @@ $green: #0e4a2e;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $green;
+  background: var(--chip-color, $green);
   color: #fff;
   font-weight: 600;
   font-size: 14px;
@@ -70,7 +78,7 @@ $green: #0e4a2e;
 
 .hl-row-title {
   font-weight: 700;
-  color: $green;
+  color: var(--arc-color, $green);
   font-size: 14px;
 }
 
@@ -78,4 +86,27 @@ $green: #0e4a2e;
   color: #333;
   line-height: 1.4;
   font-size: 13px;
+}
+
+.hl-title {
+  color: $green;
+}
+
+.hl-subtitle {
+  color: $green;
+  margin-top: 8px;
+
+  &__index {
+    margin-right: 8px;
+  }
+}
+
+.hl-note {
+  margin-top: 10px;
+  margin-bottom: 36px;
+  color: #333;
+
+  &__em {
+    font-size: 13px;
+  }
 }

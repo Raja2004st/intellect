@@ -25,14 +25,10 @@ const IndividualDevelopmentPlan = ({
     const out = [];
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title idp-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     const bodyRows = Array.from({ length: rows });
@@ -53,7 +49,7 @@ const IndividualDevelopmentPlan = ({
             ))}
           </div>
         ))}
-      </div>,
+      </div>
     );
 
     const assignmentsHeaders = [
@@ -85,7 +81,7 @@ const IndividualDevelopmentPlan = ({
             </div>
           ))}
         </div>
-      </div>,
+      </div>
     );
 
     // Summary section
@@ -93,7 +89,7 @@ const IndividualDevelopmentPlan = ({
       <div key="summary-block" className="summary">
         <div className="section-band">Summary</div>
         <div className="summary__box" />
-      </div>,
+      </div>
     );
 
     return out;

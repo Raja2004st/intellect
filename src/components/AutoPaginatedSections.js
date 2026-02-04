@@ -30,6 +30,7 @@ const AutoPaginatedSections = ({
   const [measured, setMeasured] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isMeasuringLocal, setIsMeasuringLocal] = useState(false);
+  const [lastPageCount, setLastPageCount] = useState(0);
 
   const measurementId = useRef(
     componentId ||
@@ -284,24 +285,27 @@ const AutoPaginatedSections = ({
     );
   }
 
-  if (hasError || pages.length === 0) {
-    return (
-      <section
-        className="section-page pdf-section"
-        style={{ padding: pagePadding }}
-      >
-        <div className={contentClassName}>
-          {HeaderComponent ? <HeaderComponent /> : null}
-          {blocks.map((b, i) => (
-            <div key={i} style={{ paddingLeft }}>
-              {b}
-            </div>
-          ))}
-        </div>
-        <PageFooter pageNumber={startPage} />
-      </section>
-    );
-  }
+  // if (hasError || pages.length === 0) {
+  //   return (
+  //     <section
+  //       className="section-page pdf-section"
+  //       style={{ padding: pagePadding }}
+  //     >
+  //       <div className={contentClassName}>
+  //         {HeaderComponent ? <HeaderComponent /> : null}
+  //         {blocks.map((b, i) => (
+  //           <div key={i} style={{ paddingLeft }}>
+  //             {b}
+  //           </div>
+  //         ))}
+  //       </div>
+  //       <PageFooter pageNumber={startPage} />
+  //     </section>
+  //   );
+  // }
+  // useState(() => {
+  //   setLastPageCount(startPage + pages.length);
+  // }, [pages]);
 
   return (
     <div>

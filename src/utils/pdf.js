@@ -65,12 +65,10 @@ function waitForImages(rootEl, timeoutMs = 8000) {
   });
 }
 
-// Wait until the set of .pdf-section elements stabilizes (pagination finished)
 async function waitForStableSections({ timeoutMs = 8000, idleMs = 300 } = {}) {
   const start = Date.now();
   const getCount = () => document.querySelectorAll(".pdf-section").length;
 
-  // If none yet, wait a tick for initial render
   if (getCount() === 0) {
     await new Promise((r) =>
       requestAnimationFrame(() => requestAnimationFrame(r))
@@ -101,13 +99,11 @@ async function waitForStableSections({ timeoutMs = 8000, idleMs = 300 } = {}) {
       }
     });
 
-    // Start listening for any subtree changes that would add/remove pages
     observer.observe(document.body, {
       childList: true,
       subtree: true,
     });
 
-    // Kick off initial idle window
     resetIdle();
   });
 }
@@ -116,7 +112,6 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
 
-  // Downscale canvas if too large to keep PDF size reasonable
   const processedCanvas = downscaleCanvas(canvas, MAX_CANVAS_WIDTH_PX);
 
   const usableW = pageW - marginMm * 2;
@@ -131,7 +126,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
     return;
   }
 
-  const APPROX_SECTION_PX = 900; // Fixed section height
+  const APPROX_SECTION_PX = 900;
   const TOLERANCE_PX = 40;
   if (processedCanvas.height <= APPROX_SECTION_PX + TOLERANCE_PX) {
     const targetH = usableH;
@@ -182,7 +177,6 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
 }
 
 export async function downloadPdfSplitByHeader() {
-  // Wait for fonts and give layout time to settle before measuring/collecting sections
   try {
     if (document.fonts && document.fonts.ready) {
       await document.fonts.ready.catch(() => {});
@@ -192,13 +186,11 @@ export async function downloadPdfSplitByHeader() {
     requestAnimationFrame(() => requestAnimationFrame(r))
   );
 
-  // Ensure pagination and dynamic pages have finished rendering and stabilized
   await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
 
   let sections = Array.from(document.querySelectorAll(".pdf-section"));
   if (!sections.length) return;
 
-  // Show loader while generating the PDF
   showLoader("Exporting PDF…");
 
   try {
@@ -210,21 +202,18 @@ export async function downloadPdfSplitByHeader() {
       compress: true,
     });
 
-    // Resolve again and re-wait in case pagination created more pages late
     await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
     sections = Array.from(document.querySelectorAll(".pdf-section"));
 
     for (let i = 0; i < sections.length; i++) {
       const el = sections[i];
 
-      // Skip if element is not attached to the DOM
       if (!el || !el.isConnected || !document.body.contains(el)) {
         console.warn("Skipping section: element not in DOM at capture time");
         continue;
       }
 
       try {
-        // Allow one more frame and ensure images are loaded. Do not scroll.
         await waitForImages(el);
         await new Promise((r) => requestAnimationFrame(r));
 
@@ -233,7 +222,7 @@ export async function downloadPdfSplitByHeader() {
           canvas = await html2canvas(el, {
             scale: H2C_SCALE,
             useCORS: true,
-            backgroundColor: "#ffffff", // force white background for consistent compression
+            backgroundColor: "#ffffff",
             scrollX: 0,
             scrollY: 0,
             removeContainer: true,
@@ -248,7 +237,6 @@ export async function downloadPdfSplitByHeader() {
             `Retrying page ${i + 1} at lower scale/FO due to error`,
             e1
           );
-          // Retry with safer settings to reduce memory/layout failures
           canvas = await html2canvas(el, {
             scale: 1,
             useCORS: true,
@@ -265,7 +253,7 @@ export async function downloadPdfSplitByHeader() {
           });
         }
 
-        await addCanvasToPdf(pdf, canvas, 0.1 /* margin in mm */);
+        await addCanvasToPdf(pdf, canvas, 0.1);
 
         if (i < sections.length - 1) pdf.addPage();
       } catch (sectionErr) {
@@ -277,7 +265,6 @@ export async function downloadPdfSplitByHeader() {
   } catch (err) {
     console.error("Failed to generate PDF:", err);
   } finally {
-    // Always hide loader
     hideLoader();
   }
 }
@@ -300,7 +287,7 @@ function showLoader(message = "Loading…") {
   overlay.style.cssText = [
     "position:fixed",
     "inset:0",
-    "background:rgba(17,24,39,0.35)", // slate-900 with opacity
+    "background:rgba(17,24,39,0.35)",
     "z-index:2147483646",
     "display:flex",
     "align-items:center",

@@ -3,6 +3,7 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
+import "../styles/qualitativeFeedbackIntro.scss";
 
 const QualitativeFeedbackIntro = ({
   startPage = 30,
@@ -20,39 +21,20 @@ const QualitativeFeedbackIntro = ({
     const out = [];
 
     out.push(
-      <h2
-        key="title"
-        className="content-page__title"
-        style={{ color: "#0e4a2e" }}
-      >
+      <h2 key="title" className="content-page__title qfi-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>,
+      </h2>
     );
 
     out.push(
-      <div
-        key="body"
-        style={{
-          marginTop: 8,
-          color: "#333",
-          maxWidth: 620,
-          paddingLeft: "40px",
-        }}
-      >
+      <div key="body" className="qfi-body">
         {paragraphs.map((p, i) => (
-          <p
-            key={i}
-            style={{
-              fontSize: 14,
-              lineHeight: 1.6,
-              margin: i === 0 ? "0 0 16px 0" : "0 0 0 0",
-            }}
-          >
+          <p key={i} className="qfi-paragraph">
             {p}
           </p>
         ))}
-      </div>,
+      </div>
     );
 
     return out;
