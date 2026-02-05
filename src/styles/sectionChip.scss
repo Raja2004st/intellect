@@ -1,59 +1,53 @@
-.section-chip {
-  display: inline-block;
-  max-width: 100%;
-  padding: 10px 18px;
-  font-weight: 700;
-  font-size: var(--fs-lg);
-  line-height: 1.2;
-  color: #fff;
-  background: var(--color-green-mid);
-  border-radius: 18px;
-  position: relative;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-// .section-chip::before {
-//   content: "";
-//   position: absolute;
-//   width: 0;
-//   height: 0;
-//   left: -22px;
-//   top: 55px;
-//   border: 21px solid;
-//   border-color: var(--chip-color, #0e4a2e) transparent transparent transparent;
-//   // bottom: 0;
-//   z-index: 1;
-//   // transform: translateY(-50%);
-// }
+.section-chip-container {
+  // height: 50px;
+  // overflow: hidden;
+  // position: relative;
 
-// .section-chip::after {
-//   content: "";
-//   position: absolute;
-//   width: 0;
-//   height: 0;
-//   left: -18px;
-//   top: 0;
-//   border: 22px solid;
-//   border-color: white transparent transparent transparent;
-//   // bottom: 0;
-//   z-index: 2;
-// }
-
-.section-chip::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -13px;
-  width: 23px;
-  height: 25px;
-  background: var(--chip-color);
-  // border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 66px;
-  transform: translateX(1px);
-}
-@media (max-width: 768px) {
   .section-chip {
-    padding: 8px 14px;
-    font-size: var(--fs-md);
-    border-radius: 16px;
+    display: inline-block;
+    max-width: 100%;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    line-height: 1.2;
+    color: #fff;
+    background: var(--color-green-mid);
+    border-radius: 18px 18px 18px 0;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    min-width: 264px;
+  }
+  .section-chip::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 39px;
+    border-left: 1px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid transparent;
+    border-color: var(--chip-color, #0e4a2e) transparent transparent transparent;
+    z-index: 1;
+  }
+
+  // .section-chip::before {
+  //   content: "";
+  //   position: absolute;
+  //   left: 0;
+  //   bottom: -13px;
+  //   width: 23px;
+  //   height: 25px;
+  //   background: var(--chip-color);
+  //   // border-bottom-left-radius: 12px;
+  //   border-bottom-right-radius: 66px;
+  //   transform: translateX(1px);
+  // }
+  @media (max-width: 768px) {
+    .section-chip {
+      padding: 8px 14px;
+      font-size: var(--fs-md);
+      border-radius: 16px;
+    }
   }
 }

@@ -142,7 +142,7 @@
 /* About the Sections (1.2) */
 .about-sections__group {
   margin: 26px 0 28px;
-  padding-left: 36px; // align with other about content
+  padding-left: 20px; // align with other about content
 
   .section-chip {
     margin: 14px 0 8px;
@@ -151,7 +151,7 @@
 
 .about-sections__list {
   margin: 8px 0 0;
-  padding-left: 18px; // bullet indent
+  padding-left: 45px;
   list-style: disc;
   color: var(--color-text);
   font-size: var(--fs-md);
@@ -160,7 +160,7 @@
 }
 
 .about-sections__item {
-  margin: 10px 0;
+  margin: 0 0;
 }
 
 .about-sections__lead {

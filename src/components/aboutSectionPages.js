@@ -151,7 +151,9 @@ const AboutSectionPages = ({
             {s.items.map((it, i) => (
               <li key={i} className="about-sections__item">
                 <span className="about-sections__lead">{it.lead}</span>
-                <span className="about-sections__tail"> – {it.tail}</span>
+                <span className="about-sections__tail">
+                  {it.lead && " - "} {it.tail}
+                </span>
               </li>
             ))}
           </ul>
