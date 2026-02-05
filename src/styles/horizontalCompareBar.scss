@@ -1,10 +1,11 @@
 .hcb {
-  border: 1px solid var(--hcb-border, var(--color-muted));
+  // border: 1px solid var(--hcb-border, var(--color-muted));
   background: var(--hcb-track, var(--color-bg));
 }
 
 .hcb-rows {
   /* container for rows */
+  border: 1px solid var(--hcb-border, var(--color-muted));
 }
 
 .hcb-row {
@@ -19,18 +20,21 @@
   &:not(&--first) {
     border-top: 1px solid var(--hcb-border, var(--color-muted));
   }
+  // &:not(&--last) {
+  //   border-bottom: none;
+  // }
 }
 
 .hcb-track {
   position: relative;
   height: var(--hcb-bar-h, 18px);
-  margin-top: 7px;
+  // margin-top: 7px;
 }
 
 .hcb-fill {
   position: absolute;
   left: 0;
-  top: 0;
+  top: 7px;
   height: var(--hcb-bar-h, 18px);
   width: var(--hcb-fill-w, 0%);
   background: var(--hcb-fill-color, var(--color-green));
@@ -39,7 +43,7 @@
 .hcb-label {
   position: absolute;
   left: 6px;
-  top: 50%;
+  top: 87%;
   transform: translateY(-50%);
   font-size: var(--fs-sm);
   font-weight: 700;
@@ -47,7 +51,7 @@
 }
 
 .hcb-bottom {
-  border-top: 1px solid var(--hcb-border, var(--color-muted));
+  // border-top: 1px solid var(--hcb-border, var(--color-muted));
 }
 
 .hcb-ticks {

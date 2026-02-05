@@ -6,7 +6,6 @@ import React, {
   useCallback,
 } from "react";
 import { createRoot } from "react-dom/client";
-import PageFooter from "./PageFooter";
 import measurementManager from "./measurementManager"; // Import the manager
 import "../styles/mainPage.scss";
 
@@ -299,7 +298,7 @@ const AutoPaginatedSections = ({
   //           </div>
   //         ))}
   //       </div>
-  //       <PageFooter pageNumber={startPage} />
+  //       {/* Page number is now handled globally via CSS counters in mainPage.scss */}
   //     </section>
   //   );
   // }
@@ -326,7 +325,6 @@ const AutoPaginatedSections = ({
               </div>
             ))}
           </div>
-          <PageFooter pageNumber={startPage + pageIndex} />
         </section>
       ))}
     </div>

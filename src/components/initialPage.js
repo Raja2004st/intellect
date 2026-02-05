@@ -40,9 +40,11 @@ const InitialPage = ({ initialName = "" }) => {
                 className="initial-cover__name-field"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                // placeholder="Enter name"
                 aria-label="Name"
               />
+              <span className="initial-cover__name-fallback" aria-hidden="true">
+                {name && name.trim().length > 0 ? name : "\u00A0"}
+              </span>
             </p>
           </div>
         </main>

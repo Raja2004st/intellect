@@ -79,6 +79,10 @@
     color: var(--cover-text);
     font-size: 22px;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    gap: 0;
   }
 
   &__name-field {
@@ -88,12 +92,24 @@
     outline: none;
     color: var(--color-white);
     font: inherit;
-    padding: 1px 0 0 6px; // small gap after 'Name -'
+    display: inline-block;
+    line-height: 1;
+    padding: 0 0 0 6px;
+    vertical-align: baseline;
     min-width: 220px;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.6);
     }
+  }
+
+  &__name-fallback {
+    display: none;
+    font: inherit;
+    line-height: 1;
+    padding-left: 6px;
+    color: var(--color-white);
+    white-space: pre;
   }
 
   &__name-input {
@@ -131,4 +147,11 @@
       height: 40px;
     }
   }
+}
+
+body.pdf-exporting .initial-cover__name-field {
+  display: none !important;
+}
+body.pdf-exporting .initial-cover__name-fallback {
+  display: inline-block !important;
 }

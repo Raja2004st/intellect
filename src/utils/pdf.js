@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 const IMG_FORMAT = "JPEG";
 const IMG_QUALITY = 0.68;
 const H2C_SCALE = 1.3;
-const MAX_CANVAS_WIDTH_PX = 1800; // Downscale very large canvases to cap size
+const MAX_CANVAS_WIDTH_PX = 1800;
 
 function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
   if (!srcCanvas || !srcCanvas.width || srcCanvas.width <= maxWidthPx)
@@ -285,6 +285,7 @@ function showLoader(message = "Preparing PDF…", totalPages = 0) {
     }
 
     existing.style.display = "flex";
+    document.body.classList.add("pdf-exporting");
     return;
   }
 
@@ -397,6 +398,8 @@ function showLoader(message = "Preparing PDF…", totalPages = 0) {
   `;
 
   document.body.appendChild(overlay);
+  // Mark body as exporting for CSS adjustments
+  document.body.classList.add("pdf-exporting");
 }
 
 function updateLoaderProgress(currentPage, totalPages) {
@@ -435,4 +438,6 @@ function hideLoader() {
       }
     }, 300);
   }
+  // Remove exporting class after cleanup
+  document.body.classList.remove("pdf-exporting");
 }
