@@ -32,7 +32,6 @@ function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
   return dst;
 }
 
-// Wait for images inside a container to load (with a timeout safeguard)
 function waitForImages(rootEl, timeoutMs = 8000) {
   const imgs = Array.from(rootEl.querySelectorAll("img"));
   if (imgs.length === 0) return Promise.resolve();
@@ -191,7 +190,7 @@ export async function downloadPdfSplitByHeader() {
   let sections = Array.from(document.querySelectorAll(".pdf-section"));
   if (!sections.length) return;
 
-  showLoader("Exporting PDF…");
+  showLoader("Exporting PDF…", sections.length);
 
   try {
     // Enable stream compression in jsPDF constructor
@@ -207,6 +206,9 @@ export async function downloadPdfSplitByHeader() {
 
     for (let i = 0; i < sections.length; i++) {
       const el = sections[i];
+
+      // Update loader with current progress
+      updateLoaderProgress(i + 1, sections.length);
 
       if (!el || !el.isConnected || !document.body.contains(el)) {
         console.warn("Skipping section: element not in DOM at capture time");
@@ -271,11 +273,17 @@ export async function downloadPdfSplitByHeader() {
 
 export { addCanvasToPdf };
 
-function showLoader(message = "Loading…") {
+function showLoader(message = "Preparing PDF…", totalPages = 0) {
   const existing = document.getElementById("pdf-export-loader");
   if (existing) {
-    const msgEl = existing.querySelector(".msg");
+    const msgEl = existing.querySelector(".loader-message");
     if (msgEl) msgEl.textContent = message;
+
+    const progressText = existing.querySelector(".loader-progress-text");
+    if (progressText && totalPages > 0) {
+      progressText.textContent = `0/${totalPages} pages`;
+    }
+
     existing.style.display = "flex";
     return;
   }
@@ -284,106 +292,147 @@ function showLoader(message = "Loading…") {
   overlay.id = "pdf-export-loader";
   overlay.setAttribute("role", "status");
   overlay.setAttribute("aria-live", "polite");
-  overlay.style.cssText = [
-    "position:fixed",
-    "inset:0",
-    "background:rgba(17,24,39,0.35)",
-    "z-index:2147483646",
-    "display:flex",
-    "align-items:center",
-    "justify-content:center",
-    "pointer-events:none",
-    "backdrop-filter:blur(2px)",
-  ].join(";");
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2147483647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+  `;
 
   overlay.innerHTML = `
-    <style>
-      @keyframes loader-bounce { 0%, 80%, 100% { transform: scale(0); opacity:.5 } 40% { transform: scale(1); opacity:1 } }
-      .loader-card { display:flex; flex-direction:column; align-items:center; gap:12px; padding:18px 22px; border-radius:12px; background:#ffffff; box-shadow:0 10px 30px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.06); color:#111827; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; border:1px solid rgba(0,0,0,0.06); }
-      .loader-row { display:flex; align-items:center; gap:10px; height:24px; }
-      .dot { width:10px; height:10px; border-radius:50%; background:#2563eb; animation: loader-bounce 1.4s infinite ease-in-out both; }
-      .dot:nth-child(1) { animation-delay:-0.32s; }
-      .dot:nth-child(2) { animation-delay:-0.16s; }
-      .msg { font-weight:600; font-size:14px; color:#0f172a; }
-    </style>
-    <div class="loader-card">
-      <div class="loader-row" aria-hidden="true">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+    <div class="loader-container" style="
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      min-width: 320px;
+      max-width: 90vw;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    ">
+      <!-- Spinner -->
+      <div class="loader-spinner" style="
+        width: 60px;
+        height: 60px;
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #2563eb;
+        border-radius: 50%;
+        margin: 0 auto 24px;
+        animation: loader-spin 1s linear infinite;
+      "></div>
+      
+      <!-- Message -->
+      <div class="loader-message" style="
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      ">
+        ${message}
       </div>
-      <div class="msg">${message}</div>
-    </div>
+      
+      <!-- Progress Text -->
+      <div class="loader-progress-text" style="
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: ${totalPages > 0 ? "16px" : "0"};
+      ">
+        ${totalPages > 0 ? `0/${totalPages} pages` : ""}
+      </div>
+      
+      <!-- Progress Bar (only shown when totalPages > 0) -->
+      ${
+        totalPages > 0
+          ? `
+        <div class="loader-progress-bar-container" style="
+          background: #f3f4f6;
+          border-radius: 8px;
+          height: 8px;
+          overflow: hidden;
+          margin-bottom: 12px;
+        ">
+          <div class="loader-progress-bar" style="
+            background: #2563eb;
+            height: 100%;
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+          "></div>
+        </div>
+        
+        <!-- Percentage -->
+        <div class="loader-percentage" style="
+          font-size: 13px;
+          color: #9ca3af;
+          font-weight: 500;
+        ">
+          0%
+        </div>
+      `
+          : ""
+      }
+      
+      
+    <style>
+      @keyframes loader-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      #pdf-export-loader .loader-container {
+        animation: fadeIn 0.3s ease-out;
+      }
+    </style>
   `;
 
   document.body.appendChild(overlay);
 }
 
-function hideLoader() {
-  const el = document.getElementById("pdf-export-loader");
-  if (el && el.parentNode) el.parentNode.removeChild(el);
+function updateLoaderProgress(currentPage, totalPages) {
+  if (totalPages <= 0) return;
+
+  const loader = document.getElementById("pdf-export-loader");
+  if (!loader) return;
+
+  const progressText = loader.querySelector(".loader-progress-text");
+  if (progressText) {
+    progressText.textContent = `${currentPage}/${totalPages} pages`;
+  }
+
+  const progressBar = loader.querySelector(".loader-progress-bar");
+  if (progressBar) {
+    const percentage = Math.round((currentPage / totalPages) * 100);
+    progressBar.style.width = `${percentage}%`;
+  }
+
+  const percentageEl = loader.querySelector(".loader-percentage");
+  if (percentageEl) {
+    const percentage = Math.round((currentPage / totalPages) * 100);
+    percentageEl.textContent = `${percentage}%`;
+  }
 }
 
-// export async function downloadDocxSplitByHeader() {
-//   const sections = Array.from(document.querySelectorAll(".pdf-section"));
-//   if (!sections.length) return;
+function hideLoader() {
+  const el = document.getElementById("pdf-export-loader");
+  if (el && el.parentNode) {
+    el.style.transition = "opacity 0.3s ease";
+    el.style.opacity = "0";
 
-//   // showLoader("Exporting Word…");
-//   try {
-//     const doc = new Document({
-//       sections: [],
-//     });
-
-//     for (let i = 0; i < sections.length; i++) {
-//       const el = sections[i];
-
-//       const canvas = await html2canvas(el, {
-//         scale: H2C_SCALE,
-//         useCORS: true,
-//         backgroundColor: "#ffffff", // force white background for consistent compression
-//         scrollY: -window.scrollY,
-//         // Ensure the loader is not included in the cloned DOM used by html2canvas
-//         onclone: (clonedDoc) => {
-//           const loader = clonedDoc.getElementById("pdf-export-loader");
-//           if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-//         },
-//       });
-
-//       const blob = await new Promise((resolve) =>
-//         canvas.toBlob(resolve, "image/jpeg", 0.72)
-//       );
-//       if (!blob) continue;
-//       const imgBuffer = await blob.arrayBuffer();
-
-//       const targetWidthPx = 700; // slightly less to keep margins and reduce size
-//       const targetHeightPx = Math.round(
-//         (canvas.height * targetWidthPx) / canvas.width
-//       );
-
-//       doc.addSection({
-//         children: [
-//           new Paragraph({
-//             children: [
-//               new ImageRun({
-//                 data: imgBuffer,
-//                 transformation: {
-//                   width: targetWidthPx,
-//                   height: targetHeightPx,
-//                 },
-//               }),
-//             ],
-//           }),
-//         ],
-//       });
-//     }
-
-//     const blob = await Packer.toBlob(doc);
-//     saveAs(blob, "report.docx");
-
-//     // } finally {
-//     //   hideLoader();
-//     // }
-//   } catch (e) {
-//     console.error(e);
-//   }
-// }
+    setTimeout(() => {
+      if (el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+    }, 300);
+  }
+}

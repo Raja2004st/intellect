@@ -88,7 +88,7 @@
     outline: none;
     color: var(--color-white);
     font: inherit;
-    padding: 0 0 0 6px; // small gap after 'Name -'
+    padding: 1px 0 0 6px; // small gap after 'Name -'
     min-width: 220px;
 
     &::placeholder {
