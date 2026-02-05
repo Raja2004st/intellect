@@ -2,9 +2,30 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 const IMG_FORMAT = "JPEG";
-const IMG_QUALITY = 0.68;
-const H2C_SCALE = 1.3;
-const MAX_CANVAS_WIDTH_PX = 1800;
+const IMG_QUALITY = 0.62;
+const H2C_SCALE = 1.1;
+const MAX_CANVAS_WIDTH_PX = 1600;
+
+// Track export state
+let isExporting = false;
+let exportTimeoutIds = [];
+
+// Clear all timeouts to prevent memory leaks
+function clearAllTimeouts() {
+  exportTimeoutIds.forEach((id) => clearTimeout(id));
+  exportTimeoutIds = [];
+}
+
+// Wrap setTimeout to track all timeouts
+function safeSetTimeout(fn, delay) {
+  const id = setTimeout(() => {
+    fn();
+    // Remove from tracking after execution
+    exportTimeoutIds = exportTimeoutIds.filter((timeoutId) => timeoutId !== id);
+  }, delay);
+  exportTimeoutIds.push(id);
+  return id;
+}
 
 function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
   if (!srcCanvas || !srcCanvas.width || srcCanvas.width <= maxWidthPx)
@@ -35,11 +56,16 @@ function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
 function waitForImages(rootEl, timeoutMs = 8000) {
   const imgs = Array.from(rootEl.querySelectorAll("img"));
   if (imgs.length === 0) return Promise.resolve();
-  let done = false;
+
   return new Promise((resolve) => {
-    const timer = setTimeout(() => {
-      if (!done) resolve();
+    let done = false;
+    const timer = safeSetTimeout(() => {
+      if (!done) {
+        done = true;
+        resolve();
+      }
     }, timeoutMs);
+
     let remaining = 0;
     imgs.forEach((img) => {
       if (img.complete && img.naturalWidth > 0) return;
@@ -56,6 +82,7 @@ function waitForImages(rootEl, timeoutMs = 8000) {
       img.addEventListener("load", cleanup, { once: true });
       img.addEventListener("error", cleanup, { once: true });
     });
+
     if (remaining === 0) {
       done = true;
       clearTimeout(timer);
@@ -64,19 +91,20 @@ function waitForImages(rootEl, timeoutMs = 8000) {
   });
 }
 
-async function waitForStableSections({ timeoutMs = 8000, idleMs = 300 } = {}) {
+async function waitForStableSections({ timeoutMs = 6000, idleMs = 250 } = {}) {
   const start = Date.now();
   const getCount = () => document.querySelectorAll(".pdf-section").length;
 
   if (getCount() === 0) {
-    await new Promise((r) =>
-      requestAnimationFrame(() => requestAnimationFrame(r))
-    );
+    await new Promise((r) => {
+      requestAnimationFrame(() => requestAnimationFrame(r));
+    });
   }
 
   return new Promise((resolve) => {
     let lastCount = getCount();
     let idleTimer = null;
+
     const done = () => {
       observer.disconnect();
       if (idleTimer) clearTimeout(idleTimer);
@@ -85,12 +113,14 @@ async function waitForStableSections({ timeoutMs = 8000, idleMs = 300 } = {}) {
 
     const resetIdle = () => {
       if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => done(), idleMs);
+      idleTimer = safeSetTimeout(() => done(), idleMs);
     };
 
     const observer = new MutationObserver(() => {
       const now = Date.now();
-      if (now - start > timeoutMs) return done();
+      if (now - start > timeoutMs) {
+        return done();
+      }
       const current = getCount();
       if (current !== lastCount) {
         lastCount = current;
@@ -175,25 +205,165 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
   }
 }
 
-export async function downloadPdfSplitByHeader() {
-  try {
-    if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready.catch(() => {});
+async function preloadImagesForSections(sections, timeoutMs = 6000) {
+  const urls = new Set();
+  sections.forEach((sec) => {
+    sec.querySelectorAll("img").forEach((img) => {
+      if (img?.src) urls.add(img.src);
+    });
+  });
+
+  if (urls.size === 0) return;
+
+  await Promise.race([
+    Promise.all(
+      Array.from(urls).map(
+        (src) =>
+          new Promise((resolve) => {
+            const im = new Image();
+            im.onload = im.onerror = () => resolve();
+            im.crossOrigin = "anonymous";
+            im.src = src;
+          })
+      )
+    ),
+    new Promise((r) => safeSetTimeout(r, timeoutMs)),
+  ]);
+}
+
+function injectExportOptimizations() {
+  const id = "pdf-export-optimizations";
+  if (document.getElementById(id)) return;
+  const style = document.createElement("style");
+  style.id = id;
+  style.textContent = `
+    * { animation: none !important; transition: none !important; }
+    .section-page { box-shadow: none !important; filter: none !important; }
+    .content-page, .content-page * { text-shadow: none !important; }
+  `;
+  document.head.appendChild(style);
+}
+
+function removeExportOptimizations() {
+  const node = document.getElementById("pdf-export-optimizations");
+  if (node && node.parentNode) node.parentNode.removeChild(node);
+}
+
+// Inject loader styles properly
+function injectLoaderStyles() {
+  const id = "pdf-loader-styles";
+  if (document.getElementById(id)) return;
+  const style = document.createElement("style");
+  style.id = id;
+  style.textContent = `
+    @keyframes loaderSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-  } catch {}
-  await new Promise((r) =>
-    requestAnimationFrame(() => requestAnimationFrame(r))
-  );
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .pdf-exporting * {
+      animation-play-state: running !important;
+    }
+    
+    #pdf-export-loader .loader-container {
+      animation: fadeIn 0.3s ease-out !important;
+    }
+    
+    #pdf-export-loader .loader-spinner {
+      animation: loaderSpin 1s linear infinite !important;
+      animation-play-state: running !important;
+    }
+    
+    /* Force animations to run even in background tabs */
+    @media (prefers-reduced-motion: no-preference) {
+      #pdf-export-loader .loader-spinner {
+        animation-duration: 1s !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
-  await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
+function removeLoaderStyles() {
+  const node = document.getElementById("pdf-loader-styles");
+  if (node && node.parentNode) node.parentNode.removeChild(node);
+}
 
-  let sections = Array.from(document.querySelectorAll(".pdf-section"));
-  if (!sections.length) return;
+// Request animation frame with fallback for background tabs
+function forceAnimationFrame() {
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const check = () => {
+      if (Date.now() - start > 50) {
+        resolve(); // Fallback after 50ms
+        return;
+      }
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    };
+    check();
+  });
+}
 
-  showLoader("Exporting PDF…", sections.length);
+export async function downloadPdfSplitByHeader() {
+  if (isExporting) {
+    console.warn("Export already in progress");
+    return;
+  }
 
   try {
-    // Enable stream compression in jsPDF constructor
+    isExporting = true;
+    clearAllTimeouts();
+
+    // Ensure animations can run in background tabs
+    if (document.documentElement) {
+      document.documentElement.style.setProperty(
+        "animation-play-state",
+        "running",
+        "important"
+      );
+      document.documentElement.style.setProperty(
+        "transition-play-state",
+        "running",
+        "important"
+      );
+    }
+
+    // Wait for fonts
+    if (document.fonts && document.fonts.ready) {
+      try {
+        await document.fonts.ready;
+      } catch (e) {
+        console.warn("Font loading failed:", e);
+      }
+    }
+
+    // Force double animation frame for stable render
+    await forceAnimationFrame();
+
+    // Wait for sections to be stable
+    await waitForStableSections({ timeoutMs: 8000, idleMs: 300 });
+
+    let sections = Array.from(document.querySelectorAll(".pdf-section"));
+    if (!sections.length) {
+      isExporting = false;
+      return;
+    }
+
+    // Show loader and inject styles BEFORE any heavy operations
+    showLoader("Exporting PDF…", sections.length);
+    injectExportOptimizations();
+    injectLoaderStyles();
+
+    // Force animation to start
+    await forceAnimationFrame();
+
     const pdf = new jsPDF({
       orientation: "p",
       unit: "mm",
@@ -201,13 +371,21 @@ export async function downloadPdfSplitByHeader() {
       compress: true,
     });
 
-    await waitForStableSections({ timeoutMs: 12000, idleMs: 350 });
+    // Final stability check and image prefetch
+    await waitForStableSections({ timeoutMs: 4000, idleMs: 250 });
     sections = Array.from(document.querySelectorAll(".pdf-section"));
+    await preloadImagesForSections(sections, 5000);
 
     for (let i = 0; i < sections.length; i++) {
+      // Check if export was cancelled
+      if (!isExporting) {
+        console.log("Export cancelled");
+        break;
+      }
+
       const el = sections[i];
 
-      // Update loader with current progress
+      // Update loader progress
       updateLoaderProgress(i + 1, sections.length);
 
       if (!el || !el.isConnected || !document.body.contains(el)) {
@@ -216,79 +394,195 @@ export async function downloadPdfSplitByHeader() {
       }
 
       try {
-        await waitForImages(el);
-        await new Promise((r) => requestAnimationFrame(r));
+        await waitForImages(el, 5000);
 
-        let canvas;
-        try {
-          canvas = await html2canvas(el, {
-            scale: H2C_SCALE,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            scrollX: 0,
-            scrollY: 0,
-            removeContainer: true,
-            onclone: (clonedDoc) => {
-              const loader = clonedDoc.getElementById("pdf-export-loader");
-              if (loader && loader.parentNode)
-                loader.parentNode.removeChild(loader);
-            },
-          });
-        } catch (e1) {
-          console.warn(
-            `Retrying page ${i + 1} at lower scale/FO due to error`,
-            e1
-          );
-          canvas = await html2canvas(el, {
-            scale: 1,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            scrollX: 0,
-            scrollY: 0,
-            removeContainer: true,
-            foreignObjectRendering: true,
-            onclone: (clonedDoc) => {
-              const loader = clonedDoc.getElementById("pdf-export-loader");
-              if (loader && loader.parentNode)
-                loader.parentNode.removeChild(loader);
-            },
-          });
+        // Force render before capturing
+        await forceAnimationFrame();
+
+        // Use webgl rendering for better performance
+        const canvas = await html2canvas(el, {
+          scale: H2C_SCALE,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          scrollX: 0,
+          scrollY: 0,
+          removeContainer: true,
+          logging: false,
+          allowTaint: true,
+          imageTimeout: 0,
+          ignoreElements: (element) => {
+            return element.id === "pdf-export-loader";
+          },
+          onclone: (clonedDoc, element) => {
+            // Remove loader from cloned document
+            const loader = clonedDoc.getElementById("pdf-export-loader");
+            if (loader && loader.parentNode) {
+              loader.parentNode.removeChild(loader);
+            }
+
+            // Ensure visibility
+            element.style.visibility = "visible";
+            element.style.opacity = "1";
+          },
+        });
+
+        if (!canvas || canvas.width === 0 || canvas.height === 0) {
+          throw new Error("Empty canvas");
         }
 
         await addCanvasToPdf(pdf, canvas, 0.1);
-
         if (i < sections.length - 1) pdf.addPage();
-      } catch (sectionErr) {
-        console.warn("Skipping section due to render error:", sectionErr);
+      } catch (firstErr) {
+        console.warn("First capture attempt failed:", firstErr);
+        try {
+          // Fallback attempt with different settings
+          await forceAnimationFrame();
+
+          const canvas = await html2canvas(el, {
+            scale: Math.max(0.95, H2C_SCALE - 0.1),
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            scrollX: 0,
+            scrollY: 0,
+            removeContainer: true,
+            foreignObjectRendering: false,
+            logging: false,
+            allowTaint: true,
+            imageTimeout: 0,
+            ignoreElements: (element) => element.id === "pdf-export-loader",
+            onclone: (clonedDoc) => {
+              const loader = clonedDoc.getElementById("pdf-export-loader");
+              if (loader && loader.parentNode) {
+                loader.parentNode.removeChild(loader);
+              }
+            },
+          });
+
+          await addCanvasToPdf(pdf, canvas, 0.1);
+          if (i < sections.length - 1) pdf.addPage();
+        } catch (secondErr) {
+          console.warn("Second capture attempt failed:", secondErr);
+          try {
+            // Minimal fallback
+            await forceAnimationFrame();
+
+            const canvas = await html2canvas(el, {
+              scale: 0.9,
+              useCORS: false,
+              backgroundColor: "#ffffff",
+              scrollX: 0,
+              scrollY: 0,
+              removeContainer: true,
+              foreignObjectRendering: true,
+              logging: false,
+              allowTaint: false,
+              imageTimeout: 0,
+              ignoreElements: (element) => element.id === "pdf-export-loader",
+              onclone: (clonedDoc) => {
+                const loader = clonedDoc.getElementById("pdf-export-loader");
+                if (loader && loader.parentNode) {
+                  loader.parentNode.removeChild(loader);
+                }
+              },
+            });
+
+            await addCanvasToPdf(pdf, canvas, 0.1);
+            if (i < sections.length - 1) pdf.addPage();
+          } catch (finalErr) {
+            console.error(
+              "All capture attempts failed for section",
+              i,
+              finalErr
+            );
+            continue;
+          }
+        }
+      }
+
+      // Yield to browser every few sections to keep UI responsive
+      if (i % 3 === 0) {
+        await new Promise((r) => setTimeout(r, 0));
       }
     }
 
-    pdf.save("report.pdf");
+    if (isExporting) {
+      pdf.save("report.pdf");
+    }
   } catch (err) {
     console.error("Failed to generate PDF:", err);
+    // Show error to user
+    if (isExporting) {
+      const loader = document.getElementById("pdf-export-loader");
+      if (loader) {
+        const message = loader.querySelector(".loader-message");
+        if (message) {
+          message.textContent = "Export failed. Please try again.";
+          message.style.color = "#dc2626";
+        }
+        safeSetTimeout(hideLoader, 3000);
+      }
+    }
   } finally {
-    hideLoader();
+    // Cleanup
+    removeExportOptimizations();
+    removeLoaderStyles();
+    clearAllTimeouts();
+
+    // Reset animation states
+    if (document.documentElement) {
+      document.documentElement.style.removeProperty("animation-play-state");
+      document.documentElement.style.removeProperty("transition-play-state");
+    }
+
+    // Hide loader with delay to ensure clean state
+    safeSetTimeout(() => {
+      hideLoader();
+      isExporting = false;
+    }, 100);
+  }
+}
+
+export function cancelPdfExport() {
+  if (isExporting) {
+    console.log("Cancelling PDF export...");
+    isExporting = false;
+    clearAllTimeouts();
+
+    // Show cancelled message briefly
+    const loader = document.getElementById("pdf-export-loader");
+    if (loader) {
+      const message = loader.querySelector(".loader-message");
+      if (message) {
+        message.textContent = "Export cancelled";
+        message.style.color = "#6b7280";
+      }
+    }
+
+    safeSetTimeout(() => {
+      hideLoader();
+      removeExportOptimizations();
+      removeLoaderStyles();
+    }, 800);
   }
 }
 
 export { addCanvasToPdf };
 
+// FIXED: Proper loader animation implementation
 function showLoader(message = "Preparing PDF…", totalPages = 0) {
+  // Remove existing loader first
   const existing = document.getElementById("pdf-export-loader");
-  if (existing) {
-    const msgEl = existing.querySelector(".loader-message");
-    if (msgEl) msgEl.textContent = message;
-
-    const progressText = existing.querySelector(".loader-progress-text");
-    if (progressText && totalPages > 0) {
-      progressText.textContent = `0/${totalPages} pages`;
-    }
-
-    existing.style.display = "flex";
-    document.body.classList.add("pdf-exporting");
-    return;
+  if (existing && existing.parentNode) {
+    existing.parentNode.removeChild(existing);
   }
 
+  // Remove existing styles
+  const existingStyles = document.getElementById("pdf-loader-styles");
+  if (existingStyles && existingStyles.parentNode) {
+    existingStyles.parentNode.removeChild(existingStyles);
+  }
+
+  // Create overlay
   const overlay = document.createElement("div");
   overlay.id = "pdf-export-loader";
   overlay.setAttribute("role", "status");
@@ -298,107 +592,154 @@ function showLoader(message = "Preparing PDF…", totalPages = 0) {
     inset: 0;
     background: rgba(17, 24, 39, 0.85);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 2147483647;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   `;
 
-  overlay.innerHTML = `
-    <div class="loader-container" style="
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 32px 40px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-      text-align: center;
-      min-width: 320px;
-      max-width: 90vw;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-    ">
-      <!-- Spinner -->
-      <div class="loader-spinner" style="
-        width: 60px;
-        height: 60px;
-        border: 4px solid #f3f4f6;
-        border-top: 4px solid #2563eb;
-        border-radius: 50%;
-        margin: 0 auto 24px;
-        animation: loader-spin 1s linear infinite;
-      "></div>
-      
-      <!-- Message -->
-      <div class="loader-message" style="
-        font-size: 18px;
-        font-weight: 600;
-        color: #111827;
-        margin-bottom: 8px;
-        line-height: 1.4;
-      ">
-        ${message}
-      </div>
-      
-      <!-- Progress Text -->
-      <div class="loader-progress-text" style="
-        font-size: 14px;
-        color: #6b7280;
-        margin-bottom: ${totalPages > 0 ? "16px" : "0"};
-      ">
-        ${totalPages > 0 ? `0/${totalPages} pages` : ""}
-      </div>
-      
-      <!-- Progress Bar (only shown when totalPages > 0) -->
-      ${
-        totalPages > 0
-          ? `
-        <div class="loader-progress-bar-container" style="
-          background: #f3f4f6;
-          border-radius: 8px;
-          height: 8px;
-          overflow: hidden;
-          margin-bottom: 12px;
-        ">
-          <div class="loader-progress-bar" style="
-            background: #2563eb;
-            height: 100%;
-            width: 0%;
-            border-radius: 8px;
-            transition: width 0.3s ease;
-          "></div>
-        </div>
-        
-        <!-- Percentage -->
-        <div class="loader-percentage" style="
-          font-size: 13px;
-          color: #9ca3af;
-          font-weight: 500;
-        ">
-          0%
-        </div>
-      `
-          : ""
-      }
-      
-      
-    <style>
-      @keyframes loader-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      
-      #pdf-export-loader .loader-container {
-        animation: fadeIn 0.3s ease-out;
-      }
-    </style>
+  // Create loader content
+  const loaderContainer = document.createElement("div");
+  loaderContainer.className = "loader-container";
+  loaderContainer.style.cssText = `
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    min-width: 320px;
+    max-width: 90vw;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(10px);
   `;
 
+  // Create spinner
+  const spinner = document.createElement("div");
+  spinner.className = "loader-spinner";
+  spinner.style.cssText = `
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(243, 244, 246, 1);
+    border-top: 4px solid rgba(37, 99, 235, 1);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+  `;
+
+  // Create message
+  const messageDiv = document.createElement("div");
+  messageDiv.className = "loader-message";
+  messageDiv.style.cssText = `
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  `;
+  messageDiv.textContent = message;
+
+  // Create progress text
+  const progressText = document.createElement("div");
+  progressText.className = "loader-progress-text";
+  progressText.style.cssText = `
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: ${totalPages > 0 ? "16px" : "0"};
+  `;
+  if (totalPages > 0) {
+    progressText.textContent = `0/${totalPages} pages`;
+  }
+
+  // Assemble loader
+  loaderContainer.appendChild(spinner);
+  loaderContainer.appendChild(messageDiv);
+  loaderContainer.appendChild(progressText);
+
+  // Add progress bar if needed
+  if (totalPages > 0) {
+    const progressBarContainer = document.createElement("div");
+    progressBarContainer.className = "loader-progress-bar-container";
+    progressBarContainer.style.cssText = `
+      background: #f3f4f6;
+      border-radius: 8px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    `;
+
+    const progressBar = document.createElement("div");
+    progressBar.className = "loader-progress-bar";
+    progressBar.style.cssText = `
+      background: #2563eb;
+      height: 100%;
+      width: 0%;
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    `;
+
+    progressBarContainer.appendChild(progressBar);
+    loaderContainer.appendChild(progressBarContainer);
+
+    const percentageDiv = document.createElement("div");
+    percentageDiv.className = "loader-percentage";
+    percentageDiv.style.cssText = `
+      font-size: 13px;
+      color: #9ca3af;
+      font-weight: 500;
+    `;
+    percentageDiv.textContent = "0%";
+    loaderContainer.appendChild(percentageDiv);
+  }
+
+  // Add cancel button
+  const cancelButton = document.createElement("button");
+  cancelButton.id = "pdf-export-cancel";
+  cancelButton.textContent = "Cancel Export";
+  cancelButton.style.cssText = `
+    margin-top: 20px;
+    padding: 8px 16px;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  `;
+  cancelButton.addEventListener("mouseenter", () => {
+    cancelButton.style.background = "#e5e7eb";
+  });
+  cancelButton.addEventListener("mouseleave", () => {
+    cancelButton.style.background = "#f3f4f6";
+  });
+  cancelButton.addEventListener("click", cancelPdfExport);
+  loaderContainer.appendChild(cancelButton);
+
+  overlay.appendChild(loaderContainer);
   document.body.appendChild(overlay);
-  // Mark body as exporting for CSS adjustments
+
+  // Force styles injection
+  injectLoaderStyles();
+
+  // Animate in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      overlay.style.opacity = "1";
+      loaderContainer.style.opacity = "1";
+      loaderContainer.style.transform = "translateY(0)";
+      loaderContainer.style.transition =
+        "opacity 0.3s ease, transform 0.3s ease";
+
+      // Force spinner animation
+      spinner.style.animation = "loaderSpin 1s linear infinite";
+    });
+  });
+
   document.body.classList.add("pdf-exporting");
 }
 
@@ -427,17 +768,17 @@ function updateLoaderProgress(currentPage, totalPages) {
 }
 
 function hideLoader() {
-  const el = document.getElementById("pdf-export-loader");
-  if (el && el.parentNode) {
-    el.style.transition = "opacity 0.3s ease";
-    el.style.opacity = "0";
+  const loader = document.getElementById("pdf-export-loader");
+  if (loader) {
+    // Fade out animation
+    loader.style.opacity = "0";
+    loader.style.transition = "opacity 0.3s ease";
 
-    setTimeout(() => {
-      if (el.parentNode) {
-        el.parentNode.removeChild(el);
+    safeSetTimeout(() => {
+      if (loader.parentNode) {
+        loader.parentNode.removeChild(loader);
       }
+      document.body.classList.remove("pdf-exporting");
     }, 300);
   }
-  // Remove exporting class after cleanup
-  document.body.classList.remove("pdf-exporting");
 }
