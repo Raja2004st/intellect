@@ -5,6 +5,8 @@ import FeedbackBubble from "./FeedbackBubble";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 import "../styles/qualitativeFeedbackList.scss";
+import greenPersonIcon from "../assets/png/greenPersonIcon.png";
+import yellowPersonIcon from "../assets/png/yellowPersonIcon.png";
 
 const THEME = {
   green: {
@@ -12,12 +14,14 @@ const THEME = {
     avatarBg: "var(--color-green)",
     bubbleColor: "var(--color-white)",
     textColor: "var(--color-text)",
+    icon: greenPersonIcon,
   },
   gold: {
     borderColor: "var(--color-gold)",
     avatarBg: "var(--color-gold)",
     bubbleColor: "var(--color-white)",
     textColor: "var(--color-text)",
+    icon: yellowPersonIcon,
   },
 };
 
@@ -64,6 +68,17 @@ const QualitativeFeedbackList = ({
                 borderColor={theme.borderColor}
                 avatarBg={theme.avatarBg}
                 textColor={theme.textColor}
+                icon={
+                  <img
+                    src={theme.icon}
+                    alt="Person"
+                    style={
+                      q.colorTheme === "green"
+                        ? { width: "42px", height: "40px" }
+                        : { width: "48px", height: "45px" }
+                    }
+                  />
+                }
               />
             ))}
           </div>

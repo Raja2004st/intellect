@@ -55,7 +55,7 @@ const OverviewSummary = ({
           <div className="os-row__label">{row.label}</div>
           <HorizontalCompareBar self={row.self} others={row.others} />
           <div className="os-row__stats">
-            <div className="os-row__stats-caption">Mean</div>
+            {/* <div className="os-row__stats-caption">Mean</div> */}
             <div className="os-row__stats-values">
               <span>{row.self}</span>
               <span>{row.others}</span>

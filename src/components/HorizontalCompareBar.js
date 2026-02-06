@@ -114,7 +114,7 @@ const HorizontalCompareBar = ({
         </div>
 
         {showTicks && (
-          <div className="hcb-ticks" style={{ padding: `6px ${padX}px 6px` }}>
+          <div className="hcb-ticks" style={{ padding: `6px 0 6px` }}>
             {Array.from({ length: max + 1 }).map((_, i) => (
               <span key={i}>{i}</span>
             ))}
@@ -198,7 +198,7 @@ const HorizontalCompareBar = ({
       </div>
 
       {showTicks && (
-        <div className="hcb-ticks" style={{ padding: `6px ${padX}px 0` }}>
+        <div className="hcb-ticks" style={{ padding: `6px 0 0` }}>
           {Array.from({ length: max + 1 }).map((_, i) => (
             <span key={i}>{i}</span>
           ))}

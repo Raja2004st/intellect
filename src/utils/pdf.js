@@ -6,21 +6,16 @@ const IMG_QUALITY = 0.62;
 const H2C_SCALE = 1.1;
 const MAX_CANVAS_WIDTH_PX = 1600;
 
-// Track export state
 let isExporting = false;
 let exportTimeoutIds = [];
-
-// Clear all timeouts to prevent memory leaks
 function clearAllTimeouts() {
   exportTimeoutIds.forEach((id) => clearTimeout(id));
   exportTimeoutIds = [];
 }
 
-// Wrap setTimeout to track all timeouts
 function safeSetTimeout(fn, delay) {
   const id = setTimeout(() => {
     fn();
-    // Remove from tracking after execution
     exportTimeoutIds = exportTimeoutIds.filter((timeoutId) => timeoutId !== id);
   }, delay);
   exportTimeoutIds.push(id);
@@ -249,7 +244,6 @@ function removeExportOptimizations() {
   if (node && node.parentNode) node.parentNode.removeChild(node);
 }
 
-// Inject loader styles properly
 function injectLoaderStyles() {
   const id = "pdf-loader-styles";
   if (document.getElementById(id)) return;
@@ -294,13 +288,12 @@ function removeLoaderStyles() {
   if (node && node.parentNode) node.parentNode.removeChild(node);
 }
 
-// Request animation frame with fallback for background tabs
 function forceAnimationFrame() {
   return new Promise((resolve) => {
     const start = Date.now();
     const check = () => {
       if (Date.now() - start > 50) {
-        resolve(); // Fallback after 50ms
+        resolve();
         return;
       }
       requestAnimationFrame(() => {
@@ -321,7 +314,6 @@ export async function downloadPdfSplitByHeader() {
     isExporting = true;
     clearAllTimeouts();
 
-    // Ensure animations can run in background tabs
     if (document.documentElement) {
       document.documentElement.style.setProperty(
         "animation-play-state",
@@ -335,7 +327,6 @@ export async function downloadPdfSplitByHeader() {
       );
     }
 
-    // Wait for fonts
     if (document.fonts && document.fonts.ready) {
       try {
         await document.fonts.ready;
@@ -344,10 +335,8 @@ export async function downloadPdfSplitByHeader() {
       }
     }
 
-    // Force double animation frame for stable render
     await forceAnimationFrame();
 
-    // Wait for sections to be stable
     await waitForStableSections({ timeoutMs: 8000, idleMs: 300 });
 
     let sections = Array.from(document.querySelectorAll(".pdf-section"));
@@ -356,12 +345,10 @@ export async function downloadPdfSplitByHeader() {
       return;
     }
 
-    // Show loader and inject styles BEFORE any heavy operations
     showLoader("Exporting PDF…", sections.length);
     injectExportOptimizations();
     injectLoaderStyles();
 
-    // Force animation to start
     await forceAnimationFrame();
 
     const pdf = new jsPDF({
@@ -377,7 +364,6 @@ export async function downloadPdfSplitByHeader() {
     await preloadImagesForSections(sections, 5000);
 
     for (let i = 0; i < sections.length; i++) {
-      // Check if export was cancelled
       if (!isExporting) {
         console.log("Export cancelled");
         break;
@@ -385,7 +371,6 @@ export async function downloadPdfSplitByHeader() {
 
       const el = sections[i];
 
-      // Update loader progress
       updateLoaderProgress(i + 1, sections.length);
 
       if (!el || !el.isConnected || !document.body.contains(el)) {
@@ -396,10 +381,8 @@ export async function downloadPdfSplitByHeader() {
       try {
         await waitForImages(el, 5000);
 
-        // Force render before capturing
         await forceAnimationFrame();
 
-        // Use webgl rendering for better performance
         const canvas = await html2canvas(el, {
           scale: H2C_SCALE,
           useCORS: true,
@@ -414,13 +397,11 @@ export async function downloadPdfSplitByHeader() {
             return element.id === "pdf-export-loader";
           },
           onclone: (clonedDoc, element) => {
-            // Remove loader from cloned document
             const loader = clonedDoc.getElementById("pdf-export-loader");
             if (loader && loader.parentNode) {
               loader.parentNode.removeChild(loader);
             }
 
-            // Ensure visibility
             element.style.visibility = "visible";
             element.style.opacity = "1";
           },
@@ -435,7 +416,6 @@ export async function downloadPdfSplitByHeader() {
       } catch (firstErr) {
         console.warn("First capture attempt failed:", firstErr);
         try {
-          // Fallback attempt with different settings
           await forceAnimationFrame();
 
           const canvas = await html2canvas(el, {
@@ -463,7 +443,6 @@ export async function downloadPdfSplitByHeader() {
         } catch (secondErr) {
           console.warn("Second capture attempt failed:", secondErr);
           try {
-            // Minimal fallback
             await forceAnimationFrame();
 
             const canvas = await html2canvas(el, {
@@ -499,7 +478,6 @@ export async function downloadPdfSplitByHeader() {
         }
       }
 
-      // Yield to browser every few sections to keep UI responsive
       if (i % 3 === 0) {
         await new Promise((r) => setTimeout(r, 0));
       }
@@ -510,7 +488,6 @@ export async function downloadPdfSplitByHeader() {
     }
   } catch (err) {
     console.error("Failed to generate PDF:", err);
-    // Show error to user
     if (isExporting) {
       const loader = document.getElementById("pdf-export-loader");
       if (loader) {
@@ -523,18 +500,15 @@ export async function downloadPdfSplitByHeader() {
       }
     }
   } finally {
-    // Cleanup
     removeExportOptimizations();
     removeLoaderStyles();
     clearAllTimeouts();
 
-    // Reset animation states
     if (document.documentElement) {
       document.documentElement.style.removeProperty("animation-play-state");
       document.documentElement.style.removeProperty("transition-play-state");
     }
 
-    // Hide loader with delay to ensure clean state
     safeSetTimeout(() => {
       hideLoader();
       isExporting = false;
@@ -548,7 +522,6 @@ export function cancelPdfExport() {
     isExporting = false;
     clearAllTimeouts();
 
-    // Show cancelled message briefly
     const loader = document.getElementById("pdf-export-loader");
     if (loader) {
       const message = loader.querySelector(".loader-message");
@@ -568,7 +541,6 @@ export function cancelPdfExport() {
 
 export { addCanvasToPdf };
 
-// FIXED: Proper loader animation implementation
 function showLoader(message = "Preparing PDF…", totalPages = 0) {
   // Remove existing loader first
   const existing = document.getElementById("pdf-export-loader");

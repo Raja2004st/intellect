@@ -37,11 +37,11 @@
   font-size: var(--fs-md);
   color: var(--color-green);
   font-weight: 700;
-  line-height: 2.23;
+  line-height: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
+  gap: 20px;
+  margin-top: 12px;
 
   &__item {
     text-align: right;

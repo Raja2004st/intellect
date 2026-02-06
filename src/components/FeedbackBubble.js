@@ -38,12 +38,12 @@ const FeedbackBubble = ({
       style={style}
     >
       <div className="fb-avatar-wrap">
-        <div
+        {/* <div
           className="fb-avatar"
           style={{ "--fb-avatar-bg": avatarBg, "--fb-border": borderColor }}
-        >
-          {icon || <PersonIcon size={20} color="#fff" />}
-        </div>
+        > */}
+        {icon}
+        {/* </div> */}
       </div>
       <div
         className="fb-bubble"
@@ -115,7 +115,7 @@ export default FeedbackBubble;
 //             "--fb-border": borderColor
 //           }}
 //         >
-//           {icon || <PersonIcon size={20} color="#fff" />}
+//           {icon || <img src="/home/wizgeeks/Code/intellect/src/assets/png/greenPersonIcon.png" alt="Green Person Icon" style={{ width: '20px', height: '20px' }} />}
 //         </div>
 //       </div>
 

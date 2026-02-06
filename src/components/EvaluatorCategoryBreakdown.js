@@ -16,7 +16,7 @@ const PALETTE = {
 const defaultData = [
   {
     label: "Leadership",
-    values: { self: 3.5, manager: 3.0, team: 2.5, peers: 4.5 },
+    values: { self: 3.0, manager: 3.0, team: 2.5, peers: 4.5 },
   },
   {
     label: "Leadership",
