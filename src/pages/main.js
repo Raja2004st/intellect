@@ -318,6 +318,7 @@ const MainPage = () => {
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
         },
+        
       ],
     },
     {
@@ -372,6 +373,7 @@ const MainPage = () => {
       leftIcon: ChessIcon,
       scoreShip: false,
       items: [
+        { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },
@@ -665,6 +667,7 @@ const MainPage = () => {
               others: 2,
             }))}
             scoreShip={sec.scoreShip}
+            key_id={`bs-${i}`}
           />
         ))}
         <CoachingActionPlan startPage={49} />

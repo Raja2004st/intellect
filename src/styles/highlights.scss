@@ -36,10 +36,8 @@
 }
 
 .hl-right {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  padding-top: 10px;
+  position: relative;
+  padding-top: 0;
 }
 
 .hl-row {

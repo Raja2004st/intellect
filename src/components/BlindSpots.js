@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 import "../styles/blindSpots.scss";
+import ArcConnector from "./ArcConnector";
 
 const ScoreChip = ({ score = 2.5, scoreShip = false }) => (
   <div className="bs-chip">{<span>{score}</span>}</div>
@@ -39,9 +40,7 @@ const RatingBars = ({ self = 4, others = 2 }) => {
           <span className="bs-value others">{self}</span>
         </div>
       </div>
-      {/* Center label */}
       <span className="bs-center-label">Others</span>
-      {/* Right: Your Rating gold chip + grey bar */}
       <div className="bs-bar others">
         <div
           className="bs-fill others"
@@ -72,47 +71,41 @@ const BlindSpots = ({
     { score: 2.5, text: "Text", self: 4, others: 2 },
     { score: 2.5, text: "Text", self: 4, others: 2 },
   ],
+  key_id = "",
 }) => {
+  const [points, setPoints] = useState([]);
+  const arcHeight = 420;
+  const paddingTop = 60;
+  const paddingBottom = 60;
+  const usableHeight = arcHeight - paddingTop - paddingBottom;
+  const arePointsEqual = (a, b) => {
+    if (a === b) return true;
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i]?.x !== b[i]?.x || a[i]?.y !== b[i]?.y) return false;
+    }
+    return true;
+  };
+
+  const handlePointsLine = useCallback((newPoints) => {
+    setPoints((prev) => {
+      if (arePointsEqual(prev, newPoints)) return prev;
+      return newPoints;
+    });
+  }, []);
+
   const blocks = useMemo(() => {
     const out = [];
-
     const rowSpacing = 100;
     const topOffset = 70;
     const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
-
-    const clamp01 = (v) => Math.max(0, Math.min(1, v));
-
-    const getArcCx = (i) => {
-      if (!items?.length || items.length === 1) return 65;
-      const t = clamp01(i / (items.length - 1));
-      const cxMin = 65;
-      const cxMax = 124;
-      const bulge = Math.sin(Math.PI * t);
-      return cxMin + (cxMax - cxMin) * bulge;
-    };
-
-    const getConnectorStyle = (i) => {
-      const cx = getArcCx(i);
-      const cxMin = 65;
-      const cxMax = 124;
-      const k = cxMax === cxMin ? 0 : clamp01((cx - cxMin) / (cxMax - cxMin));
-
-      const widthMin = 65;
-      const widthMax = 126;
-      const leftMin = -71;
-      const leftMax = -133;
-
-      return {
-        width: widthMin + (widthMax - widthMin) * k,
-        left: leftMin + (leftMax - leftMin) * k,
-      };
-    };
 
     out.push(
       <h2 key="title" className="content-page__title bs-title">
         <span className="content-page__title-index">{titleIndex}</span>
         <span className="content-page__title-text">{titleText}</span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -120,7 +113,7 @@ const BlindSpots = ({
         <p>
           <strong>Blind Spots</strong> {description}
         </p>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -130,7 +123,7 @@ const BlindSpots = ({
         style={{ "--bs-arc": arcColor, "--bs-chip": chipColor }}
       >
         <div className="bs-left" style={{ minHeight: arcHeight }}>
-          <svg
+          {/* <svg
             className="bs-arc"
             viewBox={`0 0 200 ${arcHeight}`}
             preserveAspectRatio="none"
@@ -155,7 +148,16 @@ const BlindSpots = ({
                 fill={arcColor}
               />
             ))}
-          </svg>
+          </svg> */}
+          <ArcConnector
+            items={items}
+            arcColor={arcColor}
+            arcHeight={arcHeight}
+            paddingTop={paddingTop}
+            paddingBottom={paddingBottom}
+            setPointsLine={handlePointsLine}
+          />
+
           {leftIcon && (
             <div className="bs-left-icon">
               <div className="bs-left-icon-card">
@@ -164,30 +166,40 @@ const BlindSpots = ({
             </div>
           )}
         </div>
-        <div className="bs-right">
-          {items.map((it, i) => (
-            <div key={`row-${i}`} className="bs-row">
+        <div
+          className="bs-right"
+          style={{ position: "relative", width: "100%" }}
+        >
+          {points.length === items.length &&
+            items.map((it, i) => (
               <div
-                className="bs-connector"
+                key={`row-${i}`}
+                className="bs-row"
                 style={{
-                  width:
-                    i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
-                  left:
-                    i === 0 || i === 4 ? -133 : i === 1 || i === 3 ? -88 : -71,
+                  position: "absolute",
+                  top: points[i].y - 45,
+                  width: "100%",
                 }}
-              />
-              <ScoreChip score={it.score} scoreShip={scoreShip} />
-              <div className="bs-row-main">
-                <div className="bs-row-top">
-                  <div className="bs-row-title">Your Rating</div>
-                  <RatingBars self={it.self} others={it.others} />
+              >
+                <div
+                  className="bs-connector"
+                  style={{
+                    width: 200 - points[i].x,
+                    left: -(200 - points[i].x),
+                  }}
+                />
+                <ScoreChip score={it.score} scoreShip={scoreShip} />
+                <div className="bs-row-main">
+                  <div className="bs-row-top">
+                    <div className="bs-row-title">Your Rating</div>
+                    <RatingBars self={it.self} others={it.others} />
+                  </div>
+                  <div className="bs-row-text">{it.text}</div>
                 </div>
-                <div className="bs-row-text">{it.text}</div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
-      </div>
+      </div>,
     );
 
     return out;
@@ -196,9 +208,11 @@ const BlindSpots = ({
     titleText,
     description,
     items,
+    points,
     arcColor,
     chipColor,
     leftIcon,
+    handlePointsLine,
   ]);
 
   return (

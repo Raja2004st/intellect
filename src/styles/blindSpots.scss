@@ -45,11 +45,12 @@
   object-fit: contain;
 }
 
+
 .bs-right {
   display: flex;
   flex-direction: column;
-  gap: 50px;
-  padding-top: 25px;
+  // gap: 50px;
+  padding-top: 16px;
 }
 
 .bs-row {

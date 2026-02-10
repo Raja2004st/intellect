@@ -56,7 +56,7 @@ const HomePage = () => {
             <button
               type="button"
               className="home-card__cta home-card__cta--overall"
-              onClick={() => navigate("/user/reports")}
+              onClick={() => navigate("/reports/user/list")}
             >
               View User List
             </button>

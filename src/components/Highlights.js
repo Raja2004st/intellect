@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 import "../styles/highlights.scss";
+import ArcConnector from "./ArcConnector";
 
 const ChessIcon = ({ size = 120, color = "#0e4a2e" }) => (
   <svg
@@ -82,11 +83,33 @@ const Highlights = ({
     
   ],
 }) => {
+  const [points, setPoints] = useState([]);
+
+  const arePointsEqual = (a, b) => {
+    if (a === b) return true;
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i]?.x !== b[i]?.x || a[i]?.y !== b[i]?.y) return false;
+    }
+    return true;
+  };
+
+  const handlePointsLine = useCallback((newPoints) => {
+    setPoints((prev) => {
+      if (arePointsEqual(prev, newPoints)) return prev;
+      return newPoints;
+    });
+  }, []);
+
   const blocks = useMemo(() => {
     const out = [];
-    const rowSpacing = 90; // px between rows to align with arc dots
-    const topOffset = 50; // starting Y for first dot
+    const rowSpacing = 90;
+    const topOffset = 50;
     const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
+    const paddingTop = topOffset;
+    const paddingBottom = topOffset;
+    const rowTopAdjust = 39;
 
     // Title
     if (titleIndex && titleText) {
@@ -121,61 +144,50 @@ const Highlights = ({
         }}
       >
         <div className="hl-left" style={{ minHeight: arcHeight }}>
-          <svg
-            className="hl-arc"
-            viewBox={`0 0 200 ${arcHeight}`}
-            preserveAspectRatio="none"
-          >
-            <path
-              d={`M20 0 C 160 ${Math.round(arcHeight * 0.23)}, 160 ${Math.round(
-                arcHeight * 0.77
-              )}, 20 ${arcHeight}`}
-              stroke={arcColor}
-              strokeWidth="3.0"
-              fill="none"
-              strokeLinecap="round"
-            />
-            {items.map((_, i) => (
-              <circle
-                key={i}
-                cx={
-                  i == 0 ? 59 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 59
-                }
-                cy={topOffset + i * rowSpacing + i * 40}
-                r={8}
-                fill={arcColor}
-              />
-            ))}
-          </svg>
+          <ArcConnector
+            items={items}
+            arcColor={arcColor}
+            arcHeight={arcHeight}
+            paddingTop={paddingTop}
+            paddingBottom={paddingBottom}
+            setPointsLine={handlePointsLine}
+          />
           {leftIcon && (
             <div className="hl-chess">
               <LeftIcon leftIcon={leftIcon} arcColor={arcColor} />
             </div>
           )}
         </div>
-        <div className="hl-right">
-          {items.map((it, i) => (
-            <div key={`it-${i}`} className="hl-row">
+        <div className="hl-right" style={{ position: "relative", width: "100%" }}>
+          {points.length === items.length &&
+            items.map((it, i) => (
               <div
-                className="hl-row-line"
+                key={`it-${i}`}
+                className="hl-row"
                 style={{
-                  width:
-                    i === 0 || i === 4 ? 126 : i === 1 || i === 3 ? 82 : 65,
-                  left:
-                    i === 0 || i === 4 ? -133 : i === 1 || i === 3 ? -88 : -71,
+                  position: "absolute",
+                  top: points[i].y - rowTopAdjust,
+                  width: "100%",
                 }}
-              />
-              <ScoreChip
-                score={it.score}
-                color={chipColor}
-                scoreShip={scoreShip}
-              />
-              <div className="hl-row-text">
-                <div className="hl-row-title">{it.title}</div>
-                <div className="hl-row-desc">{it.desc}</div>
+              >
+                <div
+                  className="hl-row-line"
+                  style={{
+                    width: 200 - points[i].x,
+                    left: -(200 - points[i].x),
+                  }}
+                />
+                <ScoreChip
+                  score={it.score}
+                  color={chipColor}
+                  scoreShip={scoreShip}
+                />
+                <div className="hl-row-text">
+                  <div className="hl-row-title">{it.title}</div>
+                  <div className="hl-row-desc">{it.desc}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     );
@@ -192,6 +204,8 @@ const Highlights = ({
     chipColor,
     dotsColor,
     leftIcon,
+    points,
+    handlePointsLine,
   ]);
 
   return (
