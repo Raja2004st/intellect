@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../styles/evaluatorTable.scss";
 
 const EvaluatorRatingsTable = ({
@@ -36,6 +36,15 @@ const EvaluatorRatingsTable = ({
   title,
   compact = false,
 }) => {
+  const initialRows = useMemo(() => rows, [rows]);
+  const [tableRows, setTableRows] = useState(initialRows);
+  const [editValue, setEditValue] = useState("");
+  const [currentEdit, setCurrentEdit] = useState({ rowIndex: null });
+
+  useEffect(() => {
+    setTableRows(initialRows);
+  }, [initialRows]);
+
   const pct = (score) => `${Math.max(0, Math.min(1, score / max)) * 100}%`;
   const colorPicker = (value) => {
     if (value < 3.5) {
@@ -47,6 +56,47 @@ const EvaluatorRatingsTable = ({
     }
     return "#ffffff";
   };
+
+  const handleScoreClick = (rowIndex, value) => {
+    setCurrentEdit({ rowIndex });
+    setEditValue(String(value ?? ""));
+  };
+
+  const handleScoreChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const commitScoreEdit = () => {
+    if (currentEdit.rowIndex === null) {
+      setCurrentEdit({ rowIndex: null });
+      return;
+    }
+
+    setTableRows((prev) => {
+      const next = [...prev];
+      const row = next[currentEdit.rowIndex];
+      if (!row) return prev;
+      next[currentEdit.rowIndex] = {
+        ...row,
+        score: editValue,
+      };
+      return next;
+    });
+
+    setCurrentEdit({ rowIndex: null });
+  };
+
+  const handleScoreBlur = () => {
+    commitScoreEdit();
+  };
+
+  const handleScoreKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitScoreEdit();
+    }
+  };
+
   return (
     <div style={{ width: "100%" }}>
       <table
@@ -71,7 +121,7 @@ const EvaluatorRatingsTable = ({
           </tr>
         </thead>
         <tbody>
-          {rows.map((r, idx) => (
+          {tableRows.map((r, idx) => (
             <tr key={idx}>
               <td className="et-label">{r.label}</td>
               <td className="et-na"></td>
@@ -86,8 +136,27 @@ const EvaluatorRatingsTable = ({
                   />
                 </div>
               </td>
-              <td className="et-score">{r.score}</td>
-              <td className="et-gap">{r.gapFromSelf}</td>
+              <td
+                className={`et-score ${
+                  currentEdit.rowIndex === idx ? "editing" : ""
+                }`}
+                onClick={() => handleScoreClick(idx, r.score)}
+              >
+                {currentEdit.rowIndex === idx ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleScoreChange}
+                    onBlur={handleScoreBlur}
+                    onKeyDown={handleScoreKeyDown}
+                    autoFocus
+                    className="et-input"
+                  />
+                ) : (
+                  r.score
+                )}
+              </td>
+              <td className="et-gap">{Math.abs(tableRows[0].score- r.score)}</td>
               <td className="et-highlight">{r.highlight}</td>
             </tr>
           ))}

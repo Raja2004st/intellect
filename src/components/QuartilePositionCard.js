@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import "../styles/quartilePositionCard.scss";
 
+const SELECTED_CACHE = new Map();
+
 const headers5 = [
   "Score",
   "First quartile (25th percentile)",
@@ -21,9 +23,22 @@ const QuartilePositionCard = ({
   valuesByQuartile,
   initialSelected = 2,
   headers = headers5,
-  onChange,
+  onValueChange,
+  persistKey,
 }) => {
-  const [selected, setSelected] = useState(initialSelected);
+  const cacheKey = persistKey ?? title;
+  const [selected, setSelected] = useState(() => {
+    if (cacheKey && SELECTED_CACHE.has(cacheKey)) {
+      return SELECTED_CACHE.get(cacheKey);
+    }
+    return initialSelected;
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState("");
+  const [currentEdit, setCurrentEdit] = useState({
+    quartile: null,
+    index: null,
+  });
 
   const values = useMemo(() => {
     return valuesByQuartile?.[selected] || [];
@@ -31,7 +46,37 @@ const QuartilePositionCard = ({
 
   const handleSelect = (q) => {
     setSelected(q);
-    onChange?.(q);
+    if (cacheKey) SELECTED_CACHE.set(cacheKey, q);
+    setCurrentEdit({ quartile: null, index: null });
+    setIsEditing(false);
+  };
+
+  const handleValueClick = (quartile, index, value) => {
+    setCurrentEdit({ quartile, index });
+    setEditValue(value);
+    setIsEditing(true);
+  };
+
+  const handleValueChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const handleValueBlur = () => {
+    if (
+      onValueChange &&
+      currentEdit.quartile !== null &&
+      currentEdit.index !== null
+    ) {
+      onValueChange(currentEdit.quartile, currentEdit.index, editValue);
+    }
+    setIsEditing(false);
+    setCurrentEdit({ quartile: null, index: null });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.target.blur();
+    }
   };
 
   return (
@@ -72,12 +117,30 @@ const QuartilePositionCard = ({
           </thead>
           <tbody>
             <tr>
-              {headers.map((_, i) => (
+              {values.map((value, i) => (
                 <td
                   key={`v-${i}`}
-                  className={`qpc-td ${i === 0 ? "qpc-td--left" : ""}`}
+                  className={`qpc-td ${i === 0 ? "qpc-td--left" : ""} ${
+                    currentEdit.quartile === selected && currentEdit.index === i
+                      ? "editing"
+                      : ""
+                  }`}
+                  onClick={() => handleValueClick(selected, i, value)}
                 >
-                  {values?.[i] ?? ""}
+                  {currentEdit.quartile === selected &&
+                  currentEdit.index === i ? (
+                    <input
+                      type="text"
+                      value={editValue}
+                      onChange={handleValueChange}
+                      onBlur={handleValueBlur}
+                      onKeyDown={handleKeyDown}
+                      autoFocus
+                      className="qpc-input"
+                    />
+                  ) : (
+                    value
+                  )}
                 </td>
               ))}
             </tr>

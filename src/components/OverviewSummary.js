@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import HorizontalCompareBar from "./HorizontalCompareBar";
@@ -13,21 +13,65 @@ const OverviewSummary = ({
   pagePadding = 10,
   items,
 }) => {
-  const data = useMemo(
-    () =>
-      items && items.length
-        ? items
-        : [
-            { label: "Leadership", self: 2.5, others: 4.0 },
-            { label: "Bandwidth", self: 2.5, others: 4.0 },
-            { label: "Sales and Customer Centricity", self: 2.5, others: 4.0 },
-            { label: "Collaboration", self: 2.5, others: 4.0 },
-            { label: "Operational Excellence", self: 2.5, others: 4.0 },
-            { label: "Result Orientation", self: 2.5, others: 4.0 },
-            { label: "Expertise and Communication", self: 2.5, others: 4.0 },
-          ],
-    [items]
-  );
+  const initialRows = useMemo(() => {
+    return items && items.length
+      ? items
+      : [
+          { label: "Leadership", self: 2.5, others: 4.0 },
+          { label: "Bandwidth", self: 2.5, others: 4.0 },
+          { label: "Sales and Customer Centricity", self: 2.5, others: 4.0 },
+          { label: "Collaboration", self: 2.5, others: 4.0 },
+          { label: "Operational Excellence", self: 2.5, others: 4.0 },
+          { label: "Result Orientation", self: 2.5, others: 4.0 },
+          { label: "Expertise and Communication", self: 2.5, others: 4.0 },
+        ];
+  }, [items]);
+
+  const [rows, setRows] = useState(initialRows);
+  const [editValue, setEditValue] = useState("");
+  const [currentEdit, setCurrentEdit] = useState({
+    rowIndex: null,
+    field: null,
+  });
+
+  useEffect(() => {
+    setRows(initialRows);
+  }, [initialRows]);
+
+  const handleValueClick = (rowIndex, field, value) => {
+    setCurrentEdit({ rowIndex, field });
+    setEditValue(String(value ?? ""));
+  };
+
+  const handleValueChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const handleValueBlur = () => {
+    if (currentEdit.rowIndex === null || !currentEdit.field) {
+      setCurrentEdit({ rowIndex: null, field: null });
+      return;
+    }
+
+    setRows((prev) => {
+      const next = [...prev];
+      const row = next[currentEdit.rowIndex];
+      if (!row) return prev;
+      next[currentEdit.rowIndex] = {
+        ...row,
+        [currentEdit.field]: editValue,
+      };
+      return next;
+    });
+
+    setCurrentEdit({ rowIndex: null, field: null });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.target.blur();
+    }
+  };
 
   const blocks = useMemo(() => {
     const out = [];
@@ -49,7 +93,7 @@ const OverviewSummary = ({
       </div>
     );
 
-    data.forEach((row, idx) => {
+    rows.forEach((row, idx) => {
       out.push(
         <div key={`row-${idx}`} className="os-row">
           <div className="os-row__label">{row.label}</div>
@@ -57,8 +101,52 @@ const OverviewSummary = ({
           <div className="os-row__stats">
             {/* <div className="os-row__stats-caption">Mean</div> */}
             <div className="os-row__stats-values">
-              <span>{row.self}</span>
-              <span>{row.others}</span>
+              <div
+                className={`os-row__stat ${
+                  currentEdit.rowIndex === idx && currentEdit.field === "self"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() => handleValueClick(idx, "self", row.self)}
+              >
+                {currentEdit.rowIndex === idx && currentEdit.field === "self" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="os-input"
+                  />
+                ) : (
+                  <span>{row.self}</span>
+                )}
+              </div>
+              <div
+                className={`os-row__stat ${
+                  currentEdit.rowIndex === idx &&
+                  currentEdit.field === "others"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() => handleValueClick(idx, "others", row.others)}
+              >
+                {currentEdit.rowIndex === idx &&
+                currentEdit.field === "others" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="os-input"
+                  />
+                ) : (
+                  <span>{row.others}</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +154,7 @@ const OverviewSummary = ({
     });
 
     return out;
-  }, [data]);
+  }, [rows, currentEdit, editValue]);
 
   return (
     <AutoPaginatedSections

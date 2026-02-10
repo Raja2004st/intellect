@@ -54,6 +54,7 @@
     font-weight: 700;
     color: var(--color-text);
     min-width: 2.2ch; /* keep numbers aligned */
+    font-size: var(--fs-md);
   }
 
   &__text {
@@ -86,8 +87,9 @@
   &__page {
     min-width: 2ch;
     text-align: right;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--color-text);
+    font-size: var(--fs-md);
   }
 
   /* indentation for nested levels */

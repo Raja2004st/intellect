@@ -80,6 +80,34 @@ const BlindSpots = ({
     const topOffset = 70;
     const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
 
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+
+    const getArcCx = (i) => {
+      if (!items?.length || items.length === 1) return 65;
+      const t = clamp01(i / (items.length - 1));
+      const cxMin = 65;
+      const cxMax = 124;
+      const bulge = Math.sin(Math.PI * t);
+      return cxMin + (cxMax - cxMin) * bulge;
+    };
+
+    const getConnectorStyle = (i) => {
+      const cx = getArcCx(i);
+      const cxMin = 65;
+      const cxMax = 124;
+      const k = cxMax === cxMin ? 0 : clamp01((cx - cxMin) / (cxMax - cxMin));
+
+      const widthMin = 65;
+      const widthMax = 126;
+      const leftMin = -71;
+      const leftMax = -133;
+
+      return {
+        width: widthMin + (widthMax - widthMin) * k,
+        left: leftMin + (leftMax - leftMin) * k,
+      };
+    };
+
     out.push(
       <h2 key="title" className="content-page__title bs-title">
         <span className="content-page__title-index">{titleIndex}</span>
@@ -120,7 +148,7 @@ const BlindSpots = ({
               <circle
                 key={i}
                 cx={
-                  i == 0 ? 65 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 65
+                  i == 0 || i == items.length - 1 ? 65 : i == 1 ? 110 : i == 2 ? 124 : i == 3 ? 110 : 65
                 }
                 cy={topOffset + i * rowSpacing + i * 40}
                 r={8}

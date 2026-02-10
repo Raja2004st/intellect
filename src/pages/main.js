@@ -377,6 +377,7 @@ const MainPage = () => {
         { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },
         { score: 2.5, desc: "Text" },
+        // { score: 2.5, desc: "Text" },
       ],
     },
     {

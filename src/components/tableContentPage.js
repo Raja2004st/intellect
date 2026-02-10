@@ -44,8 +44,8 @@ const defaultToc = [
     children: [
       { label: "Strengths", page: 46 },
       { label: "Areas of Improvement", page: 47 },
-      { label: "Sales & Customer Centricity", page: 48 },
-      { label: "Collaboration", page: 49 },
+      { label: "Hidden Strengths", page: 48 },
+      { label: "Blind spots", page: 49 },
     ],
   },
   {

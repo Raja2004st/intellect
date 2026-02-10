@@ -43,7 +43,7 @@ function downscaleCanvas(srcCanvas, maxWidthPx = MAX_CANVAS_WIDTH_PX) {
     0,
     0,
     targetW,
-    targetH
+    targetH,
   );
   return dst;
 }
@@ -180,7 +180,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       0,
       0,
       processedCanvas.width,
-      sliceCanvas.height
+      sliceCanvas.height,
     );
 
     const sliceImgData = sliceCanvas.toDataURL("image/jpeg", IMG_QUALITY);
@@ -192,7 +192,7 @@ async function addCanvasToPdf(pdf, canvas, marginMm = 0) {
       marginMm,
       marginMm,
       usableW,
-      sliceImgH
+      sliceImgH,
     );
 
     yPx += sliceHeightPx;
@@ -219,8 +219,8 @@ async function preloadImagesForSections(sections, timeoutMs = 6000) {
             im.onload = im.onerror = () => resolve();
             im.crossOrigin = "anonymous";
             im.src = src;
-          })
-      )
+          }),
+      ),
     ),
     new Promise((r) => safeSetTimeout(r, timeoutMs)),
   ]);
@@ -318,12 +318,12 @@ export async function downloadPdfSplitByHeader() {
       document.documentElement.style.setProperty(
         "animation-play-state",
         "running",
-        "important"
+        "important",
       );
       document.documentElement.style.setProperty(
         "transition-play-state",
         "running",
-        "important"
+        "important",
       );
     }
 
@@ -471,7 +471,7 @@ export async function downloadPdfSplitByHeader() {
             console.error(
               "All capture attempts failed for section",
               i,
-              finalErr
+              finalErr,
             );
             continue;
           }

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import HorizontalCompareBar from "./HorizontalCompareBar";
@@ -47,6 +47,61 @@ const EvaluatorCategoryBreakdown = ({
   pagePadding = 10,
   items = defaultData,
 }) => {
+  const initialRows = useMemo(() => items, [items]);
+  const [rows, setRows] = useState(initialRows);
+  const [editValue, setEditValue] = useState("");
+  const [currentEdit, setCurrentEdit] = useState({
+    rowIndex: null,
+    field: null,
+  });
+
+  useEffect(() => {
+    setRows(initialRows);
+  }, [initialRows]);
+
+  const handleValueClick = (rowIndex, field, value) => {
+    setCurrentEdit({ rowIndex, field });
+    setEditValue(String(value ?? ""));
+  };
+
+  const handleValueChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const commitEdit = () => {
+    if (currentEdit.rowIndex === null || !currentEdit.field) {
+      setCurrentEdit({ rowIndex: null, field: null });
+      return;
+    }
+
+    setRows((prev) => {
+      const next = [...prev];
+      const row = next[currentEdit.rowIndex];
+      if (!row) return prev;
+      next[currentEdit.rowIndex] = {
+        ...row,
+        values: {
+          ...row.values,
+          [currentEdit.field]: editValue,
+        },
+      };
+      return next;
+    });
+
+    setCurrentEdit({ rowIndex: null, field: null });
+  };
+
+  const handleValueBlur = () => {
+    commitEdit();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitEdit();
+    }
+  };
+
   const blocks = useMemo(() => {
     const out = [];
 
@@ -68,7 +123,7 @@ const EvaluatorCategoryBreakdown = ({
       </div>
     );
 
-    items.forEach((row, idx) => {
+    rows.forEach((row, idx) => {
       out.push(
         <div
           key={`sec-${idx}`}
@@ -103,10 +158,101 @@ const EvaluatorCategoryBreakdown = ({
               showTicks={true}
             />
             <div className="ecb-values">
-              <div className="ecb-values__item">{row.values.self}</div>
-              <div className="ecb-values__item">{row.values.manager}</div>
-              <div className="ecb-values__item">{row.values.team}</div>
-              <div className="ecb-values__item">{row.values.peers}</div>
+              <div
+                className={`ecb-values__item ${
+                  currentEdit.rowIndex === idx && currentEdit.field === "self"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() => handleValueClick(idx, "self", row.values.self)}
+              >
+                {currentEdit.rowIndex === idx && currentEdit.field === "self" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="ecb-input"
+                  />
+                ) : (
+                  row.values.self
+                )}
+              </div>
+              <div
+                className={`ecb-values__item ${
+                  currentEdit.rowIndex === idx &&
+                  currentEdit.field === "manager"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() =>
+                  handleValueClick(idx, "manager", row.values.manager)
+                }
+              >
+                {currentEdit.rowIndex === idx &&
+                currentEdit.field === "manager" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="ecb-input"
+                  />
+                ) : (
+                  row.values.manager
+                )}
+              </div>
+              <div
+                className={`ecb-values__item ${
+                  currentEdit.rowIndex === idx && currentEdit.field === "team"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() => handleValueClick(idx, "team", row.values.team)}
+              >
+                {currentEdit.rowIndex === idx && currentEdit.field === "team" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="ecb-input"
+                  />
+                ) : (
+                  row.values.team
+                )}
+              </div>
+              <div
+                className={`ecb-values__item ${
+                  currentEdit.rowIndex === idx && currentEdit.field === "peers"
+                    ? "editing"
+                    : ""
+                }`}
+                onClick={() =>
+                  handleValueClick(idx, "peers", row.values.peers)
+                }
+              >
+                {currentEdit.rowIndex === idx &&
+                currentEdit.field === "peers" ? (
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onBlur={handleValueBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                    className="ecb-input"
+                  />
+                ) : (
+                  row.values.peers
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +260,7 @@ const EvaluatorCategoryBreakdown = ({
     });
 
     return out;
-  }, [items]);
+  }, [rows,currentEdit,editValue]);
 
   return (
     <AutoPaginatedSections

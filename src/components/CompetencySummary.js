@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import ReportInfoTable from "./reportInfoTable";
@@ -122,10 +122,24 @@ const CompetencySummary = ({
     }),
     []
   );
-  const cohortMap =
-    (cohortQuartiles && cohortQuartiles.map) || defaultCohortMap;
-  const streamMap =
-    (streamQuartiles && streamQuartiles.map) || defaultStreamMap;
+
+  const [cohortMap, setCohortMap] = useState(defaultCohortMap);
+  const [streamMap, setStreamMap] = useState(defaultStreamMap);
+
+  // console.log(cohortMap, streamMap);
+  const handleCohortChange = (quartile, index, value) => {
+    setCohortMap((prev) => ({
+      ...prev,
+      [quartile]: prev[quartile].map((v, i) => (i === index ? value : v)),
+    }));
+  };
+
+  const handleStreamChange = (quartile, index, value) => {
+    setStreamMap((prev) => ({
+      ...prev,
+      [quartile]: prev[quartile].map((v, i) => (i === index ? value : v)),
+    }));
+  };
 
   const blocks = useMemo(() => {
     const out = [];
@@ -177,19 +191,21 @@ const CompetencySummary = ({
             title="Your Quartile Position Cohort"
             valuesByQuartile={cohortMap}
             initialSelected={2}
+            onValueChange={handleCohortChange}
           />
           <div className="cs-quartiles__divider" />
           <QuartilePositionCard
             title="Your Quartile Position Stream"
             valuesByQuartile={streamMap}
             initialSelected={2}
+            onValueChange={handleStreamChange}
           />
         </div>
       </div>
     );
 
     return out;
-  }, [cohortQuartiles, streamQuartiles]);
+  }, [cohortMap, streamMap]);
 
   return (
     <AutoPaginatedSections
