@@ -81,7 +81,7 @@ const OverviewSummary = ({
         <span className="content-page__title-text os-title__text">
           Overview/Summary of Scores Across 7 Elements
         </span>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -90,71 +90,37 @@ const OverviewSummary = ({
           <strong> Note:</strong> For categories with more than one respondent,
           scores represent the mean of all individual ratings.
         </em>
-      </div>
+      </div>,
     );
 
     rows.forEach((row, idx) => {
       out.push(
         <div key={`row-${idx}`} className="os-row">
           <div className="os-row__label">{row.label}</div>
-          <HorizontalCompareBar self={row.self} others={row.others} />
-          <div className="os-row__stats">
-            {/* <div className="os-row__stats-caption">Mean</div> */}
-            <div className="os-row__stats-values">
-              <div
-                className={`os-row__stat ${
-                  currentEdit.rowIndex === idx && currentEdit.field === "self"
-                    ? "editing"
-                    : ""
-                }`}
-                onClick={() => handleValueClick(idx, "self", row.self)}
-              >
-                {currentEdit.rowIndex === idx && currentEdit.field === "self" ? (
-                  <input
-                    type="text"
-                    value={editValue}
-                    onChange={handleValueChange}
-                    onBlur={handleValueBlur}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    className="os-input"
-                  />
-                ) : (
-                  <span>{row.self}</span>
-                )}
-              </div>
-              <div
-                className={`os-row__stat ${
-                  currentEdit.rowIndex === idx &&
-                  currentEdit.field === "others"
-                    ? "editing"
-                    : ""
-                }`}
-                onClick={() => handleValueClick(idx, "others", row.others)}
-              >
-                {currentEdit.rowIndex === idx &&
-                currentEdit.field === "others" ? (
-                  <input
-                    type="text"
-                    value={editValue}
-                    onChange={handleValueChange}
-                    onBlur={handleValueBlur}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    className="os-input"
-                  />
-                ) : (
-                  <span>{row.others}</span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+          <HorizontalCompareBar
+            self={row.self}
+            others={row.others}
+            editableValues={true}
+            onValuesChange={(nextValues) => {
+              setRows((prev) => {
+                const next = [...prev];
+                const cur = next[idx];
+                if (!cur) return prev;
+                next[idx] = {
+                  ...cur,
+                  self: nextValues?.self ?? cur.self,
+                  others: nextValues?.others ?? cur.others,
+                };
+                return next;
+              });
+            }}
+          />
+        </div>,
       );
     });
 
     return out;
-  }, [rows, currentEdit, editValue]);
+  }, [rows]);
 
   return (
     <AutoPaginatedSections

@@ -47,12 +47,12 @@ const EvaluatorRatingsTable = ({
 
   const pct = (score) => `${Math.max(0, Math.min(1, score / max)) * 100}%`;
   const colorPicker = (value) => {
-    if (value < 3.5) {
-      return "#AE7F2E";
-    } else if (value >= 3.5 && value < 4) {
-      return "#B5D3BB";
-    } else if (value >= 4) {
-      return "#21552F";
+    if (value <= 3.5) {
+      return "var(--color-gold)";
+    } else if (value > 3.5 && value <= 4) {
+      return "var(--color-mint)";
+    } else if (value > 4) {
+      return "var(--color-green-mid)";
     }
     return "#ffffff";
   };
