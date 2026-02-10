@@ -63,6 +63,24 @@
   .pc-cell {
     background: var(--color-white);
   }
+
+  .pc-score {
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &.editing {
+      padding: 0;
+
+      &:focus-within {
+        outline: none;
+      }
+    }
+  }
   .pc-your {
     color: var(--color-text);
     font-weight: 600;
@@ -74,5 +92,24 @@
     color: var(--color-text);
     font-weight: 600;
     // background: var(--color-sage);
+  }
+}
+
+.pc-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: inherit;
+  font-family: inherit;
+  background: white;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  text-align: center;
+
+  &:focus {
+    outline: none;
   }
 }

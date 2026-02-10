@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../styles/participantCohortTable.scss";
 
 const ParticipantCohortTable = ({
@@ -12,7 +12,142 @@ const ParticipantCohortTable = ({
   ],
   selfRatings = {},
   cohortRatings = {},
+  onSelfRatingsChange,
+  onCohortRatingsChange,
 }) => {
+  const initialSelfRatings = useMemo(() => selfRatings, [selfRatings]);
+  const initialCohortRatings = useMemo(() => cohortRatings, [cohortRatings]);
+  const [localSelfRatings, setLocalSelfRatings] = useState(initialSelfRatings);
+  const [localCohortRatings, setLocalCohortRatings] = useState(
+    initialCohortRatings
+  );
+  const [editValue, setEditValue] = useState("");
+  const [currentEdit, setCurrentEdit] = useState({
+    competencyIndex: null,
+    rowKind: null,
+    colKey: null,
+  });
+
+  useEffect(() => {
+    setLocalSelfRatings(initialSelfRatings);
+  }, [initialSelfRatings]);
+
+  useEffect(() => {
+    setLocalCohortRatings(initialCohortRatings);
+  }, [initialCohortRatings]);
+
+  const COLS = useMemo(
+    () => [
+      { key: "self", className: "pc-col-self" },
+      { key: "manager", className: "pc-col-mgr" },
+      { key: "teamMembers", className: "pc-col-team" },
+      { key: "peers", className: "pc-col-peers" },
+    ],
+    []
+  );
+
+  const valueAt = (ratingsMap, competencyLabel, colKey) => {
+    const row = ratingsMap?.[competencyLabel];
+    if (row == null) return "";
+    if (typeof row !== "object") return "";
+    const direct = row[colKey];
+    if (direct !== undefined && direct !== null) return direct;
+    if (colKey === "teamMembers") {
+      const alt = row.team || row.teamMember || row.team_members;
+      if (alt !== undefined && alt !== null) return alt;
+    }
+    return "";
+  };
+
+  const startEdit = ({ competencyIndex, rowKind, colKey, value }) => {
+    setCurrentEdit({ competencyIndex, rowKind, colKey });
+    setEditValue(String(value ?? ""));
+  };
+
+  const commitEdit = () => {
+    const { competencyIndex, rowKind, colKey } = currentEdit;
+    if (competencyIndex === null || !rowKind || !colKey) {
+      setCurrentEdit({ competencyIndex: null, rowKind: null, colKey: null });
+      return;
+    }
+
+    const competencyLabel = competencies?.[competencyIndex];
+    if (!competencyLabel) {
+      setCurrentEdit({ competencyIndex: null, rowKind: null, colKey: null });
+      return;
+    }
+
+    const applyTo = (prev) => {
+      const prevRow = prev?.[competencyLabel];
+      const nextRow = {
+        ...(typeof prevRow === "object" && prevRow != null ? prevRow : {}),
+        [colKey]: editValue,
+      };
+      return { ...(prev || {}), [competencyLabel]: nextRow };
+    };
+
+    if (rowKind === "self") {
+      setLocalSelfRatings((prev) => {
+        const next = applyTo(prev);
+        if (typeof onSelfRatingsChange === "function") {
+          onSelfRatingsChange(next);
+        }
+        return next;
+      });
+    } else {
+      setLocalCohortRatings((prev) => {
+        const next = applyTo(prev);
+        if (typeof onCohortRatingsChange === "function") {
+          onCohortRatingsChange(next);
+        }
+        return next;
+      });
+    }
+
+    setCurrentEdit({ competencyIndex: null, rowKind: null, colKey: null });
+  };
+
+  const handleBlur = () => {
+    commitEdit();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitEdit();
+    }
+  };
+
+  const renderScoreCell = ({ competencyIndex, rowKind, colKey, value, extraClassName }) => {
+    const isEditing =
+      currentEdit.competencyIndex === competencyIndex &&
+      currentEdit.rowKind === rowKind &&
+      currentEdit.colKey === colKey;
+
+    return (
+      <td
+        className={`pc-cell pc-score ${extraClassName || ""}${
+          isEditing ? " editing" : ""
+        }`}
+        onClick={() => startEdit({ competencyIndex, rowKind, colKey, value })}
+      >
+        {isEditing ? (
+          <input
+            type="text"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+            className="pc-input"
+          />
+        ) : (
+          value
+        )}
+      </td>
+    );
+  };
+
   return (
     <table className="pc-table">
       <thead>
@@ -32,19 +167,28 @@ const ParticipantCohortTable = ({
                 {label}
               </td>
               <td className="pc-cell pc-your">Your Rating</td>
-              <td className="pc-cell" />
-              <td className="pc-cell" />
-              <td className="pc-cell" />
-              <td className="pc-cell" />
+              {COLS.map((c) =>
+                renderScoreCell({
+                  competencyIndex: idx,
+                  rowKind: "self",
+                  colKey: c.key,
+                  value: valueAt(localSelfRatings, label, c.key),
+                })
+              )}
             </tr>
             <tr>
               <td className="pc-cell pc-cohort pc-cohort-color">
                 Cohort Rating (Avg.)
               </td>
-              <td className="pc-cell pc-cohort-color" />
-              <td className="pc-cell pc-cohort-color" />
-              <td className="pc-cell pc-cohort-color" />
-              <td className="pc-cell pc-cohort-color" />
+              {COLS.map((c) =>
+                renderScoreCell({
+                  competencyIndex: idx,
+                  rowKind: "cohort",
+                  colKey: c.key,
+                  value: valueAt(localCohortRatings, label, c.key),
+                  extraClassName: "pc-cohort-color",
+                })
+              )}
             </tr>
           </React.Fragment>
         ))}

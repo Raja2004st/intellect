@@ -14,7 +14,7 @@
   --color-bg: #ffffff;
   --color-surface: #ffffff;
   --color-muted: #e5e7e9;
-  --color-secondary-bg:#f7f7fc;
+  --color-secondary-bg: #f7f7fc;
 
   /* Primary colours (Brand Core) */
   --color-green: #12341d;
@@ -29,6 +29,16 @@
   --color-copper: #ae7f2e;
   --color-copper-dark: #dca972;
   --color-white: #ffffff;
+  --feedback-initial-viewport-bg: var(--color-secondary-bg);
+  --feedback-initial-card-bg: #fbf7f7;
+  --feedback-initial-card-border: #e6e6e6;
+  --feedback-initial-title-color: #111111;
+  --feedback-initial-underline-color: #d65a5a;
+  --feedback-initial-name-color: #7b2d2d;
+  --feedback-initial-date-color: #111111;
+  /* --feedback-initial-blob-top: rgba(170, 150, 180, 0.25);
+  --feedback-initial-blob-dot: rgba(120, 90, 140, 0.55);
+  --feedback-initial-blob-bottom: rgba(220, 180, 170, 0.35); */
 
   /* Secondary colours (Supporting UI Shades) */
   --color-muted-green: #478159;

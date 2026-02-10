@@ -318,7 +318,6 @@ const MainPage = () => {
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
         },
-        
       ],
     },
     {

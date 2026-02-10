@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import ParticipantCohortTable from "./ParticipantCohortTable";
@@ -23,6 +23,19 @@ const ParticipantCohortSummary = ({
   selfRatings,
   cohortRatings,
 }) => {
+  const [localSelfRatings, setLocalSelfRatings] = useState(selfRatings || {});
+  const [localCohortRatings, setLocalCohortRatings] = useState(
+    cohortRatings || {}
+  );
+
+  useEffect(() => {
+    setLocalSelfRatings(selfRatings || {});
+  }, [selfRatings]);
+
+  useEffect(() => {
+    setLocalCohortRatings(cohortRatings || {});
+  }, [cohortRatings]);
+
   const blocks = useMemo(() => {
     const out = [];
 
@@ -43,14 +56,23 @@ const ParticipantCohortSummary = ({
       <div key="table" className="pcs-table">
         <ParticipantCohortTable
           competencies={competencies}
-          selfRatings={selfRatings}
-          cohortRatings={cohortRatings}
+          selfRatings={localSelfRatings}
+          cohortRatings={localCohortRatings}
+          onSelfRatingsChange={setLocalSelfRatings}
+          onCohortRatingsChange={setLocalCohortRatings}
         />
       </div>
     );
 
     return out;
-  }, [titleIndex, titleText, note, competencies, selfRatings, cohortRatings]);
+  }, [
+    titleIndex,
+    titleText,
+    note,
+    competencies,
+    localSelfRatings,
+    localCohortRatings,
+  ]);
 
   return (
     <AutoPaginatedSections
