@@ -1,0 +1,31 @@
+.summary-by-competency-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  background: var(--color-bg);
+}
+
+.sbc-header {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.sbc-header__pill {
+  background: var(--feedback-initial-underline-color);
+  color: var(--color-white);
+  font-weight: 800;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: var(--fs-md);
+  white-space: nowrap;
+}
+
+.sbc-chart {
+  padding: 16px 40px 0;
+}
+
+.sbc-chart__inner {
+  --ctbc-label-col: 330px;
+}

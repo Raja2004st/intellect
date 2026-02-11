@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/feedbackInitialPage.scss";
 import ReportCycle from "../assets/png/ReportCycle.png";
 
-const FeedbackInitialPage = () => {
+const FeedbackInitialPage = ({ initialName = "" }) => {
+  const [name, setName] = useState(initialName);
+
+  useEffect(() => {
+    setName(initialName);
+  }, [initialName]);
+
   return (
     <div className="feedback-initial-viewport">
       <div className="feedback-initial-card">
@@ -16,7 +22,22 @@ const FeedbackInitialPage = () => {
           </div>
 
           <div>
-            <div className="feedback-initial-name">Name</div>
+            <p className="feedback-initial-name">
+              <span>Name - </span>
+              <input
+                type="text"
+                className="feedback-initial-name-field"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                aria-label="Name"
+              />
+              <span
+                className="feedback-initial-name-fallback"
+                aria-hidden="true"
+              >
+                {name && name.trim().length > 0 ? name : "\u00A0"}
+              </span>
+            </p>
             <div className="feedback-initial-date">Feb 2025</div>
           </div>
         </div>

@@ -1,8 +1,16 @@
 .feedback-common-header {
   width: 100%;
   background: var(--color-bg);
-  padding: 22px 48px 0;
+  padding: 58px 48px 0;
   box-sizing: border-box;
+  position: relative;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
 
   &__title {
     font-size: 26px;
@@ -10,6 +18,14 @@
     color: var(--color-text);
     line-height: 1.15;
     letter-spacing: 0.2px;
+
+  }
+
+  &__right {
+    position: absolute;
+    // top: 0;
+    right: 22px;
+    flex: 0 0 auto;
   }
 
   &__underline {

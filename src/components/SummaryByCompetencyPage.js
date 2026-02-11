@@ -1,0 +1,91 @@
+import React, { useMemo } from "react";
+import AutoPaginatedSections from "./AutoPaginatedSections";
+import FeedbackCommonHeader from "./FeedbackCommonHeader";
+import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
+import "../styles/summaryByCompetencyPage.scss";
+
+const SummaryByCompetencyPage = ({
+  title = "Summary by Competency – Creating the Right Culture",
+  overallScore = 4.53,
+  items = [],
+}) => {
+  const blocks = useMemo(() => {
+    const out = [];
+
+    const parsed = items.map((it) => ({
+      ...it,
+      groupMean: Number(it.groupMean),
+    }));
+
+    let maxIdx = -1;
+    let minIdx = -1;
+
+    parsed.forEach((it, idx) => {
+      const v = Number.isFinite(it.groupMean) ? it.groupMean : -Infinity;
+      if (maxIdx === -1 || v > (Number.isFinite(parsed[maxIdx]?.groupMean) ? parsed[maxIdx].groupMean : -Infinity)) {
+        maxIdx = idx;
+      }
+      if (minIdx === -1 || v < (Number.isFinite(parsed[minIdx]?.groupMean) ? parsed[minIdx].groupMean : Infinity)) {
+        minIdx = idx;
+      }
+    });
+
+    const chartItems = parsed.map((it, idx) => {
+      if (idx === maxIdx) {
+        return {
+          ...it,
+          // callout: {
+          //   variant: "highest",
+          //   text: "Highest average score\ngiven by the group",
+          // },
+        };
+      }
+      if (idx === minIdx) {
+        return {
+          ...it,
+          // callout: {
+          //   variant: "lowest",
+          //   text: "Lowest average score\ngiven by the group",
+          // },
+        };
+      }
+      return it;
+    });
+
+    out.push(
+      <FeedbackCommonHeader
+        key="sbc-hdr"
+        title={title}
+        right={
+          overallScore !== undefined && overallScore !== null ? (
+            <div className="sbc-header__pill">Overall Score – {overallScore}/5</div>
+          ) : null
+        }
+        className="sbc-header"
+      />
+    );
+
+    out.push(
+      <div key="sbc-chart" className="sbc-chart">
+        <CompetencyThreeBarChart items={chartItems} className="sbc-chart__inner" />
+      </div>
+    );
+
+    return out;
+  }, [items, overallScore, title]);
+
+  return (
+    <div className="section-page-container">
+      <AutoPaginatedSections
+        blocks={blocks}
+        pageWidth={794}
+        pageHeight={1123}
+        pagePadding={0}
+        contentClassName="summary-by-competency-page"
+        componentId="summary-by-competency"
+      />
+    </div>
+  );
+};
+
+export default SummaryByCompetencyPage;

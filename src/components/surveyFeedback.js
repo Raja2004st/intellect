@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useMemo } from "react";
+import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import "../styles/surveyFeedback.scss";
-import PageFooter from "./PageFooter";
+import staffPerformanceDevlopment from "../assets/png/staffPerformanceDevlopment.png";
+import personality from "../assets/png/personality.png";
+import educationalQulaity from "../assets/png/educationalQulaity.png";
+import culture from "../assets/png/culture.png";
+import management from "../assets/png/management.png";
 
 const SurveyFeedback = () => {
-  return (
-    <div className="survey-feedback-page">
-      <FeedbackCommonHeader title="360° Survey Feedback – Key Highlights" />
+  const blocks = useMemo(() => {
+    const out = [];
 
-      <div className="survey-feedback-content">
+    out.push(
+      <FeedbackCommonHeader
+        key="h1"
+        title="360° Survey Feedback – Key Highlights"
+      />,
+    );
+
+    out.push(
+      <div key="p1" className="survey-feedback-content">
         <ul className="survey-feedback-bullets">
           <li>
             A powerful multi-dimensional leadership development tool that
@@ -61,8 +73,8 @@ const SurveyFeedback = () => {
         </ul>
         <ul className="survey-feedback-subpoints">
           <li>
-            Ratings on a scale of 1 to 5 (1- Strongly Disagree, 2-Disagree,
-            3- No View, 4-Agree, 5-Strongly Agree)
+            Ratings on a scale of 1 to 5 (1- Strongly Disagree, 2-Disagree, 3-
+            No View, 4-Agree, 5-Strongly Agree)
           </li>
           <li>Qualitative Comments</li>
         </ul>
@@ -73,9 +85,131 @@ const SurveyFeedback = () => {
             and Manager/s
           </li>
         </ul>
-      </div>
+      </div>,
+    );
 
-   
+    // out.push(<div key="corner1" className="survey-feedback-corner" />);
+
+    out.push(
+      <FeedbackCommonHeader key="h2" title="Survey Structure Overview" />,
+    );
+
+    out.push(
+      <div key="p2" className="survey-feedback-content survey-structure">
+        <ul className="survey-feedback-bullets">
+          <li>
+            Total number of <strong>Respondents</strong> – <strong>44</strong> +
+            <strong> Self feedback</strong>
+          </li>
+          <li>
+            Total number of questions – <strong>30</strong> (24 survey questions
+            + 6 qualitative questions)
+          </li>
+        </ul>
+
+        <ul className="survey-feedback-subpoints survey-structure__sub">
+          <li>
+            The <strong>24 survey questions</strong> were clustered into
+            <strong> 5 competencies</strong> as indicated below
+          </li>
+        </ul>
+
+        <div className="survey-structure__competencies">
+          {[
+            {
+              img: staffPerformanceDevlopment,
+              title: "Leadership for Staff",
+              subtitle: "Performance & Development",
+            },
+            {
+              img: personality,
+              title: "Leadership",
+              subtitle: "Personality & Style",
+            },
+            {
+              img: educationalQulaity,
+              title: "Educational Quality &",
+              subtitle: "Student Outcomes",
+            },
+            { img: culture, title: "Creating the", subtitle: "Right Culture" },
+            {
+              img: management,
+              title: "Engagement with",
+              subtitle: "Management",
+            },
+          ].map((c) => (
+            <div key={c.subtitle} className="survey-structure__comp">
+              <img
+                className="survey-structure__icon"
+                src={c.img}
+                alt={c.subtitle}
+              />
+              <div className="survey-structure__label">
+                <div>{c.title}</div>
+                <div>{c.subtitle}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <ul className="survey-feedback-bullets survey-structure__note">
+          <li>
+            <em>Note : Of the 24 survey questions on the 5 competencies,</em>
+          </li>
+        </ul>
+
+        <ul className="survey-structure__notes">
+          <li>
+            <span className="survey-structure__dash" />
+            <span>
+              <strong>6 questions</strong> on
+              <strong>
+                {" "}
+                Leadership for Staff Performance &amp; Development
+              </strong>
+              , were not included for <strong>Managers</strong> as they were
+              relevant only for team members
+            </span>
+          </li>
+          <li>
+            <span className="survey-structure__dash" />
+            <span>
+              <strong>5 questions</strong> on
+              <strong> Educational Quality &amp; Student Outcomes</strong>, were
+              not included for <strong>Managers</strong> and
+              <strong> Office Staff</strong> as they were relevant only for
+              teachers
+            </span>
+          </li>
+          <li>
+            <span className="survey-structure__dash" />
+            <span>
+              <strong>3 questions</strong> on
+              <strong> Engagement with Management</strong>, were not included
+              for
+              <strong> Teachers</strong> and <strong>Office Staff</strong> as
+              they were relevant only for Managers
+            </span>
+          </li>
+        </ul>
+      </div>,
+    );
+
+    // out.push(<div key="corner2" className="survey-feedback-corner" />);
+
+    return out;
+  }, []);
+
+  return (
+    <div className="section-page-container">
+      <AutoPaginatedSections
+        blocks={blocks}
+        pageWidth={794}
+        pageHeight={1123}
+        pagePadding={0}
+        contentClassName="survey-feedback-page"
+        componentId="survey-feedback"
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@
   --color-surface: #ffffff;
   --color-muted: #e5e7e9;
   --color-secondary-bg: #f7f7fc;
+  --color-black: #111;
 
   /* Primary colours (Brand Core) */
   --color-green: #12341d;
@@ -69,12 +70,30 @@
   --bar-self: #81b48d;
   --bar-self-tail: #b5d3bb;
 
+  /* Competency 3-series bar chart */
+  --chart-series-group-mean: #0b63b6;
+  --chart-series-manager-rating: #b22222;
+  --chart-series-self-rating: #0e9f3d;
+  --chart-separator: var(--feedback-initial-underline-color);
+
+  /* Strengths page */
+  --strength-pill-bg: #86ffb8;
+  --strength-card-bg: #efefef;
+  --strength-divider: rgba(0, 0, 0, 0.45);
+  --strength-title-color:#17ad90;
+  --strength-arc-color:#00a651;
+
+  /* Areas of Improvement page */
+  --improve-pill-bg: #f3c6c6;
+
+
   /* Component theming hooks (defaults) */
   --arc-color: var(--color-green-mid);
   --chip-color: var(--color-green-mid);
   --fb-border: var(--color-border);
   --bs-arc: var(--color-gold);
   --bs-chip: var(--color-gold);
+
 }
 
 /* body {

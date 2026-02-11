@@ -8,6 +8,10 @@ export default function ArcConnector({
   paddingTop = 50,
   paddingBottom = 50,
   setPointsLine,
+  circleColor,
+  circleBorderColor,
+  circleBorderWidth = 1,
+  circleRadius = 7,
 }) {
   const pathRef = useRef(null);
   const [points, setPoints] = useState([]);
@@ -90,7 +94,15 @@ export default function ArcConnector({
 
       {/* Dynamic Circles */}
       {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={7} fill={arcColor} />
+        <circle
+          key={i}
+          cx={p.x}
+          cy={p.y}
+          r={circleRadius ?? 7}
+          fill={circleColor ?? arcColor}
+          stroke={circleBorderColor ?? arcColor}
+          strokeWidth={circleBorderWidth}
+        />
       ))}
     </svg>
   );
