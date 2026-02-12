@@ -1,0 +1,156 @@
+.stop-doing-page {
+  width: 100%;
+  height: 100%;
+  background: var(--color-white);
+  padding: 58px 40px 52px;
+  box-sizing: border-box;
+}
+
+.sd-header {
+  background: transparent;
+  padding: 0;
+
+  .feedback-common-header__title {
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--color-black);
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  .feedback-common-header__underline {
+    margin-top: 14px;
+    height: 1px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 0;
+  }
+}
+
+.sd-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.sd-col {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: #cfefff;
+  display: flex;
+  flex-direction: column;
+}
+
+.sd-row {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.sd-row:first-child {
+  border-top: none;
+}
+
+.sd-cell {
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #111;
+}
+
+.sd-strong {
+  font-weight: 800;
+}
+
+.sd-red {
+  color: #d32f2f;
+  font-weight: 800;
+}
+
+.sd-footnote {
+  margin-top: 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #111;
+}
+
+.sd-traits {
+  margin-top: 76px;
+}
+
+.sd-traits__title {
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--color-black);
+  line-height: 1.1;
+}
+
+.sd-traits__subtitle {
+  margin-top: 6px;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--color-black);
+}
+
+.sd-traits__underline {
+  margin-top: 14px;
+  height: 1px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.sd-traits__grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.sd-trait-card {
+  height: 84px;
+  background: #cfefff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 800;
+  color: #111;
+  white-space: pre-line;
+  position: relative;
+  overflow: hidden;
+}
+// .nls-adj-card::before {
+//   transform: rotate(85deg);
+//     content: "";
+//     position: absolute;
+//     left: 19px;
+//     width: 21px;
+//     height: 87px;
+//     bottom: -36px;
+//     background: white;
+//     border-radius: 50%;
+//     z-index: 1;
+// }
+
+.sd-trait-card::after {
+transform: rotate(79deg);
+    content: "";
+    position: absolute;
+    // left: 71px;
+      right: 45px;
+    width: 32px;
+    height: 141px;
+    bottom: -78px;
+    background: white;
+    border-radius: 50%;
+    z-index: 1;
+}
+.sd-trait-card--lg {
+  font-size: var(--fs-lg);
+}
+
+.sd-trait-card--md {
+  font-size: var(--fs-md);
+}
+
+.sd-trait-card--sm {
+  font-size: var(--fs-sm);
+}

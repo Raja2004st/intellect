@@ -37,6 +37,9 @@ const formatDefault = (n) => {
 const CompetencyThreeBarChart = ({
   items = [],
   max = 5,
+  barHeight = 6,
+  barGap = 10,
+  rowPaddingY = 12,
   legendItems = DEFAULT_LEGEND,
   formatValue = formatDefault,
   className = "",
@@ -54,16 +57,23 @@ const CompetencyThreeBarChart = ({
   return (
     <div
       className={`ctbc ${showCallouts ? "ctbc--callouts" : ""} ${className}`.trim()}
+      style={{
+        "--ctbc-bar-h": `${barHeight}px`,
+        "--ctbc-gap": `${barGap}px`,
+        "--ctbc-row-pad-y": `${rowPaddingY}px`,
+        "--ctbc-series-count": legendItems.length,
+      }}
     >
       <div className="ctbc__rows">
         {items.map((row, idx) => {
-          const gm = parseNum(row.groupMean);
-          const mgr = parseNum(row.managerRating);
-          const self = parseNum(row.selfRating);
-
-          const gmW = `${clamp01(gm / max) * 100}%`;
-          const mgrW = `${clamp01(mgr / max) * 100}%`;
-          const selfW = `${clamp01(self / max) * 100}%`;
+          const series = legendItems.map((it) => {
+            const value = parseNum(row?.[it.key]);
+            return {
+              ...it,
+              value,
+              width: `${clamp01(value / max) * 100}%`,
+            };
+          });
 
           return (
             <div
@@ -74,47 +84,25 @@ const CompetencyThreeBarChart = ({
 
               <div className="ctbc-row__bars">
                 <div className="tbc-row-hr-line"></div>
-                <div className="ctbc-bar">
-                  <div className="ctbc-bar__track" aria-label="Group mean bar">
+                {series.map((s) => (
+                  <div key={s.key} className="ctbc-bar">
                     <div
-                      className="ctbc-bar__fill"
-                      style={{
-                        width: gmW,
-                        background: "var(--chart-series-group-mean)",
-                      }}
-                    />
-                    {gm !== 0 && <div className="ctbc-bar__value">{formatValue(gm)}</div>}
+                      className="ctbc-bar__track"
+                      aria-label={`${s.label} bar`}
+                    >
+                      <div
+                        className="ctbc-bar__fill"
+                        style={{
+                          width: s.width,
+                          background: s.color,
+                        }}
+                      />
+                      {s.value !== 0 && (
+                        <div className="ctbc-bar__value">{formatValue(s.value)}</div>
+                      )}
+                    </div>
                   </div>
-                </div>
-
-                <div className="ctbc-bar">
-                  <div
-                    className="ctbc-bar__track"
-                    aria-label="Manager rating bar"
-                  >
-                    <div
-                      className="ctbc-bar__fill"
-                      style={{
-                        width: mgrW,
-                        background: "var(--chart-series-manager-rating)",
-                      }}
-                    />
-                   {mgr !== 0 && <div className="ctbc-bar__value">{formatValue(mgr)}</div>}
-                  </div>
-                </div>
-
-                <div className="ctbc-bar">
-                  <div className="ctbc-bar__track" aria-label="Self rating bar">
-                    <div
-                      className="ctbc-bar__fill"
-                      style={{
-                        width: selfW,
-                        background: "var(--chart-series-self-rating)",
-                      }}
-                    />
-                    {self !== 0 && <div className="ctbc-bar__value">{formatValue(self)}</div>}
-                  </div>
-                </div>
+                ))}
 
                 {row.callout ? (
                   <div

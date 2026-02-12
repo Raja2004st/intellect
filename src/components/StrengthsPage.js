@@ -109,7 +109,7 @@ const StrengthsPage = ({
         <FeedbackCommonHeader title={title} />
 
         <div className="sp-grid" style={{ "--sp-arc-color": arcColor }}>
-          <div className="sp-left" style={{ }}>
+          <div className="sp-left" style={{}}>
             <ArcConnector
               items={groupItems}
               arcColor={"var(--strength-arc-color)"}
@@ -132,9 +132,8 @@ const StrengthsPage = ({
               <div className="sp-col">
                 <div className="sp-col__header">
                   <div className="sp-col__header-title">{groupTitle}</div>
-                
                 </div>
-                  <div className="sp-col__header-sub">{groupSubTitle}</div>
+                <div className="sp-col__header-sub">{groupSubTitle}</div>
 
                 <div className="sp-col__body" style={{ minHeight: arcHeight }}>
                   {strengthPoints.length === groupItems.length &&
@@ -155,7 +154,9 @@ const StrengthsPage = ({
                             left: -(165 - strengthPoints[i].x),
                           }}
                         />
-                        <div className="sp-pill">{Number(it.score).toFixed(2)}</div>
+                        <div className="sp-pill">
+                          {Number(it.score).toFixed(2)}
+                        </div>
                         <div className="sp-card">{it.text}</div>
                       </div>
                     ))}
@@ -167,14 +168,15 @@ const StrengthsPage = ({
               <div className="sp-col">
                 <div className="sp-col__header sp-col__header--manager">
                   <div className="sp-col__header-title">{managerTitle}</div>
-                 
                 </div>
-                 <div className="sp-col__header-sub">{managerSubTitle}</div>
+                <div className="sp-col__header-sub">{managerSubTitle}</div>
 
                 <div className="sp-col__body sp-col__body--manager">
                   {managerItems.map((it, idx) => (
                     <div key={`m-${idx}`} className="sp-row sp-row--manager">
-                      <div className="sp-pill">{Number(it.score).toFixed(2)}</div>
+                      <div className="sp-pill">
+                        {Number(it.score).toFixed(2)}
+                      </div>
                       <div className="sp-card">{it.text}</div>
                     </div>
                   ))}
@@ -183,7 +185,7 @@ const StrengthsPage = ({
             </div>
           </div>
         </div>
-      </div>
+      </div>,
     );
 
     out.push(

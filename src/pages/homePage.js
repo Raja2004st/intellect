@@ -4,7 +4,7 @@ import "../styles/home.scss";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="home">
       <div className="home__grid">
@@ -106,6 +106,7 @@ const HomePage = () => {
             <button
               type="button"
               className="home-card__cta home-card__cta--report360"
+              onClick={() => navigate("/feedback")}
             >
               View 360° Analysis
             </button>

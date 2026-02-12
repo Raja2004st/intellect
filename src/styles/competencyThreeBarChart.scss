@@ -3,6 +3,8 @@
   --ctbc-bar-h: 6px;
   --ctbc-gap: 10px;
   --ctbc-value-gap: 10px;
+  --ctbc-series-count: 3;
+  --ctbc-row-pad-y: 12px;
 
   width: 100%;
 }
@@ -15,7 +17,7 @@
   display: grid;
   grid-template-columns: var(--ctbc-label-col) 1fr;
   column-gap: 8px;
-  padding: 12px 0;
+  padding: var(--ctbc-row-pad-y) 0;
   border-top: 2px dashed var(--chart-separator);
 
   &--first {
@@ -100,7 +102,11 @@
 
   .tbc-row-hr-line {
     position: absolute;
-    height: 64px;
+    height: calc(
+      (var(--ctbc-bar-h) * var(--ctbc-series-count)) +
+        (var(--ctbc-gap) * (var(--ctbc-series-count) - 1)) +
+        26px
+    );
     width: 1px;
     background-color: var(--bg-label);
     top: -13px;

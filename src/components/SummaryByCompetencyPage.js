@@ -8,6 +8,9 @@ const SummaryByCompetencyPage = ({
   title = "Summary by Competency – Creating the Right Culture",
   overallScore = 4.53,
   items = [],
+  leadershipOverallScore = 4.53,
+  leadershipItems = [],
+  barHeight,
 }) => {
   const blocks = useMemo(() => {
     const out = [];
@@ -22,10 +25,22 @@ const SummaryByCompetencyPage = ({
 
     parsed.forEach((it, idx) => {
       const v = Number.isFinite(it.groupMean) ? it.groupMean : -Infinity;
-      if (maxIdx === -1 || v > (Number.isFinite(parsed[maxIdx]?.groupMean) ? parsed[maxIdx].groupMean : -Infinity)) {
+      if (
+        maxIdx === -1 ||
+        v >
+          (Number.isFinite(parsed[maxIdx]?.groupMean)
+            ? parsed[maxIdx].groupMean
+            : -Infinity)
+      ) {
         maxIdx = idx;
       }
-      if (minIdx === -1 || v < (Number.isFinite(parsed[minIdx]?.groupMean) ? parsed[minIdx].groupMean : Infinity)) {
+      if (
+        minIdx === -1 ||
+        v <
+          (Number.isFinite(parsed[minIdx]?.groupMean)
+            ? parsed[minIdx].groupMean
+            : Infinity)
+      ) {
         minIdx = idx;
       }
     });
@@ -54,25 +69,58 @@ const SummaryByCompetencyPage = ({
 
     out.push(
       <FeedbackCommonHeader
-        key="sbc-hdr"
+        key="sbc-hdr-1"
         title={title}
         right={
           overallScore !== undefined && overallScore !== null ? (
-            <div className="sbc-header__pill">Overall Score – {overallScore}/5</div>
+            <div className="sbc-header__pill">
+              Overall Score – {overallScore}/5
+            </div>
           ) : null
         }
         className="sbc-header"
-      />
+      />,
     );
 
     out.push(
-      <div key="sbc-chart" className="sbc-chart">
-        <CompetencyThreeBarChart items={chartItems} className="sbc-chart__inner" />
-      </div>
+      <div key="sbc-chart-1" className="sbc-chart">
+        <CompetencyThreeBarChart
+          items={chartItems}
+          className="sbc-chart__inner"
+          barHeight={12}
+          barGap={6}
+        />
+      </div>,
+    );
+
+    out.push(
+      <FeedbackCommonHeader
+        key="sbc-hdr-2"
+        title={"Summary by Competency – Leadership Personality & Style"}
+        right={
+          leadershipOverallScore !== undefined && leadershipOverallScore !== null ? (
+            <div className="sbc-header__pill">
+              Overall Score – {leadershipOverallScore}/5
+            </div>
+          ) : null
+        }
+        className="sbc-header"
+      />,
+    );
+
+    out.push(
+      <div key="sbc-chart-2" className="sbc-chart">
+        <CompetencyThreeBarChart
+          items={leadershipItems}
+          className="sbc-chart__inner"
+          barHeight={9}
+          barGap={4}
+        />
+      </div>,
     );
 
     return out;
-  }, [items, overallScore, title]);
+  }, [items, overallScore, title, barHeight, leadershipItems, leadershipOverallScore]);
 
   return (
     <div className="section-page-container">
