@@ -194,7 +194,7 @@ const ContinueDoingPage = ({
   }, [columns, footnote, immediateActionSummary, title]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -203,7 +203,7 @@ const ContinueDoingPage = ({
         contentClassName="continue-doing-page"
         componentId="continue-doing"
       />
-    </div>
+    // </div>
   );
 };
 

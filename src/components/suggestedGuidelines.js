@@ -104,7 +104,7 @@ const SuggestedGuidelines = ({
   }, [items, note, overallScore, title]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -113,7 +113,7 @@ const SuggestedGuidelines = ({
         contentClassName="suggested-guidelines-page"
         componentId="suggested-guidelines"
       />
-    </div>
+    // </div>
   );
 };
 

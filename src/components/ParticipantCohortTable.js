@@ -161,19 +161,22 @@ const ParticipantCohortTable = ({
       </thead>
       <tbody>
         {competencies.map((label, idx) => (
-          <React.Fragment key={idx}>
+          <React.Fragment key={label ?? idx}>
             <tr>
               <td className="pc-label" rowSpan={2}>
                 {label}
               </td>
               <td className="pc-cell pc-your">Your Rating</td>
               {COLS.map((c) =>
-                renderScoreCell({
-                  competencyIndex: idx,
-                  rowKind: "self",
-                  colKey: c.key,
-                  value: valueAt(localSelfRatings, label, c.key),
-                })
+                React.cloneElement(
+                  renderScoreCell({
+                    competencyIndex: idx,
+                    rowKind: "self",
+                    colKey: c.key,
+                    value: valueAt(localSelfRatings, label, c.key),
+                  }),
+                  { key: `self-${label ?? idx}-${c.key}` },
+                ),
               )}
             </tr>
             <tr>
@@ -181,13 +184,16 @@ const ParticipantCohortTable = ({
                 Cohort Rating (Avg.)
               </td>
               {COLS.map((c) =>
-                renderScoreCell({
-                  competencyIndex: idx,
-                  rowKind: "cohort",
-                  colKey: c.key,
-                  value: valueAt(localCohortRatings, label, c.key),
-                  extraClassName: "pc-cohort-color",
-                })
+                React.cloneElement(
+                  renderScoreCell({
+                    competencyIndex: idx,
+                    rowKind: "cohort",
+                    colKey: c.key,
+                    value: valueAt(localCohortRatings, label, c.key),
+                    extraClassName: "pc-cohort-color",
+                  }),
+                  { key: `cohort-${label ?? idx}-${c.key}` },
+                ),
               )}
             </tr>
           </React.Fragment>

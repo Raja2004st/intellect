@@ -2,4 +2,22 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+     counter-reset: page;
+
+
+//       .section-page {
+//     position: relative;
+//     counter-increment: page;
+
+//     &::after {
+//       content: counter(page);
+//       position: absolute;
+//       bottom: 49px;
+//       right: 53px;
+//       color: var(--color-text);
+//       font-size: var(--fs-md);
+//       font-weight: 500;
+//       letter-spacing: 0.02em;
+//     }
+//   }
 }

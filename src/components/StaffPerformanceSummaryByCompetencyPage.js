@@ -141,7 +141,7 @@ const StaffPerformanceSummaryByCompetencyPage = ({
   }, [items, items2, overallScore, overallScore2, title, title2, barHeight]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -150,7 +150,7 @@ const StaffPerformanceSummaryByCompetencyPage = ({
         contentClassName="summary-by-competency-page"
         componentId="staff-performance-summary-by-competency"
       />
-    </div>
+    // </div>
   );
 };
 

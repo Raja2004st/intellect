@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/navbar.scss";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   BarChart3,
   Bell,
@@ -17,6 +17,13 @@ import {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [activePath, setActivePath] = useState("");
+  const location = useLocation();
+
+  useEffect(()=>{
+    console.log(location);
+    setActivePath(location.pathname === "/" ? "/" :"/");
+  },[location])
 
   return (
     <>
@@ -62,7 +69,7 @@ const Navbar = () => {
                 to="/"
                 end
                 className={({ isActive }) =>
-                  `rh-nav__link ${isActive ? "is-active" : ""}`
+                  `rh-nav__link ${isActive || activePath === "/" ? "is-active" : ""}`
                 }
               >
                 <Home className="rh-nav__link-icon" />

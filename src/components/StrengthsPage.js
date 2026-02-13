@@ -192,7 +192,12 @@ const StrengthsPage = ({
       <div key="improvements" className="sp sp--improvement">
         <FeedbackCommonHeader title={improvementsTitle} />
 
-        <div className="sp-grid" style={{ "--sp-arc-color": "var(--feedback-initial-underline-color)" }}>
+        <div
+          className="sp-grid"
+          style={{
+            "--sp-arc-color": "var(--feedback-initial-underline-color)",
+          }}
+        >
           <div className="sp-left" style={{}}>
             <ArcConnector
               items={improvementsGroupItems}
@@ -215,9 +220,13 @@ const StrengthsPage = ({
             <div className="sp-cols">
               <div className="sp-col">
                 <div className="sp-col__header">
-                  <div className="sp-col__header-title">{improvementsGroupTitle}</div>
+                  <div className="sp-col__header-title">
+                    {improvementsGroupTitle}
+                  </div>
                 </div>
-                <div className="sp-col__header-sub">{improvementsGroupSubTitle}</div>
+                <div className="sp-col__header-sub">
+                  {improvementsGroupSubTitle}
+                </div>
 
                 <div className="sp-col__body" style={{ minHeight: arcHeight }}>
                   {improvementPoints.length === improvementsGroupItems.length &&
@@ -238,7 +247,9 @@ const StrengthsPage = ({
                             left: -(165 - improvementPoints[i].x),
                           }}
                         />
-                        <div className="sp-pill">{Number(it.score).toFixed(2)}</div>
+                        <div className="sp-pill">
+                          {Number(it.score).toFixed(2)}
+                        </div>
                         <div className="sp-card">{it.text}</div>
                       </div>
                     ))}
@@ -249,14 +260,20 @@ const StrengthsPage = ({
 
               <div className="sp-col">
                 <div className="sp-col__header sp-col__header--manager">
-                  <div className="sp-col__header-title">{improvementsManagerTitle}</div>
+                  <div className="sp-col__header-title">
+                    {improvementsManagerTitle}
+                  </div>
                 </div>
-                <div className="sp-col__header-sub">{improvementsManagerSubTitle}</div>
+                <div className="sp-col__header-sub">
+                  {improvementsManagerSubTitle}
+                </div>
 
                 <div className="sp-col__body sp-col__body--manager">
                   {improvementsManagerItems.map((it, idx) => (
                     <div key={`im-${idx}`} className="sp-row sp-row--manager">
-                      <div className="sp-pill">{Number(it.score).toFixed(2)}</div>
+                      <div className="sp-pill">
+                        {Number(it.score).toFixed(2)}
+                      </div>
                       <div className="sp-card">{it.text}</div>
                     </div>
                   ))}
@@ -265,7 +282,7 @@ const StrengthsPage = ({
             </div>
           </div>
         </div>
-      </div>
+      </div>,
     );
 
     return out;
@@ -292,7 +309,7 @@ const StrengthsPage = ({
   ]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -301,7 +318,7 @@ const StrengthsPage = ({
         contentClassName="strengths-page"
         componentId="strengths-page"
       />
-    </div>
+    // </div>
   );
 };
 

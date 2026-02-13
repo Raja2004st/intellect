@@ -187,7 +187,7 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
   ]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -196,7 +196,7 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
         contentClassName="summary-by-competency-page"
         componentId="engagement-with-management-summary-by-competency"
       />
-    </div>
+    // </div>
   );
 };
 

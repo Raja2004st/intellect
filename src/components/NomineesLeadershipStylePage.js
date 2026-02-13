@@ -168,7 +168,7 @@ const NomineesLeadershipStylePage = ({
   ]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -177,7 +177,7 @@ const NomineesLeadershipStylePage = ({
         contentClassName="nls-page"
         componentId="nominees-leadership-style"
       />
-    </div>
+    // </div>
   );
 };
 

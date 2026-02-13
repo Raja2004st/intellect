@@ -152,53 +152,53 @@ const Feedback360Report = () => {
     },
   ];
   const summaryByCompetencyLeadershipItems = [
-  {
-    label:
-      "Builds rapport with people and treats team members\nwith respect and dignity",
-    groupMean: 4.91,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label: "Leads without aggression or arrogance",
-    groupMean: 4.91,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label:
-      "Does not misuse his/her power or authority in any direct\nor indirect ways",
-    groupMean: 4.86,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label: "Makes one feel valued as an individual",
-    groupMean: 4.77,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label: "Handles ambiguous situations well",
-    groupMean: 4.65,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label:
-      "Values diverse perspectives, even if they are different\nfrom his/her own",
-    groupMean: 4.58,
-    managerRating: 4,
-    selfRating: 5,
-  },
-  {
-    label:
-      "Usually makes the right decisions promptly and on time\nwithout undue delay",
-    groupMean: 4.35,
-    managerRating: 3,
-    selfRating: 5,
-  },
-];
+    {
+      label:
+        "Builds rapport with people and treats team members\nwith respect and dignity",
+      groupMean: 4.91,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label: "Leads without aggression or arrogance",
+      groupMean: 4.91,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label:
+        "Does not misuse his/her power or authority in any direct\nor indirect ways",
+      groupMean: 4.86,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label: "Makes one feel valued as an individual",
+      groupMean: 4.77,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label: "Handles ambiguous situations well",
+      groupMean: 4.65,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label:
+        "Values diverse perspectives, even if they are different\nfrom his/her own",
+      groupMean: 4.58,
+      managerRating: 4,
+      selfRating: 5,
+    },
+    {
+      label:
+        "Usually makes the right decisions promptly and on time\nwithout undue delay",
+      groupMean: 4.35,
+      managerRating: 3,
+      selfRating: 5,
+    },
+  ];
 
   const summaryByCompetencyOverallScore = 4.53;
   const summaryByCompetencyLeadershipOverallScore = 4.7;
@@ -243,80 +243,77 @@ const Feedback360Report = () => {
     },
   ];
 
-  const mostPredominantLeadershipTraitColumns =
+  const mostPredominantLeadershipTraitColumns = [
     [
-      [
-        "Humble.",
-        "**Very humble, Good Team spirit, Motivation**",
-        "Always kind to all , appreciation, motivation to build good citizens.",
-        "**Kindness and respect** to all",
-        "As a newcomer, I feel he consistently shows **respect** for the staff, listens **attentively** to our concerns , and takes **thoughtful steps** to address any issues.",
-        "Being **respectful** to co-workers, his commitment towards the school and enthusiasm.",
-        "Giving respect to all and easily approachable.",
-        "He respects every individual in the organization **without any bias**",
-        "His commitment and dedication towards the school and the respect given to everyone in the school with **dignity**.",
-        "His way of making work environment a **happy and peaceful place** with a lot of **respect and dignity**.",
-        "**Respectful, accountable, reliable, committed, team spirit.**",
-        "Valuing the Teachers and **Equality**",
-        "**Giving direction** and guiding to do activities like education",
-        "By **encouraging** and guiding us with lot of positive words",
-      ],
-      [
-        "**Encouraging and guiding** us in the right path",
-        "**Advising and guiding** us the right part",
-        "He is highly approachable & provide necessary guidance whenever needed. So, I can say he is mostly having participative style of leadership which I like very well.",
-        "Provides **opportunities for growth (2)** and trustworthy",
-        "Providing more **professional development**",
-        "**Vision**, and passionate about education and is approachable, communicative skills strong and able to lead by example",
-        "**Great motivator** and inspires staff and students all the time.",
-        "Keeps encouraging and motivating the staff to do activities in the school/class apart from teaching.",
-        "His willingness to **listen** makes him a good leader.",
-        "**Observation, Listening, analyzing each person and problem from all angles**, simply approaching everything 360 degrees.",
-        "Principal sir is very calm and good listener . And very passionate",
-        "**Emotionally stable**, Balancing with teachers ,Parents and students as well.",
-        "**Self-discipline**",
-        "**Delegates the work well**",
-      ],
-      [
-        "A Principal should possess the ability to analyze situations thoroughly and foresee potential challenges. He/she must prepare to address issues before they escalate, and ensure he/she is well-informed about matters within the school. He/she should say \"NO\" firmly when required.",
-        "**Impartial**",
-        "**Non partial (2)**",
-        "**Unbiased**",
-        "**patience (2)**",
-        "Keeps his schedule flexible",
-        "Integrity must be at the core of leadership",
-        "His belief in students and staff.",
-        "Should be able to coach, delegate, communicate and be proactive, Leader should influence and guide the people.",
-        "Tensionless work culture, developing confidence in staff, keeping full confidence in teachers. handling diplomatically the situations",
-        "The one thing that can make a principal stand out as a leader is their ability to **inspire and empower** others.",
-        "Effective leaders develop the art and skill of being truly coachable.",
-        "Leaders should seek to take the road in situation.",
-      ],
-    ];
+      "Humble.",
+      "**Very humble, Good Team spirit, Motivation**",
+      "Always kind to all , appreciation, motivation to build good citizens.",
+      "**Kindness and respect** to all",
+      "As a newcomer, I feel he consistently shows **respect** for the staff, listens **attentively** to our concerns , and takes **thoughtful steps** to address any issues.",
+      "Being **respectful** to co-workers, his commitment towards the school and enthusiasm.",
+      "Giving respect to all and easily approachable.",
+      "He respects every individual in the organization **without any bias**",
+      "His commitment and dedication towards the school and the respect given to everyone in the school with **dignity**.",
+      "His way of making work environment a **happy and peaceful place** with a lot of **respect and dignity**.",
+      "**Respectful, accountable, reliable, committed, team spirit.**",
+      "Valuing the Teachers and **Equality**",
+      "**Giving direction** and guiding to do activities like education",
+      "By **encouraging** and guiding us with lot of positive words",
+    ],
+    [
+      "**Encouraging and guiding** us in the right path",
+      "**Advising and guiding** us the right part",
+      "He is highly approachable & provide necessary guidance whenever needed. So, I can say he is mostly having participative style of leadership which I like very well.",
+      "Provides **opportunities for growth (2)** and trustworthy",
+      "Providing more **professional development**",
+      "**Vision**, and passionate about education and is approachable, communicative skills strong and able to lead by example",
+      "**Great motivator** and inspires staff and students all the time.",
+      "Keeps encouraging and motivating the staff to do activities in the school/class apart from teaching.",
+      "His willingness to **listen** makes him a good leader.",
+      "**Observation, Listening, analyzing each person and problem from all angles**, simply approaching everything 360 degrees.",
+      "Principal sir is very calm and good listener . And very passionate",
+      "**Emotionally stable**, Balancing with teachers ,Parents and students as well.",
+      "**Self-discipline**",
+      "**Delegates the work well**",
+    ],
+    [
+      'A Principal should possess the ability to analyze situations thoroughly and foresee potential challenges. He/she must prepare to address issues before they escalate, and ensure he/she is well-informed about matters within the school. He/she should say "NO" firmly when required.',
+      "**Impartial**",
+      "**Non partial (2)**",
+      "**Unbiased**",
+      "**patience (2)**",
+      "Keeps his schedule flexible",
+      "Integrity must be at the core of leadership",
+      "His belief in students and staff.",
+      "Should be able to coach, delegate, communicate and be proactive, Leader should influence and guide the people.",
+      "Tensionless work culture, developing confidence in staff, keeping full confidence in teachers. handling diplomatically the situations",
+      "The one thing that can make a principal stand out as a leader is their ability to **inspire and empower** others.",
+      "Effective leaders develop the art and skill of being truly coachable.",
+      "Leaders should seek to take the road in situation.",
+    ],
+  ];
 
-  const immediateActionAreasSummary =
-   {
-      title: "Immediate Action Areas - Summary",
-      description:
-        "Repeated themes, if any are captured as a snapshot to facilitate understanding and further action",
-      note:
-        "Note: If comments have been very diverse with no commonality, it will not be captured here but can be referenced in the individual slides",
-      columns: {
-        continue: [
-          "Demonstrating a humble, calm and kind leadership where all individuals feel valued and heard",
-          "Fostering a happy, harmonious and peaceful work environment",
-          "Providing guidance with positivity and encouragement, helping teachers and students move in the right direction",
-        ],
-        start: [
-          "Striking a balance between being approachable and maintaining firm boundaries with students to reinforce discipline",
-          "Strengthening accountability by setting clear expectations and targets for teachers, ensuring timely completion of responsibilities",
-          "Implementing compulsory enhancement classes for students who need additional academic support",
-        ],
-        stop: [
-          "Being overly lenient in situations where firmness is required; Ensuring that students adhere to discipline effectively",
-        ],
-      },
-    };
+  const immediateActionAreasSummary = {
+    title: "Immediate Action Areas - Summary",
+    description:
+      "Repeated themes, if any are captured as a snapshot to facilitate understanding and further action",
+    note: "Note: If comments have been very diverse with no commonality, it will not be captured here but can be referenced in the individual slides",
+    columns: {
+      continue: [
+        "Demonstrating a humble, calm and kind leadership where all individuals feel valued and heard",
+        "Fostering a happy, harmonious and peaceful work environment",
+        "Providing guidance with positivity and encouragement, helping teachers and students move in the right direction",
+      ],
+      start: [
+        "Striking a balance between being approachable and maintaining firm boundaries with students to reinforce discipline",
+        "Strengthening accountability by setting clear expectations and targets for teachers, ensuring timely completion of responsibilities",
+        "Implementing compulsory enhancement classes for students who need additional academic support",
+      ],
+      stop: [
+        "Being overly lenient in situations where firmness is required; Ensuring that students adhere to discipline effectively",
+      ],
+    },
+  };
 
   return (
     <div className="feedbackreport-main-container">
@@ -386,7 +383,6 @@ const Feedback360Report = () => {
         <EngagementWithManagementSummaryByCompetencyPage
           overallScore={engagementWithManagementOverallScore}
           items={engagementWithManagementItems}
-          
         />
       </div>
       <div className="section-page">

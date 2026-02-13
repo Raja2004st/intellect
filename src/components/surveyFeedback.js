@@ -201,7 +201,7 @@ const SurveyFeedback = () => {
   }, []);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -210,7 +210,7 @@ const SurveyFeedback = () => {
         contentClassName="survey-feedback-page"
         componentId="survey-feedback"
       />
-    </div>
+    // </div>
   );
 };
 

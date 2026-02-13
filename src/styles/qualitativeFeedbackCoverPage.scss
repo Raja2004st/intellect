@@ -24,11 +24,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 56px;
+  font-size: 48px;
   font-weight: 500;
-  color: #111;
+  color: var(--color-black);
   line-height: 1.08;
   white-space: pre-line;
+  text-align: center;
 }
 
 
@@ -39,8 +40,8 @@
 }
 
 .qf-cover__circle {
-  width: 520px;
-  height: 520px;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f4f4f4 55%, #e6e6e6 100%);
   position: relative;

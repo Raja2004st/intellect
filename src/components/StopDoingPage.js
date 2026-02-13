@@ -143,7 +143,7 @@ const StopDoingPage = ({
   ]);
 
   return (
-    <div className="section-page-container">
+    // <div className="section-page-container">
       <AutoPaginatedSections
         blocks={blocks}
         pageWidth={794}
@@ -152,7 +152,7 @@ const StopDoingPage = ({
         contentClassName="stop-doing-page"
         componentId="stop-doing"
       />
-    </div>
+    // </div>
   );
 };
 
