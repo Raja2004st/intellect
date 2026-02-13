@@ -13,7 +13,7 @@ function App() {
     // <div className="App">
     <BrowserRouter>
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             <ProtectedRoute>
@@ -25,8 +25,8 @@ function App() {
           <Route path="reports/user/list" element={<UserReportsPage />} />
           <Route path="reports/user/:id" element={<MainPage />} />
           <Route path="feedback" element={<Feedback360Report />} />
-        </Route>
-        {/* <Route path="/" element={<Feedback360Report />} /> */}
+        </Route> */}
+        <Route path="/" element={<Feedback360Report />} />
       </Routes>
     </BrowserRouter>
     // </div>

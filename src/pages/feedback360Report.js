@@ -343,74 +343,58 @@ const Feedback360Report = () => {
       <div className="section-page pdf-section">
         <FeedbackInitialPage />
       </div>
-      <div className="section-page">
-        <SurveyFeedback />
-      </div>
-      <div className="section-page">
-        <SuggestedGuidelines
-          items={biggerPictureItems}
-          overallScore={biggerPictureOverallScore}
-        />
-      </div>
-      <div className="section-page">
-        <StrengthsPage
-          startPage={6}
-          groupItems={strengthsGroupItems}
-          managerItems={strengthsManagerItems}
-        />
-      </div>
-      <div className="section-page">
-        <SummaryByCompetencyPage
-          title="Summary by Competency – Creating the Right Culture"
-          overallScore={summaryByCompetencyOverallScore}
-          items={summaryByCompetencyItems}
-          leadershipOverallScore={summaryByCompetencyLeadershipOverallScore}
-          leadershipItems={summaryByCompetencyLeadershipItems}
-          barHeight={12}
-        />
-      </div>
-      <div className="section-page">
-        <StaffPerformanceSummaryByCompetencyPage
-          overallScore={staffPerformanceCompetencyOverallScore}
-          items={staffPerformanceCompetencyItems}
-          title2="Summary by Competency – Educational Quality & Student Outcomes"
-          overallScore2={educationalQualityCompetencyOverallScore}
-          items2={educationalQualityCompetencyItems}
-          barHeight={6}
-        />
-      </div>
-      <div className="section-page">
-        <EngagementWithManagementSummaryByCompetencyPage
-          overallScore={engagementWithManagementOverallScore}
-          items={engagementWithManagementItems}
-        />
-      </div>
+      <SurveyFeedback />
+
+      <SuggestedGuidelines
+        items={biggerPictureItems}
+        overallScore={biggerPictureOverallScore}
+      />
+
+      <StrengthsPage
+        startPage={6}
+        groupItems={strengthsGroupItems}
+        managerItems={strengthsManagerItems}
+      />
+
+      <SummaryByCompetencyPage
+        title="Summary by Competency – Creating the Right Culture"
+        overallScore={summaryByCompetencyOverallScore}
+        items={summaryByCompetencyItems}
+        leadershipOverallScore={summaryByCompetencyLeadershipOverallScore}
+        leadershipItems={summaryByCompetencyLeadershipItems}
+        barHeight={12}
+      />
+
+      <StaffPerformanceSummaryByCompetencyPage
+        overallScore={staffPerformanceCompetencyOverallScore}
+        items={staffPerformanceCompetencyItems}
+        title2="Summary by Competency – Educational Quality & Student Outcomes"
+        overallScore2={educationalQualityCompetencyOverallScore}
+        items2={educationalQualityCompetencyItems}
+        barHeight={6}
+      />
+
+      <EngagementWithManagementSummaryByCompetencyPage
+        overallScore={engagementWithManagementOverallScore}
+        items={engagementWithManagementItems}
+      />
+
       <div className="section-page">
         <QualitativeFeedbackCoverPage />
       </div>
-      <div className="section-page">
-        <NomineesLeadershipStylePage />
-      </div>
-      <div className="section-page">
-        <ContinueDoingPage />
-      </div>
-      <div className="section-page">
-        <StopDoingPage />
-      </div>
-      <div className="section-page">
-        <ContinueDoingPage
-          title="Most Predominant Leadership Trait"
-          columns={mostPredominantLeadershipTraitColumns}
-        />
-      </div>
-      <div className="section-page">
-        <ContinueDoingPage
-          title={"Immediate Action Areas - Summary"}
-          columns={[[], [], []]}
-          footnote={""}
-          immediateActionSummary={immediateActionAreasSummary}
-        />
-      </div>
+      <NomineesLeadershipStylePage />
+      <ContinueDoingPage />
+      <StopDoingPage />
+      <ContinueDoingPage
+        title="Most Predominant Leadership Trait"
+        columns={mostPredominantLeadershipTraitColumns}
+      />
+      <ContinueDoingPage
+        title={"Immediate Action Areas - Summary"}
+        columns={[[], [], []]}
+        footnote={""}
+        immediateActionSummary={immediateActionAreasSummary}
+      />
     </div>
   );
 };
