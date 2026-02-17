@@ -46,7 +46,11 @@
 }
 
 .sbc-compare__header .feedback-common-header__underline {
+  // width: 95%;
   margin-top: 14px;
+}
+.sbc-compare__header .feedback-common-header__underline::before {
+  display: none;
 }
 
 .sbc-compare__notes {

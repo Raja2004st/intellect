@@ -143,7 +143,7 @@
   font-weight: 800;
   color: #111;
   position: relative;
-  overflow-x: clip;
+  // overflow-x: clip;
   z-index: 8;
   // border-bottom-left-radius:50% ;
 }
@@ -152,10 +152,12 @@
    transform: rotate(83deg);
     content: "";
     position: absolute;
-    left: 25px;
+    // left: 25px;
+    left: 32px;
     width: 32px;
     height: 96px;
-    bottom: -36px;
+    // bottom: -36px;
+    bottom: -34px;
     background:#cfefff;
     border-radius: 50%;
     z-index: 1;

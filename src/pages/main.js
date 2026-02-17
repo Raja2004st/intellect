@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import InitialPage from "../components/initialPage";
 import "../styles/mainPage.scss";
 import Header from "../components/header";
@@ -37,7 +37,8 @@ const MainPage = () => {
   // const [scoreLastPage, setScoreLastPage] = useState(9)
   // const [aboutSectionTwoLastPage, setAboutSectionTwoLastPage] = useState(11)
   // const [compentencyLastPage, setCompentencyLastPage] = useState(12)
-  // const [overviewSummaryLastPage, setOverviewSummaryLastPage] = useState(13)
+ 
+
   const qualitativeSections = [
     {
       titleIndex: "3.1.",
@@ -298,6 +299,17 @@ const MainPage = () => {
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
         },
+        
+        {
+          score: 4.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
+          {
+          score: 2.5,
+          title: "Negotiation",
+          desc: "Is flexible and works well in a fast paced and dynamic environment",
+        },
         {
           score: 2.5,
           title: "Negotiation",
@@ -453,7 +465,6 @@ const MainPage = () => {
         <AboutSectionPages />
         <ScoringDefinition />
         <AboutSectionPages
-          startPage={10}
           titleIndex="1.4."
           titleText="LBSCORE Element Snapshot"
           sections={[
@@ -619,9 +630,8 @@ const MainPage = () => {
             },
           ]}
         />
-        <CompetencySummary startPage={12} />
+        <CompetencySummary />
         <OverviewSummary
-          startPage={13}
           items={[
             { label: "Leadership", self: 3.5, others: 4.5 },
             { label: "Bandwidth", self: 2.4, others: 4.1 },
@@ -634,9 +644,9 @@ const MainPage = () => {
         />
         <SpiderChartSummary />
         <EvaluatorCategoryBreakdown />
-        <BehaviouralIndicators startPage={16} />
-        <ParticipantCohortSummary startPage={26} />
-        <QualitativeFeedbackIntro startPage={30} />
+        <BehaviouralIndicators />
+        <ParticipantCohortSummary />
+        <QualitativeFeedbackIntro />
         {qualitativeSections.map((sec, i) => (
           <QualitativeFeedbackList
             key={`qsec-${i}`}
@@ -669,9 +679,9 @@ const MainPage = () => {
             key_id={`bs-${i}`}
           />
         ))}
-        <CoachingActionPlan startPage={49} />
-        <CoachingActionPlanPage2 startPage={50} />
-        <IndividualDevelopmentPlan startPage={51} />
+        <CoachingActionPlan />
+        <CoachingActionPlanPage2 />
+        <IndividualDevelopmentPlan />
       </div>
     </div>
   );

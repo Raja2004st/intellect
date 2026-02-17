@@ -132,7 +132,7 @@ const Highlights = ({
       <div key="note" className="hl-note">
         <em className="hl-note__em">{note}</em>
       </div>
-    );
+    )
 
     out.push(
       <div
@@ -141,6 +141,8 @@ const Highlights = ({
         style={{
           "--arc-color": arcColor,
           "--chip-color": chipColor,
+          // height:950,
+        
         }}
       >
         <div className="hl-left" style={{ minHeight: arcHeight }}>

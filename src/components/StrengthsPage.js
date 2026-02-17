@@ -109,7 +109,7 @@ const StrengthsPage = ({
         <FeedbackCommonHeader title={title} />
 
         <div className="sp-grid" style={{ "--sp-arc-color": arcColor }}>
-          <div className="sp-left" style={{}}>
+          <div className="sp-left">
             <ArcConnector
               items={groupItems}
               arcColor={"var(--strength-arc-color)"}
@@ -310,14 +310,14 @@ const StrengthsPage = ({
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
-        blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
-        pagePadding={0}
-        contentClassName="strengths-page"
-        componentId="strengths-page"
-      />
+    <AutoPaginatedSections
+      blocks={blocks}
+      pageWidth={794}
+      pageHeight={1123}
+      pagePadding={0}
+      contentClassName="strengths-page"
+      componentId="strengths-page"
+    />
     // </div>
   );
 };

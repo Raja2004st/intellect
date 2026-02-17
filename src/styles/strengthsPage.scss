@@ -38,20 +38,24 @@
 
 .sp-left {
   position: relative;
-}
-
-.sp-left .bs-arc {
-  position: absolute;
-  top: 57px;
+    top: 57px;
   left: -3px;
   width: 143px;
-  height: 77%;
+  height: var(--sp-arc-height, 77%);
 }
+
+// .sp-left .bs-arc {
+//   position: absolute;
+//   top: 57px;
+//   left: -3px;
+//   width: 143px;
+//   height: var(--sp-arc-height, 77%);
+// }
 
 .sp-left__icon {
   position: absolute;
   left: -38px;
-  top: 130px;
+  top: 78px;
   width: 132px;
   height: 132px;
 }

@@ -35,9 +35,21 @@
   text-align: center;
 
   &__label {
-    margin-bottom: 6px;
+    margin-bottom: 13px;
     font-weight: 700;
+    font-size: var(--fs-lg);
   }
+}
+
+.cs-gauge-chart {
+  position: relative;
+  width: 230px;   
+  height: 230px;
+}
+
+.cs-gauge-chart__canvas-wrap {
+  width: 100%;
+  height: 100%;
 }
 
 .cs-quartiles {

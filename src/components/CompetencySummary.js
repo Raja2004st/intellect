@@ -3,83 +3,164 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
 import ReportInfoTable from "./reportInfoTable";
 import QuartilePositionCard from "./QuartilePositionCard";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import "../styles/mainPage.scss";
 import "../styles/contentPage.scss";
 import "../styles/competencySummary.scss";
 
-const Gauge = ({ score = 383, max = 500, size = 240 }) => {
-  const center = size / 2;
-  const stroke = 16;
-  const radius = center - stroke / 2 - 4; // small inset to avoid clipping
-  const circ = 2 * Math.PI * radius;
-  const pct = Math.min(1, Math.max(0, score / max));
-  const dash = circ * pct;
-  const gap = circ - dash;
+ChartJS.register(ArcElement, Tooltip);
+
+const Gauge = ({ score = 453, max = 500 }) => {
+  const value = Number(score) || 0;
+  const total = Number(max) || 500;
+  const percentage = Math.max(0, Math.min(100, (value / total) * 100));
+
+  const emptyDoughnut = {
+    id: "emptyDoughnut",
+    color: "#0B2D16",
+    width: 1.5,
+    radiusDecrease: 0,
+    afterDraw(chart) {
+      const meta = chart.getDatasetMeta(0).data[0];
+      if (!meta) return;
+
+      const ctx = chart.ctx;
+      const centerX = meta.x;
+      const centerY = meta.y;
+
+      const radius = meta.outerRadius - this.radiusDecrease - 6;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = this.width;
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
+
+  const data = {
+    datasets: [
+      // Outer thick arc
+      {
+        data: [percentage, 100 - percentage],
+        backgroundColor: ["#0B2D16", "transparent"],
+        borderWidth: 0,
+        cutout: "73%",
+        rotation: 0,
+        circumference: 300,
+      },
+
+      // Inner thin ring
+      {
+        data: [percentage, 100 - percentage],
+        backgroundColor: ["#0B2D16", "transparent"],
+        borderWidth: 0,
+        cutout: "50%",
+        radius: "74%",
+        rotation: 0,
+        circumference: 300,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    // devicePixelRatio: Math.min(window.devicePixelRatio || 2, 2),
+    plugins: {
+      tooltip: { enabled: false },
+      legend: { display: false },
+    },
+  };
+  const centerText = {
+    id: "centerText",
+    afterDatasetsDraw(chart) {
+      const {
+        ctx,
+        chartArea: { top, width, height },
+      } = chart;
+
+      const centerX = width / 2;
+      const centerY = height / 2 + top;
+
+      ctx.save();
+
+      const radius = Math.min(width, height) * 0.22;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#2E8543";
+      ctx.fill();
+
+      ctx.font = "500 28px sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(value, centerX, centerY);
+
+      ctx.restore();
+    },
+  };
+
+  const dottedTicks = {
+    id: "dottedTicks",
+    afterDraw(chart) {
+      const ctx = chart.ctx;
+      const meta = chart.getDatasetMeta(0).data[0];
+
+      if (!meta) return;
+
+      const centerX = meta.x;
+      const centerY = meta.y;
+      const outerRadius = meta.outerRadius - 28;
+      const innerRadius = outerRadius - 10;
+
+      ctx.save();
+      ctx.strokeStyle = "#0B2D16";
+      ctx.lineWidth = 4;
+      ctx.lineCap = "round";
+
+      const totalDots = 30;
+      const filledDots = Math.round((percentage / 100) * totalDots) - 1;
+      const startAngle = (-90 * Math.PI) / 180;
+      const endAngle = startAngle + (320 * Math.PI) / 180;
+
+      // draw dots only for the active portion corresponding to the value
+      for (let i = 0; i < filledDots; i += 1) {
+        const angle = startAngle + (i / totalDots) * (endAngle - startAngle);
+
+        const x1 = centerX + innerRadius * Math.cos(angle);
+        const y1 = centerY + innerRadius * Math.sin(angle);
+
+        const x2 = centerX + outerRadius * Math.cos(angle);
+        const y2 = centerY + outerRadius * Math.sin(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    },
+  };
 
   return (
-    <svg
-      className="gauge"
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      aria-label="overall score gauge"
-    >
-      <defs>
-        <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0e4a2e" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#1a6b48" stopOpacity="1" />
-        </linearGradient>
-        <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow
-            dx="0"
-            dy="2"
-            stdDeviation="2"
-            floodColor="rgba(0,0,0,0.25)"
-          />
-        </filter>
-      </defs>
-
-      {/* Track */}
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        stroke="#e6efe9"
-        strokeWidth={stroke}
-        fill="none"
-      />
-
-      {/* Progress arc with gradient + shadow */}
-      <circle
-        className="gauge__progress"
-        cx={center}
-        cy={center}
-        r={radius}
-        stroke="url(#gaugeGradient)"
-        strokeWidth={stroke}
-        fill="none"
-        strokeDasharray={`${dash} ${gap}`}
-        transform={`rotate(-90 ${center} ${center})`}
-        strokeLinecap="round"
-      />
-
-      {/* Center disc */}
-      <circle cx={center} cy={center} r={radius - stroke - 6} fill="#0e4a2e" />
-
-      {/* Score */}
-      <text
-        className="gauge__score"
-        x="50%"
-        y="50%"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        fontSize={Math.round(size * 0.185)}
-        fontWeight="700"
-        fill="#fff"
-      >
-        {score}
-      </text>
-    </svg>
+    <div className="cs-gauge-chart">
+      {/* <div className="cs-gauge-chart__title">Your Overall Score</div> */}
+      <div className="cs-gauge-chart__canvas-wrap">
+        <Doughnut
+          data={data}
+          options={options}
+          plugins={[dottedTicks, centerText, emptyDoughnut]}
+        />
+      </div>
+      {/* <div className="cs-gauge-chart__center">
+        {value}
+      </div> */}
+    </div>
   );
 };
 
@@ -99,7 +180,7 @@ const CompetencySummary = ({
       { label: "Third quartile (75th percentile)", value: "425.5", extra: "" },
       { label: "Max Score", value: "483.0", extra: "" },
     ],
-    []
+    [],
   );
 
   const streamRows = cohortRows;
@@ -111,7 +192,7 @@ const CompetencySummary = ({
       3: ["310.0", "380.0", "405.0", "440.0", "490.0"],
       4: ["335.0", "395.0", "415.0", "455.0", "500.0"],
     }),
-    []
+    [],
   );
   const defaultStreamMap = useMemo(
     () => ({
@@ -120,7 +201,7 @@ const CompetencySummary = ({
       3: ["305.0", "378.0", "402.0", "438.0", "488.0"],
       4: ["330.0", "392.0", "412.0", "452.0", "498.0"],
     }),
-    []
+    [],
   );
 
   const [cohortMap, setCohortMap] = useState(defaultCohortMap);
@@ -148,7 +229,7 @@ const CompetencySummary = ({
       <h2 key="title" className="content-page__title cs-title">
         <span className="content-page__title-index">2.</span>
         <span className="content-page__title-text">Competency Summary</span>
-      </h2>
+      </h2>,
     );
 
     out.push(
@@ -165,7 +246,7 @@ const CompetencySummary = ({
         <div className="cs-gauge-wrap">
           <div className="cs-gauge">
             <div className="cs-gauge__label">Your Overall Score</div>
-            <Gauge />
+            <Gauge score={455} max={500} />
           </div>
         </div>
         <ul className="cs-overall__bullets">
@@ -181,7 +262,7 @@ const CompetencySummary = ({
             </em>
           </li>
         </ul>
-      </div>
+      </div>,
     );
 
     out.push(
@@ -201,7 +282,7 @@ const CompetencySummary = ({
             onValueChange={handleStreamChange}
           />
         </div>
-      </div>
+      </div>,
     );
 
     return out;

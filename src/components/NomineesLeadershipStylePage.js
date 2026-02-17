@@ -7,140 +7,106 @@ import "../styles/nomineesLeadershipStylePage.scss";
 
 ChartJS.register(ArcElement, Tooltip);
 
-const Donut = ({ percent, color, badgePosition = "bottom" }) => {
+const Donut = ({ percent, color }) => {
   const pct = Number(percent);
   const safePct = Number.isFinite(pct) ? Math.max(0, Math.min(100, pct)) : 0;
 
-  // const dottedRingPlugin = useMemo(() => {
-  //   return {
-  //     id: `dottedRing-${String(color)}`,
-  //     afterDatasetDraw(chart) {
-  //       const meta = chart.getDatasetMeta(0);
-  //       const arcEl = meta?.data?.[0];
-  //       const ctx = chart?.ctx;
 
-  //       if (!ctx || !arcEl) return;
 
-  //       const centerX = arcEl.x;
-  //       const centerY = arcEl.y;
-  //       const innerRadius = arcEl.innerRadius;
-  //       const outerRadius = arcEl.outerRadius;
+//   const dottedRingPlugin = {
+//   id: "dottedPattern",
 
-  //       if (
-  //         !Number.isFinite(centerX) ||
-  //         !Number.isFinite(centerY) ||
-  //         !Number.isFinite(innerRadius) ||
-  //         !Number.isFinite(outerRadius)
-  //       ) {
-  //         return;
-  //       }
+//   beforeDraw(chart) {
+//     const { ctx } = chart;
 
-  //       const radius = (innerRadius + outerRadius) / 2;
+//     const meta = chart.getDatasetMeta(0);
+//     const arc = meta?.data?.[0];
 
-  //       ctx.save();
-  //       const ringWidth = Math.max(1, outerRadius - innerRadius);
+//     if (!arc) return;
 
-  //       // Background ring (tinted)
-  //       ctx.strokeStyle = color;
-  //       ctx.globalAlpha = 0.12;
-  //       ctx.lineWidth = ringWidth;
-  //       ctx.setLineDash([]);
+//     const centerX = arc.x;
+//     const centerY = arc.y;
 
-  //       ctx.beginPath();
-  //       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-  //       ctx.stroke();
+//     const innerRadius = arc.innerRadius;
+//     const outerRadius = arc.outerRadius;
 
-  //       // // Dotted ring (foreground)
-  //       // ctx.strokeStyle = color;
-  //       // ctx.globalAlpha = 0.45;
-  //       // ctx.lineCap = "round";
-  //       // ctx.setLineDash([1, 3]);
+//     const patternCanvas = document.createElement("canvas");
+//     patternCanvas.width = 4;
+//     patternCanvas.height = 4;
 
-  //       // // Fill the full ring width with dotted lines (multiple concentric dotted circles)
-  //       // const dottedLineWidth = Math.min(2, ringWidth);
-  //       // const gapBetweenLines = Math.max(2, dottedLineWidth + 2);
-  //       // ctx.lineWidth = dottedLineWidth;
+//     const pctx = patternCanvas.getContext("2d");
 
-  //       // const half = ringWidth / 2;
-  //       // for (let offset = -half; offset <= half; offset += gapBetweenLines) {
-  //       //   const r = radius + offset;
-  //       //   if (!Number.isFinite(r) || r <= 0) continue;
-  //       //   ctx.beginPath();
-  //       //   ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
-  //       //   ctx.stroke();
-  //       // }
-  //       // ctx.restore();
-  //     },
-  //   };
-  // }, [color]);
+//     pctx.fillStyle = color;
 
-  const dottedRingPlugin = useMemo(() => {
-    return {
-      id: `dottedRing-${String(color)}`,
-      afterDatasetDraw(chart) {
-        const meta = chart.getDatasetMeta(0);
-        const arcEl = meta?.data?.[0];
-        const ctx = chart?.ctx;
+//     pctx.beginPath();
+//     pctx.arc(3, 3, 1, 0, Math.PI * 2);
+//     pctx.fill();
 
-        if (!ctx || !arcEl) return;
+//     const pattern = ctx.createPattern(patternCanvas, "repeat");
 
-        const centerX = arcEl.x;
-        const centerY = arcEl.y;
-        const innerRadius = arcEl.innerRadius;
-        const outerRadius = arcEl.outerRadius;
+//     ctx.save();
+//     ctx.fillStyle = pattern;
 
-        if (
-          !Number.isFinite(centerX) ||
-          !Number.isFinite(centerY) ||
-          !Number.isFinite(innerRadius) ||
-          !Number.isFinite(outerRadius)
-        ) {
-          return;
-        }
+//     ctx.beginPath();
+//     ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+//     ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
+//     ctx.closePath();
 
-        const radius = (innerRadius + outerRadius) / 2;
-        const ringWidth = Math.max(1, outerRadius - innerRadius);
+//     ctx.fill();
+//     ctx.restore();
+//   },
+// };
 
-        ctx.save();
+const dottedRingPlugin = {
+  id: "dottedPattern",
 
-        ctx.strokeStyle = color;
-        ctx.globalAlpha = 0.12;
-        ctx.lineWidth = ringWidth;
-        ctx.setLineDash([1]);
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.stroke();
+  beforeDraw(chart) {
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
+    const arc = meta?.data?.[0];
 
-        ctx.imageSmoothingEnabled = false;
-        ctx.globalAlpha = 0.6;
-        ctx.fillStyle = color;
+    if (!arc) return;
 
-        const dotSize = 1;
-        const halfDot = dotSize / 2;
+    const centerX = arc.x;
+    const centerY = arc.y;
 
-        const circumference = 2 * Math.PI * radius;
+    const innerRadius = arc.innerRadius;
+    const outerRadius = arc.outerRadius;
 
-        const angularDots = Math.max(50, Math.floor(circumference / 7) + 100);
-        const radialLayers = Math.max(3, Math.floor(ringWidth / 5) + 10);
+    const dotRadius = 1;   
+    const dotGap = 4;       
+    const dotColor = color;
 
-        for (let layer = 0; layer < radialLayers; layer++) {
-          const layerRadius =
-            innerRadius + (ringWidth / (radialLayers - 1 || 1)) * layer;
+    const patternCanvas = document.createElement("canvas");
+    patternCanvas.width = dotGap;
+    patternCanvas.height = dotGap;
 
-          for (let i = 0; i < angularDots; i++) {
-            const angle = (i * 2 * Math.PI) / angularDots;
+    const pctx = patternCanvas.getContext("2d");
 
-            const x = centerX + layerRadius * Math.cos(angle);
-            const y = centerY + layerRadius * Math.sin(angle);
+    pctx.fillStyle = dotColor;
+    pctx.beginPath();
+    pctx.arc(dotGap / 2, dotGap / 2, dotRadius, 0, Math.PI * 2);
+    pctx.fill();
 
-            ctx.fillRect(x - halfDot, y - halfDot, dotSize, dotSize);
-          }
-        }
+    const pattern = ctx.createPattern(patternCanvas, "repeat");
 
-        ctx.restore();
-      },
-    };
-  }, [color]);
+    ctx.save();
+    ctx.fillStyle = pattern;
+
+    ctx.beginPath();
+
+    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+
+    ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
+
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  },
+};
+
+
 
   const data = {
     labels: ["Selected", "Remaining"],
@@ -157,7 +123,7 @@ const Donut = ({ percent, color, badgePosition = "bottom" }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: "62%",
+    cutout: "52%",
     rotation: 0,
     circumference: 360,
     plugins: {
@@ -167,15 +133,26 @@ const Donut = ({ percent, color, badgePosition = "bottom" }) => {
     animation: false,
   };
 
+  const startAngleDeg = -90;
+  const filledAngleDeg = (safePct / 100) * 360;
+  const middleAngleDeg = startAngleDeg + filledAngleDeg / 2;
+  const angleRad = (middleAngleDeg * Math.PI) / 180 ;
+
+
+  const badgeRadiusPx = 60;
+
+  const badgeStyle = {
+    background: color,
+    left: `calc(50% + ${badgeRadiusPx * Math.cos(angleRad)}px)`,
+    top: `calc(50% + ${badgeRadiusPx * Math.sin(angleRad) - 5}px)`,
+  };
+
   return (
     <div className="nls-donut">
       <div className="nls-donut__canvas">
         <Doughnut data={data} options={options} plugins={[dottedRingPlugin]} />
       </div>
-      <div
-        className={`nls-donut__badge nls-donut__badge--${badgePosition}`}
-        style={{ background: color }}
-      >
+      <div className="nls-donut__badge" style={badgeStyle}>
         {Math.round(safePct)}%
       </div>
     </div>
@@ -193,7 +170,7 @@ const NomineesLeadershipStylePage = ({
       pillColor: "#ef4b3a",
     },
     {
-      percent: 7,
+      percent: 77,
       color: "#20c6a2",
       badgePosition: "top",
       pillText:
@@ -249,7 +226,6 @@ const NomineesLeadershipStylePage = ({
               <Donut
                 percent={it.percent}
                 color={it.color}
-                badgePosition={it.badgePosition}
               />
             </div>
           ))}
