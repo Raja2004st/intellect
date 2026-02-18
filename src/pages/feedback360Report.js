@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FeedbackInitialPage from "../components/feedbackInitialPage";
 import SurveyFeedback from "../components/surveyFeedback";
 import "../styles/feedback360Report.scss";
@@ -12,6 +12,7 @@ import QualitativeFeedbackCoverPage from "../components/QualitativeFeedbackCover
 import ContinueDoingPage from "../components/ContinueDoingPage";
 import StopDoingPage from "../components/StopDoingPage";
 import { downloadPdfSplitByHeader } from "../utils/pdf";
+import { useOutletContext } from "react-router-dom";
 
 const Feedback360Report = () => {
   const competencyBiggerPictureItems = [
@@ -314,6 +315,12 @@ const Feedback360Report = () => {
       ],
     },
   };
+
+  const { setIsHeader, setHeaderName } = useOutletContext();
+
+  useEffect(() => {
+    setHeaderName("Feedback");
+  }, []);
 
   return (
     <div className="feedbackreport-main-container">

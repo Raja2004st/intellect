@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InitialPage from "../components/initialPage";
 import "../styles/mainPage.scss";
 import Header from "../components/header";
@@ -30,6 +30,7 @@ import ChessKingIcon from "../assets/png/chessKingIcon.png";
 import MarketingIcon from "../assets/png/marketingIcon.png";
 import ChessIcon from "../assets/png/chessIcon.png";
 import EyeIcon from "../assets/png/eye.png";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 const MainPage = () => {
   // const [assessementLastPage, setAssessementLastPage] = useState(5)
@@ -37,8 +38,8 @@ const MainPage = () => {
   // const [scoreLastPage, setScoreLastPage] = useState(9)
   // const [aboutSectionTwoLastPage, setAboutSectionTwoLastPage] = useState(11)
   // const [compentencyLastPage, setCompentencyLastPage] = useState(12)
- 
 
+  const { setIsHeader, setHeaderName } = useOutletContext();
   const qualitativeSections = [
     {
       titleIndex: "3.1.",
@@ -299,13 +300,13 @@ const MainPage = () => {
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
         },
-        
+
         {
           score: 4.5,
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
         },
-          {
+        {
           score: 2.5,
           title: "Negotiation",
           desc: "Is flexible and works well in a fast paced and dynamic environment",
@@ -411,6 +412,9 @@ const MainPage = () => {
       ],
     },
   ];
+  useEffect(() => {
+    setHeaderName("Report");
+  }, []);
 
   return (
     <div>
@@ -505,26 +509,6 @@ const MainPage = () => {
                 },
                 {
                   tail: "Challenges existing ways of working to simplify execution and improve predictability",
-                },
-              ],
-            },
-            {
-              chip: "Sales & Customer Centricity",
-              items: [
-                {
-                  tail: "Seeks deep customer and market understanding through data, observation, and dialogue",
-                },
-                {
-                  tail: "Anticipates underlying needs and emerging opportunities beyond stated requirements",
-                },
-                {
-                  tail: "Designs solutions that deliver meaningful value and strengthen long-term partnerships",
-                },
-                {
-                  tail: "Communicates a clear and consistent customer experience across functions and touchpoints",
-                },
-                {
-                  tail: "Positions offerings with a focus on outcomes and shared success",
                 },
               ],
             },

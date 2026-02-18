@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FileText, Target } from "lucide-react";
 import "../styles/home.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { setIsHeader, setHeaderName } = useOutletContext();
+
+  useEffect(() => {
+    setHeaderName("Home");
+  }, []);
+
   return (
     <div className="home">
       <div className="home__grid">

@@ -38,6 +38,7 @@
     font-weight: 700;
     color: var(--color-text);
     text-align: left;
+    font-size: var(--fs-md);
     // white-space: nowrap;
   }
 
@@ -78,6 +79,13 @@
     }
     &__cell--value {
       width: var(--value-col, 60%);
+    }
+  }
+
+  &.report-info--scoring {
+    .report-info__cell {
+      padding: 8px 10px; 
+      font-size: var(--fs-md);
     }
   }
 }

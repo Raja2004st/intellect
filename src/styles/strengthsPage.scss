@@ -72,7 +72,7 @@
 
 .sp-cols {
   display: grid;
-  grid-template-columns: 1.2fr 2px 1fr;
+  grid-template-columns: 1.2fr 1px 1fr;
   align-items: start;
   gap: 8px;
 }
@@ -124,7 +124,7 @@
   column-gap: 12px;
   align-items: center;
   width: 100%;
-  padding-right: 10px;
+  // padding-right: 10px;
   box-sizing: border-box;
 }
 

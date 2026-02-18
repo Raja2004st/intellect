@@ -104,8 +104,23 @@ const Highlights = ({
 
   const blocks = useMemo(() => {
     const out = [];
-    const rowSpacing = 90;
+    const baseRowSpacing = 100;
+    const minRowSpacing = 50;
     const topOffset = 50;
+    const maxArcHeight = 680; 
+
+    let rowSpacing = baseRowSpacing;
+    if (items.length > 1) {
+      const idealHeight = topOffset * 2 + (items.length - 1) * baseRowSpacing + 160;
+      if (idealHeight > maxArcHeight) {
+        const availableForRows = maxArcHeight - topOffset * 2 - 160;
+        rowSpacing = Math.max(
+          minRowSpacing,
+          availableForRows / (items.length - 1)
+        );
+      }
+    }
+
     const arcHeight = topOffset * 2 + (items.length - 1) * rowSpacing + 160;
     const paddingTop = topOffset;
     const paddingBottom = topOffset;

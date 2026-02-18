@@ -62,6 +62,7 @@ const FeedbackBubble = ({
           rows={rows}
           readOnly={readOnly || !onChange}
         />
+        <div className="fb-bubble-thread"></div>
       </div>
     </div>
   );

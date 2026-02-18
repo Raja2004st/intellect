@@ -52,6 +52,31 @@
   height: 100%;
 }
 
+.cs-gauge-chart__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.cs-gauge-chart__value-input {
+  width: 80px;
+  text-align: center;
+  font: inherit;
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  outline: none;
+}
+
 .cs-quartiles {
   margin-top: 18px;
 

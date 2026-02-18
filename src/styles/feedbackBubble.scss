@@ -36,6 +36,23 @@
   padding: 10px 12px;
   background: var(--fb-bubble-bg, var(--color-bg));
   overflow: visible;
+  // border-left-style:groove ;
+  // border-left: none;
+
+
+  // .fb-bubble-thread{
+  //  position: absolute;
+  //   left: -16px;
+  //   top: 9px;
+  //   width: 36px;
+  //   height: 24px;
+  //   background: var(--fb-bubble-bg, var(--color-bg));
+  //   border: 2px solid var(--fb-border, var(--color-border));
+  //   border-radius: 21px 60px 10px 10px;
+  //   box-sizing: border-box;
+
+   
+  // }
 }
 
 .fb-row--compact .fb-bubble {
@@ -68,7 +85,7 @@
   height: 0;
   left: -18px;
   top: 0;
-  border: 20px solid;
+  border: 21px solid;
   border-color: var(--fb-bubble-bg, var(--color-bg)) transparent transparent
     transparent;
   z-index: 2;

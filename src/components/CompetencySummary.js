@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import Header from "./header";
-import ReportInfoTable from "./reportInfoTable";
 import QuartilePositionCard from "./QuartilePositionCard";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
@@ -12,7 +11,11 @@ import "../styles/competencySummary.scss";
 ChartJS.register(ArcElement, Tooltip);
 
 const Gauge = ({ score = 370, max = 500 }) => {
-  const value = Number(score) || 0;
+  const [currentScore, setCurrentScore] = useState(score);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(String(score));
+
+  const value = Number(currentScore) || 0;
   const total = Number(max) || 500;
   const percentage = Math.max(0, Math.min(100, (value / total) * 100));
 
@@ -41,6 +44,36 @@ const Gauge = ({ score = 370, max = 500 }) => {
     },
   };
 
+  const handleDoubleClick = () => {
+    setEditValue(String(currentScore));
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const commitEdit = () => {
+    const parsed = Number(editValue);
+    if (Number.isFinite(parsed)) {
+      setCurrentScore(parsed);
+    }
+    setIsEditing(false);
+  };
+
+  const handleInputBlur = () => {
+    commitEdit();
+  };
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      commitEdit();
+    } else if (e.key === "Escape") {
+      setIsEditing(false);
+      setEditValue(String(currentScore));
+    }
+  };
+
   const data = {
     datasets: [
       // Outer thick arc
@@ -50,7 +83,6 @@ const Gauge = ({ score = 370, max = 500 }) => {
         borderWidth: 0,
         cutout: "73%",
         rotation: 0,
-        // circumference: 300,
       },
 
       // Inner thin ring
@@ -123,7 +155,12 @@ const Gauge = ({ score = 370, max = 500 }) => {
       ctx.lineCap = "round";
 
       const totalDots = 30;
-      const filledDots = Math.round((percentage / 100) * totalDots);
+      const dataset = chart.data?.datasets?.[0];
+      const filledPortion = Array.isArray(dataset?.data)
+        ? Number(dataset.data[0]) || 0
+        : 0;
+      const clampedPortion = Math.max(0, Math.min(100, filledPortion));
+      const filledDots = Math.round((clampedPortion / 100) * totalDots);
       const startAngle = (-90 * Math.PI) / 180;
       const endAngle = startAngle + (360 * Math.PI) / 180;
 
@@ -148,7 +185,6 @@ const Gauge = ({ score = 370, max = 500 }) => {
 
   return (
     <div className="cs-gauge-chart">
-      {/* <div className="cs-gauge-chart__title">Your Overall Score</div> */}
       <div className="cs-gauge-chart__canvas-wrap">
         <Doughnut
           data={data}
@@ -156,8 +192,20 @@ const Gauge = ({ score = 370, max = 500 }) => {
           plugins={[dottedTicks, centerText, emptyDoughnut]}
         />
       </div>
-      {/* <div className="cs-gauge-chart__center">
-        {value}
+      {/* <div className="cs-gauge-chart__value" onDoubleClick={handleDoubleClick}>
+        {isEditing ? (
+          <input
+            type="text"
+            value={editValue}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            onKeyDown={handleInputKeyDown}
+            autoFocus
+            className="cs-gauge-chart__value-input"
+          />
+        ) : (
+          <span>{value}</span>
+        )}
       </div> */}
     </div>
   );
@@ -301,3 +349,4 @@ const CompetencySummary = ({
 };
 
 export default CompetencySummary;
+

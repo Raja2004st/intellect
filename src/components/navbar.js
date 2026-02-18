@@ -14,6 +14,7 @@ import {
   User,
   X,
 } from "lucide-react";
+import logoGreen from "../assets/png/intellectGreenLogo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -43,17 +44,22 @@ const Navbar = () => {
       <aside className={`rh-nav ${isOpen ? "rh-nav--open" : "rh-nav--closed"}`}>
         <div className="rh-nav__inner">
           <div className="rh-nav__top">
-            <div className="rh-nav__brand">
-              <div className="rh-nav__brand-mark">
+            {/* <div className="rh-nav__brand"> */}
+              {/* <div className="rh-nav__brand-mark">
                 <BarChart3 className="rh-nav__brand-icon" />
-              </div>
-              <div className="rh-nav__brand-text">
+              </div> */}
+              {/* <div className="rh-nav__brand-text">
                 <div className="rh-nav__brand-title">ReportHub</div>
                 <div className="rh-nav__brand-subtitle">
                   Analytics Dashboard
                 </div>
-              </div>
-            </div>
+              </div> */}
+                 <img
+            src={logoGreen}
+            alt="intellect logo"
+            className="nav-header-logo"
+          />
+            {/* </div> */}
 
             {/* <div className="rh-nav__search">
               <Search className="rh-nav__search-icon" />

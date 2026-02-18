@@ -10,7 +10,7 @@ import "../styles/scoringDefinition.scss";
 const ScoringDefinition = ({
   startPage = 8,
   pageWidth = 794,
-  pageHeight = 802,
+  pageHeight = 942,
   pagePadding = 10,
 }) => {
   const ratingRows = useMemo(
@@ -86,6 +86,7 @@ const ScoringDefinition = ({
           rightWidth="68%"
           rowHeight={undefined}
           extraKey="meaning"
+          className="report-info--scoring"
         />
       </div>
     );

@@ -1,10 +1,12 @@
 .home {
-  min-height: 91vh;
+  // min-height: 79vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px;
   background-color: var(--color-secondary-bg);
+  // height: 89%;
+  height: calc(100vh - 165px);
 }
 
 .home__grid {

@@ -39,8 +39,8 @@ body {
 .rh-nav + .app-main-container,
 .navbar + .app-main-container,
 .navbar-collapse-div + .app-main-container {
-  margin-left: 230px;
-  width: calc(100% - 230px);
+  margin-left: 210px;
+  width: calc(100% - 210px);
 }
 
 @media (max-width: 768px) {
