@@ -43,6 +43,7 @@ const CompetencyThreeBarChart = ({
   legendItems = DEFAULT_LEGEND,
   formatValue = formatDefault,
   className = "",
+  firstRowBorder=false
 }) => {
   const ticks = useMemo(
     () => Array.from({ length: max + 1 }, (_, i) => i),
@@ -78,7 +79,7 @@ const CompetencyThreeBarChart = ({
           return (
             <div
               key={row.label || idx}
-              className={`ctbc-row ${idx === 0 ? "ctbc-row--first" : ""} ${idx === items.length - 1 ? "ctbc-row--last" : ""}`}
+              className={`ctbc-row   ${idx === 0 && firstRowBorder? "ctbc-row--first" : ""} ${idx === items.length - 1 ? "ctbc-row--last" : ""}`}
             >
               <div className="ctbc-row__label">{row.label}</div>
 

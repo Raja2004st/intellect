@@ -20,7 +20,10 @@ const LEGEND_2 = [
 const formatOverallScore2 = (v) => {
   const n = Number(v);
   if (!Number.isFinite(n)) return v;
-  return n.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+  return n
+    .toFixed(2)
+    .replace(/\.00$/, "")
+    .replace(/(\.\d)0$/, "$1");
 };
 
 const StaffPerformanceSummaryByCompetencyPage = ({
@@ -90,7 +93,12 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       });
     };
 
-    const pushSection = ({ keyPrefix, sectionTitle, sectionOverallScore, sectionItems }) => {
+    const pushSection = ({
+      keyPrefix,
+      sectionTitle,
+      sectionOverallScore,
+      sectionItems,
+    }) => {
       const chartItems = buildChartItems(sectionItems);
 
       out.push(
@@ -111,11 +119,12 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       out.push(
         <div key={`${keyPrefix}-chart`} className="sbc-chart">
           <CompetencyThreeBarChart
-            items={chartItems}  
+            items={chartItems}
             legendItems={LEGEND_2}
             className="sbc-chart__inner"
             barHeight={12}
             barGap={6}
+            firstRowBorder={true}
           />
         </div>,
       );
@@ -142,14 +151,14 @@ const StaffPerformanceSummaryByCompetencyPage = ({
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
-        blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
-        pagePadding={0}
-        contentClassName="summary-by-competency-page"
-        componentId="staff-performance-summary-by-competency"
-      />
+    <AutoPaginatedSections
+      blocks={blocks}
+      pageWidth={794}
+      pageHeight={1123}
+      pagePadding={0}
+      contentClassName="summary-by-competency-page"
+      componentId="staff-performance-summary-by-competency"
+    />
     // </div>
   );
 };

@@ -11,7 +11,7 @@ import "../styles/competencySummary.scss";
 
 ChartJS.register(ArcElement, Tooltip);
 
-const Gauge = ({ score = 453, max = 500 }) => {
+const Gauge = ({ score = 370, max = 500 }) => {
   const value = Number(score) || 0;
   const total = Number(max) || 500;
   const percentage = Math.max(0, Math.min(100, (value / total) * 100));
@@ -50,7 +50,7 @@ const Gauge = ({ score = 453, max = 500 }) => {
         borderWidth: 0,
         cutout: "73%",
         rotation: 0,
-        circumference: 300,
+        // circumference: 300,
       },
 
       // Inner thin ring
@@ -61,7 +61,7 @@ const Gauge = ({ score = 453, max = 500 }) => {
         cutout: "50%",
         radius: "74%",
         rotation: 0,
-        circumference: 300,
+        // circumference: 300,
       },
     ],
   };
@@ -123,11 +123,10 @@ const Gauge = ({ score = 453, max = 500 }) => {
       ctx.lineCap = "round";
 
       const totalDots = 30;
-      const filledDots = Math.round((percentage / 100) * totalDots) - 1;
+      const filledDots = Math.round((percentage / 100) * totalDots);
       const startAngle = (-90 * Math.PI) / 180;
-      const endAngle = startAngle + (320 * Math.PI) / 180;
+      const endAngle = startAngle + (360 * Math.PI) / 180;
 
-      // draw dots only for the active portion corresponding to the value
       for (let i = 0; i < filledDots; i += 1) {
         const angle = startAngle + (i / totalDots) * (endAngle - startAngle);
 
@@ -246,7 +245,7 @@ const CompetencySummary = ({
         <div className="cs-gauge-wrap">
           <div className="cs-gauge">
             <div className="cs-gauge__label">Your Overall Score</div>
-            <Gauge score={455} max={500} />
+            <Gauge />
           </div>
         </div>
         <ul className="cs-overall__bullets">

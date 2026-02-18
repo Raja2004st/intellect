@@ -89,6 +89,7 @@ const SummaryByCompetencyPage = ({
           className="sbc-chart__inner"
           barHeight={12}
           barGap={6}
+          firstRowBorder={true}
         />
       </div>,
     );
@@ -115,6 +116,7 @@ const SummaryByCompetencyPage = ({
           className="sbc-chart__inner"
           barHeight={9}
           barGap={4}
+          firstRowBorder={true}
         />
       </div>,
     );

@@ -40,7 +40,8 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
       diff: 0.19,
     },
     {
-      label: "Provides opportunities for career/professional development and growth",
+      label:
+        "Provides opportunities for career/professional development and growth",
       diff: 0.17,
     },
     {
@@ -98,6 +99,7 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
           barHeight={barHeight}
           barGap={6}
           rowPaddingY={24}
+          firstRowBorder={true}
         />
       </div>,
     );
@@ -121,13 +123,20 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
           ))}
         </div>
 
-        <div className="sbc-compare__table" role="table" aria-label="Comparison table">
+        <div
+          className="sbc-compare__table"
+          role="table"
+          aria-label="Comparison table"
+        >
           <div className="sbc-compare__thead" role="rowgroup">
             <div className="sbc-compare__tr" role="row">
               <div className="sbc-compare__th" role="columnheader">
                 Comparison of Team Scores
               </div>
-              <div className="sbc-compare__th sbc-compare__th--right" role="columnheader">
+              <div
+                className="sbc-compare__th sbc-compare__th--right"
+                role="columnheader"
+              >
                 Difference - 2025 Vs 2024
               </div>
             </div>
@@ -188,14 +197,14 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
-        blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
-        pagePadding={0}
-        contentClassName="summary-by-competency-page"
-        componentId="engagement-with-management-summary-by-competency"
-      />
+    <AutoPaginatedSections
+      blocks={blocks}
+      pageWidth={794}
+      pageHeight={1123}
+      pagePadding={0}
+      contentClassName="summary-by-competency-page"
+      componentId="engagement-with-management-summary-by-competency"
+    />
     // </div>
   );
 };

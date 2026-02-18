@@ -20,8 +20,12 @@
   padding: var(--ctbc-row-pad-y) 0;
   border-top: 2px dashed var(--chart-separator);
 
+ &--no-border{
+  border-top: none !important; 
+ }
+
   &--first {
-    border-top: 2px dashed var(--chart-separator);
+    border-top: none !important;
   }
 
   &--last {

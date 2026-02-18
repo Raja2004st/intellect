@@ -8,8 +8,7 @@ import "../styles/competencyBiggerPicture.scss";
 const SuggestedGuidelines = ({
   title = "Your Competency Summary: The Bigger Picture",
   overallScore,
-  note =
-    "Snapshot of average / mean score for each Competency based on inputs from respondent's vis-a vis your self-rating",
+  note = "Snapshot of average / mean score for each Competency based on inputs from respondent's vis-a vis your self-rating",
   items = [],
 }) => {
   const blocks = useMemo(() => {
@@ -19,15 +18,15 @@ const SuggestedGuidelines = ({
       <FeedbackCommonHeader
         key="sg-h1"
         title="Suggested Guidelines When Viewing Your Report"
-      />
+      />,
     );
 
     out.push(
       <div key="sg-content" className="suggested-guidelines-content">
         <ul className="suggested-guidelines-list">
           <li>
-            View the report with an open mind and without filters or preconceived
-            notions driven by self-perception or past feedback
+            View the report with an open mind and without filters or
+            preconceived notions driven by self-perception or past feedback
           </li>
           <li>
             Each Respondent views you in a particular light and this perception
@@ -62,9 +61,8 @@ const SuggestedGuidelines = ({
             role model in specific leadership competencies
           </li>
         </ul>
-      </div>
+      </div>,
     );
-
 
     out.push(
       <FeedbackCommonHeader
@@ -72,25 +70,26 @@ const SuggestedGuidelines = ({
         title={title}
         right={
           overallScore !== undefined && overallScore !== null ? (
-            <div className="cbp-header__pill">Overall Score – {overallScore}/5</div>
+            <div className="cbp-header__pill">
+              Overall Score – {overallScore}/5
+            </div>
           ) : null
         }
-      />
+      />,
     );
 
     out.push(
       <div key="note" className="cbp-note">
         <div className="cbp-note__bullet" aria-hidden="true" />
         <div className="cbp-note__text">{note}</div>
-      </div>
+      </div>,
     );
 
     out.push(
       <div key="chart" className="cbp-chart">
         <CompetencyThreeBarChart items={items} />
-      </div>
+      </div>,
     );
-
 
     // out.push(
     //   <div
@@ -105,14 +104,14 @@ const SuggestedGuidelines = ({
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
-        blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
-        pagePadding={0}
-        contentClassName="suggested-guidelines-page"
-        componentId="suggested-guidelines"
-      />
+    <AutoPaginatedSections
+      blocks={blocks}
+      pageWidth={794}
+      pageHeight={1123}
+      pagePadding={0}
+      contentClassName="suggested-guidelines-page"
+      componentId="suggested-guidelines"
+    />
     // </div>
   );
 };
