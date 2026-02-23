@@ -11,102 +11,98 @@ const Donut = ({ percent, color }) => {
   const pct = Number(percent);
   const safePct = Number.isFinite(pct) ? Math.max(0, Math.min(100, pct)) : 0;
 
+  //   const dottedRingPlugin = {
+  //   id: "dottedPattern",
 
+  //   beforeDraw(chart) {
+  //     const { ctx } = chart;
 
-//   const dottedRingPlugin = {
-//   id: "dottedPattern",
+  //     const meta = chart.getDatasetMeta(0);
+  //     const arc = meta?.data?.[0];
 
-//   beforeDraw(chart) {
-//     const { ctx } = chart;
+  //     if (!arc) return;
 
-//     const meta = chart.getDatasetMeta(0);
-//     const arc = meta?.data?.[0];
+  //     const centerX = arc.x;
+  //     const centerY = arc.y;
 
-//     if (!arc) return;
+  //     const innerRadius = arc.innerRadius;
+  //     const outerRadius = arc.outerRadius;
 
-//     const centerX = arc.x;
-//     const centerY = arc.y;
+  //     const patternCanvas = document.createElement("canvas");
+  //     patternCanvas.width = 4;
+  //     patternCanvas.height = 4;
 
-//     const innerRadius = arc.innerRadius;
-//     const outerRadius = arc.outerRadius;
+  //     const pctx = patternCanvas.getContext("2d");
 
-//     const patternCanvas = document.createElement("canvas");
-//     patternCanvas.width = 4;
-//     patternCanvas.height = 4;
+  //     pctx.fillStyle = color;
 
-//     const pctx = patternCanvas.getContext("2d");
+  //     pctx.beginPath();
+  //     pctx.arc(3, 3, 1, 0, Math.PI * 2);
+  //     pctx.fill();
 
-//     pctx.fillStyle = color;
+  //     const pattern = ctx.createPattern(patternCanvas, "repeat");
 
-//     pctx.beginPath();
-//     pctx.arc(3, 3, 1, 0, Math.PI * 2);
-//     pctx.fill();
+  //     ctx.save();
+  //     ctx.fillStyle = pattern;
 
-//     const pattern = ctx.createPattern(patternCanvas, "repeat");
+  //     ctx.beginPath();
+  //     ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+  //     ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
+  //     ctx.closePath();
 
-//     ctx.save();
-//     ctx.fillStyle = pattern;
+  //     ctx.fill();
+  //     ctx.restore();
+  //   },
+  // };
 
-//     ctx.beginPath();
-//     ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-//     ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
-//     ctx.closePath();
+  const dottedRingPlugin = {
+    id: "dottedPattern",
 
-//     ctx.fill();
-//     ctx.restore();
-//   },
-// };
+    beforeDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
+      const arc = meta?.data?.[0];
 
-const dottedRingPlugin = {
-  id: "dottedPattern",
+      if (!arc) return;
 
-  beforeDraw(chart) {
-    const { ctx } = chart;
-    const meta = chart.getDatasetMeta(0);
-    const arc = meta?.data?.[0];
+      const centerX = arc.x;
+      const centerY = arc.y;
 
-    if (!arc) return;
+      const innerRadius = arc.innerRadius;
+      const outerRadius = arc.outerRadius;
 
-    const centerX = arc.x;
-    const centerY = arc.y;
+      const dotRadius = 1;
+      const dotGap = 4;
+      const dotColor = color;
 
-    const innerRadius = arc.innerRadius;
-    const outerRadius = arc.outerRadius;
+      const patternCanvas = document.createElement("canvas");
+      patternCanvas.width = dotGap;
+      patternCanvas.height = dotGap;
 
-    const dotRadius = 1;   
-    const dotGap = 4;       
-    const dotColor = color;
+      const pctx = patternCanvas.getContext("2d");
 
-    const patternCanvas = document.createElement("canvas");
-    patternCanvas.width = dotGap;
-    patternCanvas.height = dotGap;
+      pctx.fillStyle = dotColor;
+      pctx.beginPath();
+      pctx.arc(dotGap / 2, dotGap / 2, dotRadius, 0, Math.PI * 2);
+      pctx.fill();
 
-    const pctx = patternCanvas.getContext("2d");
+      const pattern = ctx.createPattern(patternCanvas, "repeat");
 
-    pctx.fillStyle = dotColor;
-    pctx.beginPath();
-    pctx.arc(dotGap / 2, dotGap / 2, dotRadius, 0, Math.PI * 2);
-    pctx.fill();
+      ctx.save();
+      ctx.fillStyle = pattern;
 
-    const pattern = ctx.createPattern(patternCanvas, "repeat");
+      ctx.beginPath();
 
-    ctx.save();
-    ctx.fillStyle = pattern;
+      ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
 
-    ctx.beginPath();
+      ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
 
-    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
 
-    ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
-
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-  },
-};
-
-
+      ctx.restore();
+    },
+  };
 
   const data = {
     labels: ["Selected", "Remaining"],
@@ -136,8 +132,7 @@ const dottedRingPlugin = {
   const startAngleDeg = -90;
   const filledAngleDeg = (safePct / 100) * 360;
   const middleAngleDeg = startAngleDeg + filledAngleDeg / 2;
-  const angleRad = (middleAngleDeg * Math.PI) / 180 ;
-
+  const angleRad = (middleAngleDeg * Math.PI) / 180;
 
   const badgeRadiusPx = 60;
 
@@ -153,58 +148,17 @@ const dottedRingPlugin = {
         <Doughnut data={data} options={options} plugins={[dottedRingPlugin]} />
       </div>
       <div className="nls-donut__badge" style={badgeStyle}>
-        {Math.round(safePct)}%
+        {Math.round(safePct * 10) / 10}%
       </div>
     </div>
   );
 };
-
 const NomineesLeadershipStylePage = ({
   title = "Nominee’s Leadership Style",
-  items = [
-    {
-      percent: 91,
-      color: "#ef4b3a",
-      badgePosition: "bottom",
-      pillText: "Good blend of task and relationship\n– 40 respondents",
-      pillColor: "#ef4b3a",
-    },
-    {
-      percent: 77,
-      color: "#20c6a2",
-      badgePosition: "top",
-      pillText:
-        "Too task focused and less relationship\noriented – 3 respondents",
-      pillColor: "#20c6a2",
-    },
-    {
-      percent: 2,
-      color: "#3a9ad9",
-      badgePosition: "top",
-      pillText:
-        "Too relationship oriented and less\ntask oriented – 1 Respondent",
-      pillColor: "#3a9ad9",
-    },
-  ],
+  items = [],
   adjectivesTitle = "Description of Workplace Culture - Frequently Mentioned Adjectives",
   adjectivesSubtitle = "(Adjectives that occur more than once)",
-  adjectives = [
-    { text: "Motivating", size: "lg" },
-    { text: "Energetic", size: "lg" },
-    { text: "Respectful", size: "lg" },
-    { text: "Collaborative", size: "lg" },
-    { text: "Supportive", size: "lg" },
-    { text: "Enthusiastic", size: "md" },
-    { text: "Flexible", size: "md" },
-    { text: "Dynamic", size: "md" },
-    { text: "Encouraging", size: "sm" },
-    { text: "Organized", size: "sm" },
-    { text: "Positive", size: "sm" },
-    { text: "Empowering", size: "md" },
-    { text: "Pleasant", size: "sm" },
-    { text: "Good", size: "sm" },
-    { text: "Inclusive", size: "sm" },
-  ],
+  adjectives = [],
   footnote = "* This excludes self feedback ; The larger fonts indicate more number of responses",
 }) => {
   const blocks = useMemo(() => {
@@ -223,10 +177,7 @@ const NomineesLeadershipStylePage = ({
         <div className="nls-charts">
           {items.map((it, idx) => (
             <div key={idx} className="nls-charts__col">
-              <Donut
-                percent={it.percent}
-                color={it.color}
-              />
+              <Donut percent={it.percent} color={it.color} />
             </div>
           ))}
         </div>
@@ -256,10 +207,10 @@ const NomineesLeadershipStylePage = ({
         <div className="nls-adj__grid">
           {adjectives.map((a, idx) => (
             <div
-              key={`${a.text}-${idx}`}
-              className={`nls-adj-card nls-adj-card--${a.size || "sm"}`.trim()}
+              key={`${a}-${idx}`}
+              className={`nls-adj-card nls-adj-card--${idx < 5 ? "lg" : idx < 10 ? "md" : "sm"}`.trim()}
             >
-              {a.text}
+              {a.charAt(0).toUpperCase() + a.slice(1)}
             </div>
           ))}
         </div>

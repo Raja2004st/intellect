@@ -66,6 +66,7 @@ const SuggestedGuidelines = ({
 
     out.push(
       <FeedbackCommonHeader
+        className="suggestion-overall"
         key="hdr"
         title={title}
         right={
@@ -87,7 +88,7 @@ const SuggestedGuidelines = ({
 
     out.push(
       <div key="chart" className="cbp-chart">
-        <CompetencyThreeBarChart items={items} />
+        <CompetencyThreeBarChart items={items} barHeight={8} barGap={7} />
       </div>,
     );
 

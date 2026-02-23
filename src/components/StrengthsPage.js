@@ -39,32 +39,9 @@ const StrengthsPage = ({
     },
   ],
   improvementsGroupItems = [
-    {
-      score: 4.35,
-      text: "Usually makes the right decisions promptly and on time and without undue delay",
-    },
-    {
-      score: 4.49,
-      text: "Gives clear feedback about performance or when anything goes right or wrong",
-    },
-    {
-      score: 4.49,
-      text: "Has created a work culture that rewards merit",
-    },
   ],
   improvementsManagerItems = [
-    {
-      score: 3.0,
-      text: "Usually makes the right decisions promptly and on time and without undue delay",
-    },
-    {
-      score: 3.0,
-      text: "Develops future leaders within the School",
-    },
-    {
-      score: 3.0,
-      text: "Generates energy and enthusiasm in the team | Has created a high performing culture in the team/ school",
-    },
+
   ],
 }) => {
   const [strengthPoints, setStrengthPoints] = useState([]);
@@ -198,7 +175,7 @@ const StrengthsPage = ({
             "--sp-arc-color": "var(--feedback-initial-underline-color)",
           }}
         >
-          <div className="sp-left" style={{}}>
+          <div className="sp-left" >
             <ArcConnector
               items={improvementsGroupItems}
               arcColor={"var(--feedback-initial-name-color)"}
@@ -236,8 +213,8 @@ const StrengthsPage = ({
                         className="sp-row"
                         style={{
                           top:
-                            improvementPoints[i].y -
-                            (i === 1 ? rowTopAdjust : rowTopAdjust),
+                            improvementPoints[i].y  -
+                            ( i == 2 ? rowTopAdjust - 14 : rowTopAdjust - 8),
                         }}
                       >
                         <div

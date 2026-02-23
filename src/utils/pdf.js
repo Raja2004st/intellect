@@ -401,6 +401,14 @@ export async function downloadPdfSplitByHeader() {
             if (loader && loader.parentNode) {
               loader.parentNode.removeChild(loader);
             }
+            clonedDoc.querySelectorAll(".nls-adj-card").forEach((card) => {
+              card.style.overflow = "visible"; // instead of clip/hidden
+            });
+
+            // ✅ Ensure pseudo tail stays visible
+            clonedDoc
+              .querySelectorAll(".nls-adj-card::before")
+              .forEach(() => {});
 
             element.style.visibility = "visible";
             element.style.opacity = "1";
@@ -435,6 +443,14 @@ export async function downloadPdfSplitByHeader() {
               if (loader && loader.parentNode) {
                 loader.parentNode.removeChild(loader);
               }
+              clonedDoc.querySelectorAll(".nls-adj-card").forEach((card) => {
+                card.style.overflow = "visible"; // instead of clip/hidden
+              });
+
+              // ✅ Ensure pseudo tail stays visible
+              clonedDoc
+                .querySelectorAll(".nls-adj-card::before")
+                .forEach(() => {});
             },
           });
 
@@ -462,6 +478,14 @@ export async function downloadPdfSplitByHeader() {
                 if (loader && loader.parentNode) {
                   loader.parentNode.removeChild(loader);
                 }
+                clonedDoc.querySelectorAll(".nls-adj-card").forEach((card) => {
+                  card.style.overflow = "visible"; // instead of clip/hidden
+                });
+
+                // ✅ Ensure pseudo tail stays visible
+                clonedDoc
+                  .querySelectorAll(".nls-adj-card::before")
+                  .forEach(() => {});
               },
             });
 
@@ -755,9 +779,6 @@ function hideLoader() {
   }
 }
 
-
-
-
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf";
 
@@ -1015,25 +1036,25 @@ function hideLoader() {
 //       0% { transform: rotate(0deg); }
 //       100% { transform: rotate(360deg); }
 //     }
-    
+
 //     @keyframes fadeIn {
 //       from { opacity: 0; transform: translateY(10px); }
 //       to { opacity: 1; transform: translateY(0); }
 //     }
-    
+
 //     .pdf-exporting * {
 //       animation-play-state: running !important;
 //     }
-    
+
 //     #pdf-export-loader .loader-container {
 //       animation: fadeIn 0.3s ease-out !important;
 //     }
-    
+
 //     #pdf-export-loader .loader-spinner {
 //       animation: loaderSpin 1s linear infinite !important;
 //       animation-play-state: running !important;
 //     }
-    
+
 //     /* Force animations to run even in background tabs */
 //     @media (prefers-reduced-motion: no-preference) {
 //       #pdf-export-loader .loader-spinner {
@@ -1074,23 +1095,23 @@ function hideLoader() {
 
 //   // Force a reflow to ensure layout is stable
 //   el.getBoundingClientRect();
-  
+
 //   // Wait for any pending layout changes
 //   await new Promise(resolve => setTimeout(resolve, 50));
-  
+
 //   // Check again if element is still valid
 //   if (!el.isConnected || !document.body.contains(el)) {
 //     console.warn(`Section ${index} was removed during preparation`);
 //     return false;
 //   }
-  
+
 //   return true;
 // }
 
 // // NEW: Capture with retry and better error handling
 // async function captureSectionWithRetry(el, index, maxRetries = 2) {
 //   let lastError;
-  
+
 //   for (let attempt = 0; attempt <= maxRetries; attempt++) {
 //     try {
 //       // Wait between attempts
@@ -1122,7 +1143,7 @@ function hideLoader() {
 //           if (loader && loader.parentNode) {
 //             loader.parentNode.removeChild(loader);
 //           }
-          
+
 //           // Ensure element is visible in clone
 //           if (element) {
 //             element.style.visibility = "visible";
@@ -1140,7 +1161,7 @@ function hideLoader() {
 //     } catch (err) {
 //       lastError = err;
 //       console.warn(`Capture attempt ${attempt} failed for section ${index}:`, err);
-      
+
 //       // Don't retry if element is gone
 //       if (!el.isConnected || !document.body.contains(el)) {
 //         console.warn(`Section ${index} no longer in DOM, stopping retries`);
@@ -1148,7 +1169,7 @@ function hideLoader() {
 //       }
 //     }
 //   }
-  
+
 //   console.error(`All capture attempts failed for section ${index}:`, lastError);
 //   return null;
 // }
@@ -1228,13 +1249,13 @@ function hideLoader() {
 
 //       // Capture section with retry logic
 //       const canvas = await captureSectionWithRetry(el, i);
-      
+
 //       if (canvas) {
 //         capturedCanvases.push(canvas);
 //         successfulCaptures++;
 //       } else {
 //         console.warn(`Failed to capture section ${i} after all retries`);
-        
+
 //         // Create a blank canvas as fallback
 //         const fallbackCanvas = document.createElement("canvas");
 //         fallbackCanvas.width = 800;
@@ -1248,7 +1269,7 @@ function hideLoader() {
 //         ctx.fillText("Content unavailable", 400, 300);
 //         ctx.font = "16px Arial";
 //         ctx.fillText(`Section ${i + 1} could not be captured`, 400, 350);
-        
+
 //         capturedCanvases.push(fallbackCanvas);
 //         successfulCaptures++;
 //       }
@@ -1263,10 +1284,10 @@ function hideLoader() {
 //     if (capturedCanvases.length > 0) {
 //       for (let i = 0; i < capturedCanvases.length; i++) {
 //         if (!isExporting) break;
-        
+
 //         updateLoaderProgress(i + 1, capturedCanvases.length);
 //         await addCanvasToPdf(pdf, capturedCanvases[i], 0.1);
-        
+
 //         if (i < capturedCanvases.length - 1) {
 //           pdf.addPage();
 //         }

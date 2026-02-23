@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import FeedbackInitialPage from "../components/feedbackInitialPage";
 import SurveyFeedback from "../components/surveyFeedback";
 import "../styles/feedback360Report.scss";
@@ -12,194 +12,290 @@ import QualitativeFeedbackCoverPage from "../components/QualitativeFeedbackCover
 import ContinueDoingPage from "../components/ContinueDoingPage";
 import StopDoingPage from "../components/StopDoingPage";
 import { downloadPdfSplitByHeader } from "../utils/pdf";
+import { excelSheetFeedback } from "../helper/apicalls/feedback";
 import { useOutletContext } from "react-router-dom";
 
 const Feedback360Report = () => {
-  const competencyBiggerPictureItems = [
-    {
-      label: "Leadership Personality & Style",
-      groupMean: 4.72,
-      managerRating: 3.86,
-      selfRating: 5,
-    },
-    {
-      label: "Educational Quality & Student Outcomes",
-      groupMean: 4.64,
-      managerRating: 4.0,
-      selfRating: 4.6,
-    },
-    {
-      label: "Leadership for Staff Performance & Development",
-      groupMean: 4.64,
-      managerRating: 4.0,
-      selfRating: 5,
-    },
-    {
-      label: "Creating the Right Culture",
-      groupMean: 4.57,
-      managerRating: 3.33,
-      selfRating: 4.33,
-    },
-  ];
+  const [feedbackOverallData, setFeedbackOverallData] = useState(null);
+  const buildCompetencyItemsFromApi = (summary) => {
+    if (!summary) return [];
+    return [
+      {
+        label: "Leadership Personality & Style",
+        groupMean: summary.leadership_style?.Subordinates ?? null,
+        managerRating: summary.leadership_style?.Manager ?? null,
+        selfRating: summary.leadership_style?.Self ?? null,
+      },
+      {
+        label: "Educational Quality & Student Outcomes",
+        groupMean: summary.educational_quality?.Subordinates ?? null,
+        managerRating: null,
+        selfRating: summary.educational_quality?.Self ?? null,
+      },
+      {
+        label: "Leadership for Staff Performance & Development",
+        groupMean: summary.leadership_staff_dev?.Subordinates ?? null,
+        managerRating: null,
+        selfRating: summary.leadership_staff_dev?.Self ?? null,
+      },
+      {
+        label: "Creating the Right Culture",
+        groupMean: summary.right_culture?.Subordinates ?? null,
+        managerRating: summary.right_culture?.Manager ?? null,
+        selfRating: summary.right_culture?.Self ?? null,
+      },
+      {
+        label: "Engagement with Management",
+        groupMean: summary.engagement_with_management?.Subordinates ?? null,
+        managerRating: summary.engagement_with_management?.Manager ?? null,
+        selfRating: summary.engagement_with_management?.Self ?? null,
+      },
+    ];
+  };
 
-  const engagementWithManagementItems = [
-    {
-      label:
-        "Manages school finances and payment approvals\nappropriately and maintains clear & accurate accounts",
-      managerRating: 5,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Raises relevant issues at the right time and in the right\nway to the Management on topics of importance to the\nschool",
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label: "Develops future leaders within the school",
-      managerRating: 3,
-      selfRating: 5,
-    },
-  ];
+  const buildThreeTextColumns = (items) => {
+    if (!Array.isArray(items) || !items.length) return [];
+    const cleaned = items
+      .map((raw) =>
+        String(raw || "")
+          .replace(/_x000D_\s*/gi, " ")
+          .trim(),
+      )
+      .filter((t) => t && t !== "-" && t !== "--" && t !== "---");
 
-  const educationalQualityCompetencyItems = [
-    {
-      label:
-        "Works with teachers to set high academic standards\nthat rise above minimum expectations",
-      groupMean: 4.7,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Visits classrooms to observe and monitor the quality of\ncurriculum, assessments and instruction that engage\nstudents in successful learning",
-      groupMean: 4.68,
-      selfRating: 4,
-    },
-    {
-      label:
-        "Ensures that teachers have appropriate resources to\nmeet the needs of each student",
-      groupMean: 4.63,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Facilitates opportunities for teachers to transfer and\nmentor other teachers on best practices",
-      groupMean: 4.63,
-      selfRating: 4,
-    },
-    {
-      label:
-        "Builds a passion and sense of urgency amongst staff\nmembers for them to make continuous improvements\nto the quality of learning for every student",
-      groupMean: 4.55,
-      selfRating: 5,
-    },
-  ];
+    if (!cleaned.length) return [];
 
-  const staffPerformanceCompetencyItems = [
-    {
-      label:
-        "Provides opportunities for career/professional development\nand growth",
-      groupMean: 4.74,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Provides enough support, direction and guidance whenever\nrequired, for effective performance of team members",
-      groupMean: 4.72,
-      selfRating: 5,
-    },
-    {
-      label: "Helps in resolving issues/remove roadblocks in the job",
-      groupMean: 4.7,
-      selfRating: 5,
-    },
-    {
-      label: "Makes the team members feel empowered to take decisions",
-      groupMean: 4.63,
-      selfRating: 5,
-    },
-    {
-      label: "Delegates effectively",
-      groupMean: 4.53,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Gives clear feedback about performance or when anything\ngoes right or wrong",
-      groupMean: 4.49,
-      selfRating: 5,
-    },
-  ];
-  const competencyBiggerPictureOverallScore = 4.65;
+    const cols = [[], [], []];
+    cleaned.forEach((text, idx) => {
+      cols[idx % 3].push(text);
+    });
+    return cols;
+  };
 
-  const summaryByCompetencyItems = [
-    {
-      label: "Generates energy and enthusiasm in\nthe team",
-      groupMean: 4.67,
-      managerRating: 3,
-      selfRating: 5,
-    },
-    {
-      label: "Has created a high performing culture\nin the team/school",
-      groupMean: 4.53,
-      managerRating: 3,
-      selfRating: 4,
-    },
-    {
-      label: "Has created a work culture that\nrewards merit",
-      groupMean: 4.49,
-      managerRating: 4,
-      selfRating: 4,
-    },
-  ];
-  const summaryByCompetencyLeadershipItems = [
-    {
-      label:
-        "Builds rapport with people and treats team members\nwith respect and dignity",
-      groupMean: 4.91,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label: "Leads without aggression or arrogance",
-      groupMean: 4.91,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Does not misuse his/her power or authority in any direct\nor indirect ways",
-      groupMean: 4.86,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label: "Makes one feel valued as an individual",
-      groupMean: 4.77,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label: "Handles ambiguous situations well",
-      groupMean: 4.65,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Values diverse perspectives, even if they are different\nfrom his/her own",
-      groupMean: 4.58,
-      managerRating: 4,
-      selfRating: 5,
-    },
-    {
-      label:
-        "Usually makes the right decisions promptly and on time\nwithout undue delay",
-      groupMean: 4.35,
-      managerRating: 3,
-      selfRating: 5,
-    },
-  ];
+  const buildDynamicStopDoingColumns = (items) => {
+    if (!Array.isArray(items) || !items.length) return [];
+    const cleaned = items
+      .map((raw) =>
+        String(raw || "")
+          .replace(/_x000D_\s*/gi, " ")
+          .trim(),
+      )
+      .filter((t) => t && t !== "-" && t !== "--" && t !== "---");
+    if (!cleaned.length) return [];
+    const columnCount = cleaned.length > 40 ? 3 : 2;
+    const cols = Array.from({ length: columnCount }, () => []);
+
+    cleaned.forEach((text, idx) => {
+      cols[idx % columnCount].push(text);
+    });
+
+    return cols;
+  };
+
+  const computeOverallFromApi = (summary) => {
+    if (!summary) return 4.65;
+    const values = [
+      summary.leadership_style?.Subordinates,
+      summary.educational_quality?.Subordinates,
+      summary.leadership_staff_dev?.Subordinates,
+      summary.right_culture?.Subordinates,
+    ].filter((v) => typeof v === "number");
+    if (!values.length) return 4.65;
+    const total = values.reduce((acc, v) => acc + v, 0);
+    return Number((total / values.length).toFixed(2));
+  };
+
+  const buildThreeWayCompetencyItems = (obj, fallbackItems) => {
+    if (!obj) return fallbackItems;
+    return Object.entries(obj).map(([label, vals]) => ({
+      label,
+      groupMean: vals?.Subordinates ?? null,
+      managerRating: vals?.Manager ?? null,
+      selfRating: vals?.Self ?? null,
+    }));
+  };
+
+  const competencyBiggerPictureItems = buildCompetencyItemsFromApi(
+    feedbackOverallData?.competency_summary_overall || {},
+  );
+
+  const staffPerformanceCompetencyItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.leadership_staff_dev_competency,
+    [
+      {
+        label:
+          "Provides opportunities for career/professional development\nand growth",
+        groupMean: 4.74,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Provides enough support, direction and guidance whenever\nrequired, for effective performance of team members",
+        groupMean: 4.72,
+        selfRating: 5,
+      },
+      {
+        label: "Helps in resolving issues/remove roadblocks in the job",
+        groupMean: 4.7,
+        selfRating: 5,
+      },
+      {
+        label: "Makes the team members feel empowered to take decisions",
+        groupMean: 4.63,
+        selfRating: 5,
+      },
+      {
+        label: "Delegates effectively",
+        groupMean: 4.53,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Gives clear feedback about performance or when anything\ngoes right or wrong",
+        groupMean: 4.49,
+        selfRating: 5,
+      },
+    ],
+  );
+
+  const competencyBiggerPictureOverallScore = computeOverallFromApi(
+    feedbackOverallData?.competency_summary_overall,
+  );
+
+  const summaryByCompetencyItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.right_culture_competency,
+    [
+      {
+        label: "Generates energy and enthusiasm in\nthe team",
+        groupMean: 4.67,
+        managerRating: 3,
+        selfRating: 5,
+      },
+      {
+        label: "Has created a high performing culture\nin the team/school",
+        groupMean: 4.53,
+        managerRating: 3,
+        selfRating: 4,
+      },
+      {
+        label: "Has created a work culture that\nrewards merit",
+        groupMean: 4.49,
+        managerRating: 4,
+        selfRating: 4,
+      },
+    ],
+  );
+
+  const summaryByCompetencyLeadershipItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.leadership_style_competency,
+    [
+      {
+        label:
+          "Builds rapport with people and treats team members\nwith respect and dignity",
+        groupMean: 4.91,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label: "Leads without aggression or arrogance",
+        groupMean: 4.91,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Does not misuse his/her power or authority in any direct\nor indirect ways",
+        groupMean: 4.86,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label: "Makes one feel valued as an individual",
+        groupMean: 4.77,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label: "Handles ambiguous situations well",
+        groupMean: 4.65,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Values diverse perspectives, even if they are different\nfrom his/her own",
+        groupMean: 4.58,
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Usually makes the right decisions promptly and on time\nwithout undue delay",
+        groupMean: 4.35,
+        managerRating: 3,
+        selfRating: 5,
+      },
+    ],
+  );
+
+  const engagementWithManagementItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.engagement_with_management_competency,
+    [
+      {
+        label:
+          "Manages school finances and payment approvals\nappropriately and maintains clear & accurate accounts",
+        managerRating: 5,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Raises relevant issues at the right time and in the right\nway to the Management on topics of importance to the\nschool",
+        managerRating: 4,
+        selfRating: 5,
+      },
+      {
+        label: "Develops future leaders within the school",
+        managerRating: 3,
+        selfRating: 5,
+      },
+    ],
+  );
+
+  const educationalQualityCompetencyItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.educational_quality_competency,
+    [
+      {
+        label:
+          "Works with teachers to set high academic standards\nthat rise above minimum expectations",
+        groupMean: 4.7,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Visits classrooms to observe and monitor the quality of\ncurriculum, assessments and instruction that engage\nstudents in successful learning",
+        groupMean: 4.68,
+        selfRating: 4,
+      },
+      {
+        label:
+          "Ensures that teachers have appropriate resources to\nmeet the needs of each student",
+        groupMean: 4.63,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Facilitates opportunities for teachers to transfer and\nmentor other teachers on best practices",
+        groupMean: 4.63,
+        selfRating: 4,
+      },
+      {
+        label:
+          "Builds a passion and sense of urgency amongst staff\nmembers for them to make continuous improvements\nto the quality of learning for every student",
+        groupMean: 4.55,
+        selfRating: 5,
+      },
+    ],
+  );
 
   const summaryByCompetencyOverallScore = 4.53;
   const summaryByCompetencyLeadershipOverallScore = 4.7;
@@ -222,27 +318,109 @@ const Feedback360Report = () => {
       ? competencyBiggerPictureOverallScore
       : globalData?.competencyBiggerPictureOverallScore;
 
-  const strengthsGroupItems = globalData?.strengthsGroupItems || [
-    {
-      score: 4.91,
-      text: "Builds rapport with people and treats them with respect and dignity",
-    },
-    {
-      score: 4.91,
-      text: "Leads without aggression or arrogance",
-    },
-    {
-      score: 4.86,
-      text: "Builds rapport with people and treats them with respect and dignity",
-    },
-  ];
+  const strengthsGroupItems = feedbackOverallData?.strengths
+    ? (feedbackOverallData.strengths.Subordinates || []).map((item) => ({
+        score: item.score,
+        text: item.question,
+      }))
+    : [
+        {
+          score: 4.91,
+          text: "Builds rapport with people and treats them with respect and dignity",
+        },
+        {
+          score: 4.91,
+          text: "Leads without aggression or arrogance",
+        },
+        {
+          score: 4.86,
+          text: "Builds rapport with people and treats them with respect and dignity",
+        },
+      ];
 
-  const strengthsManagerItems = globalData?.strengthsManagerItems || [
-    {
-      score: 5.0,
-      text: "Manages school finances and payment approvals appropriately and maintains clear and accurate accounts",
-    },
-  ];
+  const strengthsManagerItems = feedbackOverallData?.strengths
+    ? (feedbackOverallData.strengths.Manager || []).map((item) => ({
+        score: item.score,
+        text: item.question,
+      }))
+    : [
+        {
+          score: 5.0,
+          text: "Manages school finances and payment approvals appropriately and maintains clear and accurate accounts",
+        },
+      ];
+
+  const improvementsGroupItems = feedbackOverallData?.area_of_improvement
+    ? (feedbackOverallData.area_of_improvement.Subordinates || []).map(
+        (item) => ({
+          score: item.score,
+          text: item.question,
+        }),
+      )
+    : [];
+
+  const improvementsManagerItems = feedbackOverallData?.area_of_improvement
+    ? (feedbackOverallData.area_of_improvement.Manager || []).map((item) => ({
+        score: item.score,
+        text: item.question,
+      }))
+    : [];
+
+  const buildNomineeLeadershipItems = (nomineeObj) => {
+    if (!nomineeObj) {
+      return undefined;
+    }
+
+    const entries = Object.entries(nomineeObj);
+    if (!entries.length) return [];
+
+    const total = entries.reduce((sum, [, v]) => sum + (v?.count || 0), 0) || 1;
+
+    const palette = {
+      A: {
+        color: "#20c6a2",
+        pillColor: "#20c6a2",
+      },
+      B: {
+        color: "#3a9ad9",
+        pillColor: "#3a9ad9",
+      },
+      C: {
+        color: "#ef4b3a",
+        pillColor: "#ef4b3a",
+      },
+    };
+
+    const orderedKeys = ["C", "A", "B"];
+
+    return orderedKeys
+      .filter((key) => nomineeObj[key])
+      .map((key) => {
+        const { text, count } = nomineeObj[key];
+        const pct = (count / total) * 100;
+
+        const base =
+          key === "C"
+            ? "Good blend of task and relationship"
+            : key === "A"
+              ? "Too task focused and less relationship oriented"
+              : "Too relationship oriented and less task oriented";
+
+        const labelText = text || base;
+
+        const style = palette[key] || palette.C;
+        return {
+          percent: pct,
+          color: style.color,
+          pillText: `${labelText} – ${count} respondent${count === 1 ? "" : "s"}`,
+          pillColor: style.pillColor,
+        };
+      });
+  };
+
+  const nomineeLeadershipItems = buildNomineeLeadershipItems(
+    feedbackOverallData?.nominee_leadership,
+  );
 
   const mostPredominantLeadershipTraitColumns = [
     [
@@ -318,33 +496,62 @@ const Feedback360Report = () => {
 
   const { setIsHeader, setHeaderName } = useOutletContext();
 
+  const [excelFile, setExcelFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleExcelChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setExcelFile(file);
+    if (file) {
+      handleExcelUpload(file);
+    }
+  };
+
+  console.log("feedbackOverallData", feedbackOverallData);
+
+  const handleExcelUpload = async (fileArg) => {
+    const fileToUpload = fileArg || excelFile;
+    if (!fileToUpload || isUploading) return;
+    try {
+      setIsUploading(true);
+      const response = await excelSheetFeedback(fileToUpload);
+      setFeedbackOverallData(response);
+    } catch (err) {
+      console.error("Excel upload failed", err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   useEffect(() => {
     setHeaderName("Feedback");
   }, []);
 
   return (
     <div className="feedbackreport-main-container">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          padding: "12px 16px",
-          gap: 8,
-        }}
-      >
+      <div className="feedbackreport-toolbar">
         <button
           onClick={downloadPdfSplitByHeader}
-          style={{
-            padding: "8px 14px",
-            background: "var(--color-green)",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            cursor: "pointer",
-            // display: "none",
-          }}
+          className="feedbackreport-btn feedbackreport-btn--download"
         >
           Download PDF
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".xlsx,.xls,.csv"
+          onChange={handleExcelChange}
+          className="feedbackreport-file-input"
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+          className={`feedbackreport-btn feedbackreport-btn--upload${
+            isUploading ? " feedbackreport-btn--upload-disabled" : ""
+          }`}
+        >
+          {isUploading ? "Uploading..." : "Upload Excel"}
         </button>
       </div>
       <div className="section-page pdf-section">
@@ -361,6 +568,8 @@ const Feedback360Report = () => {
         startPage={6}
         groupItems={strengthsGroupItems}
         managerItems={strengthsManagerItems}
+        improvementsGroupItems={improvementsGroupItems}
+        improvementsManagerItems={improvementsManagerItems}
       />
 
       <SummaryByCompetencyPage
@@ -389,12 +598,37 @@ const Feedback360Report = () => {
       <div className="section-page">
         <QualitativeFeedbackCoverPage />
       </div>
-      <NomineesLeadershipStylePage />
-      <ContinueDoingPage />
-      <StopDoingPage />
+      <NomineesLeadershipStylePage
+        items={nomineeLeadershipItems}
+        adjectives={
+          feedbackOverallData?.workplace_culture
+            ? feedbackOverallData?.workplace_culture
+            : []
+        }
+      />
+      <ContinueDoingPage
+        columns={
+          buildThreeTextColumns(feedbackOverallData?.continue_doing_thing) || []
+        }
+      />
+      <StopDoingPage
+        columns={
+          buildDynamicStopDoingColumns(feedbackOverallData?.stop_doing_thing) ||
+          []
+        }
+        traits={
+          feedbackOverallData?.predominant_leader_most_thing
+            ? feedbackOverallData?.predominant_leader_most_thing
+            : []
+        }
+      />
       <ContinueDoingPage
         title="Most Predominant Leadership Trait"
-        columns={mostPredominantLeadershipTraitColumns}
+        columns={
+          buildThreeTextColumns(
+            feedbackOverallData?.predominant_leader_thing,
+          ) || mostPredominantLeadershipTraitColumns
+        }
       />
       <ContinueDoingPage
         title={"Immediate Action Areas - Summary"}
