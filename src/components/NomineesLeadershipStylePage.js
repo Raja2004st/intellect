@@ -137,9 +137,9 @@ const Donut = ({ percent, color }) => {
   const badgeRadiusPx = 60;
 
   const badgeStyle = {
-    background: color,
-    left: `calc(50% + ${badgeRadiusPx * Math.cos(angleRad)}px)`,
-    top: `calc(50% + ${badgeRadiusPx * Math.sin(angleRad) - 5}px)`,
+    // background: color,
+    left: `calc(50% + ${badgeRadiusPx * Math.cos(angleRad)}px + 5px)`,
+    top: `calc(50% + ${badgeRadiusPx * Math.sin(angleRad) - 5}px - 9px)`,
   };
 
   return (
@@ -175,7 +175,7 @@ const NomineesLeadershipStylePage = ({
     out.push(
       <div key="nls-main" className="nls-main">
         <div className="nls-charts">
-          {items.map((it, idx) => (
+          {items?.map((it, idx) => (
             <div key={idx} className="nls-charts__col">
               <Donut percent={it.percent} color={it.color} />
             </div>
@@ -205,7 +205,7 @@ const NomineesLeadershipStylePage = ({
         </div>
 
         <div className="nls-adj__grid">
-          {adjectives.map((a, idx) => (
+          {adjectives?.map((a, idx) => (
             <div
               key={`${a}-${idx}`}
               className={`nls-adj-card nls-adj-card--${idx < 5 ? "lg" : idx < 10 ? "md" : "sm"}`.trim()}
@@ -237,3 +237,4 @@ const NomineesLeadershipStylePage = ({
 };
 
 export default NomineesLeadershipStylePage;
+

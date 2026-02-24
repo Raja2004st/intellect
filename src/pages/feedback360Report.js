@@ -17,6 +17,10 @@ import { useOutletContext } from "react-router-dom";
 
 const Feedback360Report = () => {
   const [feedbackOverallData, setFeedbackOverallData] = useState(null);
+  const { setIsHeader, setHeaderName } = useOutletContext();
+  const [excelFile, setExcelFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
   const buildCompetencyItemsFromApi = (summary) => {
     if (!summary) return [];
     return [
@@ -93,16 +97,31 @@ const Feedback360Report = () => {
   };
 
   const computeOverallFromApi = (summary) => {
-    if (!summary) return 4.65;
+    if (!summary) return 4.15;
     const values = [
       summary.leadership_style?.Subordinates,
       summary.educational_quality?.Subordinates,
       summary.leadership_staff_dev?.Subordinates,
       summary.right_culture?.Subordinates,
     ].filter((v) => typeof v === "number");
-    if (!values.length) return 4.65;
+    if (!values.length) return 4.15;
     const total = values.reduce((acc, v) => acc + v, 0);
     return Number((total / values.length).toFixed(2));
+  };
+
+  const computeOverallScore = (d) => {
+    let total = 0;
+    let total_no_of_count = 0;
+    if (Object.entries(d).length === 0) {
+      return 0;
+    }
+    Object.entries(d).map(([key, value]) => {
+      Object.entries(value).map(([subKey, subValue]) => {
+        total += subValue;
+      });
+      total_no_of_count += Object.entries(value).length;
+    });
+    return Number((total / total_no_of_count).toFixed(2));
   };
 
   const buildThreeWayCompetencyItems = (obj, fallbackItems) => {
@@ -114,6 +133,9 @@ const Feedback360Report = () => {
       selfRating: vals?.Self ?? null,
     }));
   };
+
+  console.log(buildThreeWayCompetencyItems(feedbackOverallData?.right_culture_competency));
+  
 
   const competencyBiggerPictureItems = buildCompetencyItemsFromApi(
     feedbackOverallData?.competency_summary_overall || {},
@@ -297,26 +319,10 @@ const Feedback360Report = () => {
     ],
   );
 
-  const summaryByCompetencyOverallScore = 4.53;
-  const summaryByCompetencyLeadershipOverallScore = 4.7;
-  const staffPerformanceCompetencyOverallScore = 4.64;
-  const educationalQualityCompetencyOverallScore = 4.63;
-  const engagementWithManagementOverallScore = 4.5;
+  const biggerPictureItems = competencyBiggerPictureItems.length
+    ? competencyBiggerPictureItems
+    : [];
 
-  const globalData =
-    typeof window !== "undefined" ? window.__FEEDBACK360_DATA__ : undefined;
-
-  const biggerPictureItems =
-    Array.isArray(competencyBiggerPictureItems) &&
-    competencyBiggerPictureItems.length
-      ? competencyBiggerPictureItems
-      : globalData?.competencyBiggerPictureItems || [];
-
-  const biggerPictureOverallScore =
-    competencyBiggerPictureOverallScore !== undefined &&
-    competencyBiggerPictureOverallScore !== null
-      ? competencyBiggerPictureOverallScore
-      : globalData?.competencyBiggerPictureOverallScore;
 
   const strengthsGroupItems = feedbackOverallData?.strengths
     ? (feedbackOverallData.strengths.Subordinates || []).map((item) => ({
@@ -368,14 +374,12 @@ const Feedback360Report = () => {
 
   const buildNomineeLeadershipItems = (nomineeObj) => {
     if (!nomineeObj) {
-      return undefined;
+      return [];
     }
 
     const entries = Object.entries(nomineeObj);
     if (!entries.length) return [];
-
     const total = entries.reduce((sum, [, v]) => sum + (v?.count || 0), 0) || 1;
-
     const palette = {
       A: {
         color: "#20c6a2",
@@ -390,9 +394,7 @@ const Feedback360Report = () => {
         pillColor: "#ef4b3a",
       },
     };
-
-    const orderedKeys = ["C", "A", "B"];
-
+    const orderedKeys = ["A", "B","C"];
     return orderedKeys
       .filter((key) => nomineeObj[key])
       .map((key) => {
@@ -410,7 +412,7 @@ const Feedback360Report = () => {
 
         const style = palette[key] || palette.C;
         return {
-          percent: pct,
+          percent: Math.round(pct),
           color: style.color,
           pillText: `${labelText} – ${count} respondent${count === 1 ? "" : "s"}`,
           pillColor: style.pillColor,
@@ -494,17 +496,14 @@ const Feedback360Report = () => {
     },
   };
 
-  const { setIsHeader, setHeaderName } = useOutletContext();
 
-  const [excelFile, setExcelFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef(null);
 
   const handleExcelChange = (e) => {
     const file = e.target.files?.[0] || null;
     setExcelFile(file);
     if (file) {
       handleExcelUpload(file);
+      e.target.value = "";
     }
   };
 
@@ -543,6 +542,7 @@ const Feedback360Report = () => {
           accept=".xlsx,.xls,.csv"
           onChange={handleExcelChange}
           className="feedbackreport-file-input"
+          // disabled={!isUploading}
         />
         <button
           type="button"
@@ -550,6 +550,7 @@ const Feedback360Report = () => {
           className={`feedbackreport-btn feedbackreport-btn--upload${
             isUploading ? " feedbackreport-btn--upload-disabled" : ""
           }`}
+          disabled={isUploading}
         >
           {isUploading ? "Uploading..." : "Upload Excel"}
         </button>
@@ -561,7 +562,7 @@ const Feedback360Report = () => {
 
       <SuggestedGuidelines
         items={biggerPictureItems}
-        overallScore={biggerPictureOverallScore}
+        overallScore={competencyBiggerPictureOverallScore}
       />
 
       <StrengthsPage
@@ -574,28 +575,38 @@ const Feedback360Report = () => {
 
       <SummaryByCompetencyPage
         title="Summary by Competency – Creating the Right Culture"
-        overallScore={summaryByCompetencyOverallScore}
+        overallScore={computeOverallScore(
+          feedbackOverallData?.right_culture_competency || {},
+        )}
         items={summaryByCompetencyItems}
-        leadershipOverallScore={summaryByCompetencyLeadershipOverallScore}
+        leadershipOverallScore={computeOverallScore(
+          feedbackOverallData?.leadership_style_competency || {},
+        )}
         leadershipItems={summaryByCompetencyLeadershipItems}
         barHeight={12}
       />
 
       <StaffPerformanceSummaryByCompetencyPage
-        overallScore={staffPerformanceCompetencyOverallScore}
+        overallScore={computeOverallScore(
+          feedbackOverallData?.leadership_staff_dev_competency || {},
+        )}
         items={staffPerformanceCompetencyItems}
         title2="Summary by Competency – Educational Quality & Student Outcomes"
-        overallScore2={educationalQualityCompetencyOverallScore}
+        overallScore2={computeOverallScore(
+          feedbackOverallData?.educational_quality_competency || {},
+        )}
         items2={educationalQualityCompetencyItems}
         barHeight={6}
       />
 
       <EngagementWithManagementSummaryByCompetencyPage
-        overallScore={engagementWithManagementOverallScore}
+        overallScore={computeOverallScore(
+          feedbackOverallData?.engagement_with_management_competency || {},
+        )}
         items={engagementWithManagementItems}
       />
 
-      <div className="section-page">
+      <div className="section-page pdf-section">
         <QualitativeFeedbackCoverPage />
       </div>
       <NomineesLeadershipStylePage

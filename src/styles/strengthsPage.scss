@@ -32,7 +32,7 @@
   display: grid;
   grid-template-columns: 127px 1fr;
   gap: 16px;
-  padding: 0 40px 40px 40px;
+  padding: 0 40px 0 40px;
   box-sizing: border-box;
 }
 
@@ -159,4 +159,5 @@
   font-size: var(--fs-sm);
   line-height: 1.35;
   font-weight: 500;
+
 }

@@ -31,6 +31,12 @@ const capitalize = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
+const formatTraitText = (value, maxLength = 140) => {
+  const full = capitalize(value || "");
+  if (full.length <= maxLength) return full;
+  return `${full.slice(0, maxLength - 1).trimEnd()}…`;
+};
+
 const StopDoingPage = ({
   title = "What the Nominee Should “Stop Doing”…",
   columns,
@@ -99,7 +105,7 @@ const StopDoingPage = ({
               role="listitem"
             >
               <p className="sd-trait-card-text" title={capitalize(t)}>
-                {capitalize(t)}
+                {formatTraitText(t)}
               </p>
             </div>
           ))}

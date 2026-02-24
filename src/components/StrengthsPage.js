@@ -75,8 +75,8 @@ const StrengthsPage = ({
     const out = [];
 
     const rowSpacing = 96;
-    const topOffset = 70;
-    const arcHeight = 300;
+    const topOffset = 60;
+    const arcHeight = 320;
     const paddingTop = topOffset;
     const paddingBottom = topOffset;
     const rowTopAdjust = 55;
@@ -121,7 +121,7 @@ const StrengthsPage = ({
                         style={{
                           top:
                             strengthPoints[i].y -
-                            (i === 1 ? rowTopAdjust - 8 : rowTopAdjust),
+                            (i === 4 ? rowTopAdjust - 8 : rowTopAdjust),
                         }}
                       >
                         <div
@@ -150,7 +150,7 @@ const StrengthsPage = ({
 
                 <div className="sp-col__body sp-col__body--manager">
                   {managerItems.map((it, idx) => (
-                    <div key={`m-${idx}`} className="sp-row sp-row--manager">
+                    <div key={`m-${idx}`} className="sp-row sp-row--manager" >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
@@ -247,7 +247,7 @@ const StrengthsPage = ({
 
                 <div className="sp-col__body sp-col__body--manager">
                   {improvementsManagerItems.map((it, idx) => (
-                    <div key={`im-${idx}`} className="sp-row sp-row--manager">
+                    <div key={`im-${idx}`} className="sp-row sp-row--manager" style={{position:"absolute",top:improvementPoints[idx ].y - ( idx == 2 ? rowTopAdjust + 8 : rowTopAdjust - 8)}}>
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
