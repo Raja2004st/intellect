@@ -155,9 +155,18 @@
 .sp-card {
   background: var(--strength-card-bg, #efefef);
   padding: 12px 14px;
+  box-sizing: border-box;
+
+  p{
   color: var(--color-black, #111);
   font-size: var(--fs-sm);
   line-height: 1.35;
   font-weight: 500;
-
+   display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+ margin: 0;
+ }
 }

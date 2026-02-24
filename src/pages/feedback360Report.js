@@ -134,8 +134,9 @@ const Feedback360Report = () => {
     }));
   };
 
-  console.log(buildThreeWayCompetencyItems(feedbackOverallData?.right_culture_competency));
-  
+  console.log(
+    buildThreeWayCompetencyItems(feedbackOverallData?.right_culture_competency),
+  );
 
   const competencyBiggerPictureItems = buildCompetencyItemsFromApi(
     feedbackOverallData?.competency_summary_overall || {},
@@ -323,7 +324,6 @@ const Feedback360Report = () => {
     ? competencyBiggerPictureItems
     : [];
 
-
   const strengthsGroupItems = feedbackOverallData?.strengths
     ? (feedbackOverallData.strengths.Subordinates || []).map((item) => ({
         score: item.score,
@@ -350,6 +350,10 @@ const Feedback360Report = () => {
         text: item.question,
       }))
     : [
+        {
+          score: 5.0,
+          text: "Manages school finances and payment approvals appropriately and maintains clear and accurate accounts",
+        },
         {
           score: 5.0,
           text: "Manages school finances and payment approvals appropriately and maintains clear and accurate accounts",
@@ -394,7 +398,7 @@ const Feedback360Report = () => {
         pillColor: "#ef4b3a",
       },
     };
-    const orderedKeys = ["A", "B","C"];
+    const orderedKeys = ["A", "B", "C"];
     return orderedKeys
       .filter((key) => nomineeObj[key])
       .map((key) => {
@@ -495,8 +499,6 @@ const Feedback360Report = () => {
       ],
     },
   };
-
-
 
   const handleExcelChange = (e) => {
     const file = e.target.files?.[0] || null;

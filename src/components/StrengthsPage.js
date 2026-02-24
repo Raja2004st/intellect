@@ -121,20 +121,21 @@ const StrengthsPage = ({
                         style={{
                           top:
                             strengthPoints[i].y -
-                            (i === 4 ? rowTopAdjust - 8 : rowTopAdjust),
+                            (i === 2 ? rowTopAdjust + 7 : rowTopAdjust ),
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
-                            width: 160 - strengthPoints[i].x,
+                            // Clamp the connector so it stays within the score column
+                            width: Math.min(160 - strengthPoints[i].x, 62),
                             left: -(165 - strengthPoints[i].x),
                           }}
                         />
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card">{it.text}</div>
+                        <div className="sp-card"> <p>{it.text}</p></div>
                       </div>
                     ))}
                 </div>
@@ -154,7 +155,7 @@ const StrengthsPage = ({
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card">{it.text}</div>
+                      <div className="sp-card"> <p>{it.text}</p></div>
                     </div>
                   ))}
                 </div>
@@ -213,21 +214,21 @@ const StrengthsPage = ({
                         className="sp-row"
                         style={{
                           top:
-                            improvementPoints[i].y  -
-                            ( i == 2 ? rowTopAdjust - 14 : rowTopAdjust - 8),
+                            improvementPoints[i].y -
+                            (i == 2 ? rowTopAdjust - 14 : rowTopAdjust - 8),
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
-                            width: 160 - improvementPoints[i].x,
+                            width: Math.min(160 - improvementPoints[i].x, 62),
                             left: -(165 - improvementPoints[i].x),
                           }}
                         />
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card">{it.text}</div>
+                        <div className="sp-card"> <p> {it.text}</p></div>
                       </div>
                     ))}
                 </div>
@@ -247,11 +248,12 @@ const StrengthsPage = ({
 
                 <div className="sp-col__body sp-col__body--manager">
                   {improvementsManagerItems.map((it, idx) => (
-                    <div key={`im-${idx}`} className="sp-row sp-row--manager" style={{position:"absolute",top:improvementPoints[idx ].y - ( idx == 2 ? rowTopAdjust + 8 : rowTopAdjust - 8)}}>
+                    <div key={`im-${idx}`} className="sp-row sp-row--manager" style={{position:"absolute",top: improvementPoints[idx].y -
+                            (idx == 2 ? rowTopAdjust : rowTopAdjust - 8)}} >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card">{it.text}</div>
+                      <div className="sp-card"> <p>{it.text}</p></div>
                     </div>
                   ))}
                 </div>
