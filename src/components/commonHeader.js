@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { Search, Bell, User, Settings, ChevronDown } from "lucide-react";
+import {
+  Search,
+  Bell,
+  User,
+  Settings,
+  ChevronDown,
+  ArrowLeft,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../styles/commonHeader.scss";
 
-const CommonHeader = ({ headerName }) => {
+const CommonHeader = ({ headerName, handleBackNavigate, showBackIcon }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -10,6 +18,16 @@ const CommonHeader = ({ headerName }) => {
     <header className="common-header">
       <div className="common-header__inner">
         <div className="common-header__left">
+          {showBackIcon && (
+            <button
+              type="button"
+              className="common-header__back-btn"
+              onClick={handleBackNavigate}
+              aria-label="Go back"
+            >
+              <ArrowLeft size={20} />
+            </button>
+          )}
           <div>
             <h1 className="common-header__title">{headerName}</h1>
             {/* <p className="common-header__subtitle">

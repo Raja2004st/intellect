@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../styles/competencyThreeBarChart.scss";
 
 const DEFAULT_LEGEND = [
@@ -43,16 +43,23 @@ const CompetencyThreeBarChart = ({
   legendItems = DEFAULT_LEGEND,
   formatValue = formatDefault,
   className = "",
-  firstRowBorder=false
+  firstRowBorder = false,
+  onRowsChange,
 }) => {
+  const [rows, setRows] = useState(items);
+  const [editing, setEditing] = useState(null); // { rowIndex, seriesKey, value }
+  useEffect(() => {
+    setRows(items);
+  }, [items]);
+
   const ticks = useMemo(
     () => Array.from({ length: max + 1 }, (_, i) => i),
     [max],
   );
 
   const showCallouts = useMemo(
-    () => items.some((it) => Boolean(it?.callout)),
-    [items]
+    () => rows.some((it) => Boolean(it?.callout)),
+    [rows],
   );
 
   return (
@@ -66,7 +73,7 @@ const CompetencyThreeBarChart = ({
       }}
     >
       <div className="ctbc__rows">
-        {items.map((row, idx) => {
+        {rows.map((row, idx) => {
           const series = legendItems.map((it) => {
             const value = parseNum(row?.[it.key]);
             return {
@@ -79,7 +86,9 @@ const CompetencyThreeBarChart = ({
           return (
             <div
               key={row.label || idx}
-              className={`ctbc-row   ${idx === 0 && firstRowBorder? "ctbc-row--first" : ""} ${idx === items.length - 1 ? "ctbc-row--last" : ""}`}
+              className={`ctbc-row   ${
+                idx === 0 && firstRowBorder ? "ctbc-row--first" : ""
+              } ${idx === rows.length - 1 ? "ctbc-row--last" : ""}`}
             >
               <div className="ctbc-row__label">{row.label}</div>
 
@@ -98,8 +107,64 @@ const CompetencyThreeBarChart = ({
                           background: s.color,
                         }}
                       />
-                      {s.value !== 0 && (
-                        <div className="ctbc-bar__value">{formatValue(s.value)}</div>
+                      {s.value !== -1 && (
+                        editing &&
+                        editing.rowIndex === idx &&
+                        editing.seriesKey === s.key ? (
+                          <input
+                            type="number"
+                            className="ctbc-bar__value ctbc-bar__value-input"
+                            value={editing.value}
+                            autoFocus
+                            onChange={(e) =>
+                              setEditing((prev) =>
+                                prev
+                                  ? { ...prev, value: e.target.value }
+                                  : prev,
+                              )
+                            }
+                            onBlur={() => {
+                              const newVal = parseNum(editing.value);
+                              setRows((prev) =>
+                                prev.map((r, rIdx) =>
+                                  rIdx === idx
+                                    ? { ...r, [s.key]: newVal }
+                                    : r,
+                                ),
+                              );
+                              if (onRowsChange) {
+                                onRowsChange((prev) =>
+                                  prev.map((r, rIdx) =>
+                                    rIdx === idx
+                                      ? { ...r, [s.key]: newVal }
+                                      : r,
+                                  ),
+                                );
+                              }
+                              setEditing(null);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.currentTarget.blur();
+                              } else if (e.key === "Escape") {
+                                setEditing(null);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="ctbc-bar__value"
+                            onDoubleClick={() =>
+                              setEditing({
+                                rowIndex: idx,
+                                seriesKey: s.key,
+                                value: String(s.value ?? ""),
+                              })
+                            }
+                          >
+                            {formatValue(s.value)}
+                          </div>
+                        )
                       )}
                     </div>
                   </div>

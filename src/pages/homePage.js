@@ -112,7 +112,7 @@ const HomePage = () => {
             <button
               type="button"
               className="home-card__cta home-card__cta--report360"
-              onClick={() => navigate("/feedback")}
+              onClick={() => navigate("/user/feedback")}
             >
               View 360° Analysis
             </button>

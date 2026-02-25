@@ -11,8 +11,16 @@ const SummaryByCompetencyPage = ({
   leadershipOverallScore = 4.53,
   leadershipItems = [],
   barHeight,
+  onItemsChange,
+  onLeadershipItemsChange,
 }) => {
-  const blocks = useMemo(() => {
+
+  const handleItemsChange = (rows) => {
+    console.log(rows);
+    onItemsChange(rows);
+  };
+  
+    const blocks = useMemo(() => {
     const out = [];
 
     const parsed = items.map((it) => ({
@@ -90,6 +98,7 @@ const SummaryByCompetencyPage = ({
           barHeight={12}
           barGap={6}
           firstRowBorder={true}
+          onRowsChange={handleItemsChange}
         />
       </div>,
     );
@@ -117,6 +126,7 @@ const SummaryByCompetencyPage = ({
           barHeight={9}
           barGap={4}
           firstRowBorder={true}
+          onRowsChange={onLeadershipItemsChange}
         />
       </div>,
     );

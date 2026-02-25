@@ -54,8 +54,8 @@ const StrengthsPage = ({
     return true;
   };
 
-  console.log("strengthPoints", strengthPoints);
-  console.log("improvementPoints", improvementPoints);
+  // console.log("strengthPoints", strengthPoints);
+  // console.log("improvementPoints", improvementPoints);
   const handleStrengthPointsLine = useCallback((newPoints) => {
     setStrengthPoints((prev) => {
       if (arePointsEqual(prev, newPoints)) return prev;
@@ -96,7 +96,7 @@ const StrengthsPage = ({
               circleColor={"var(--strength-pill-bg)"}
               circleBorderColor={"var(--strength-arc-color)"}
               strokeWidth={5}
-              circleRadius={7.5}
+              circleRadius={8}
             />
             <div className="sp-left__icon" aria-hidden="true">
               <img src={strengthImage} alt="" className="sp-left__img" />
@@ -156,10 +156,10 @@ const StrengthsPage = ({
                     <div
                       key={`m-${idx}`}
                       className="sp-row sp-row--manager"
-                      style={{
-                        position: "absolute",
-                        top: idx === 0 ? 3 : idx === 1 ? 100 : 200,
-                      }}
+                      // style={{
+                      //   position: "absolute",
+                      //   top: idx === 0 ? 3 : idx === 1 ? 100 : 200,
+                      // }}
                     >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
@@ -266,10 +266,10 @@ const StrengthsPage = ({
                     <div
                       key={`im-${idx}`}
                       className="sp-row sp-row--manager"
-                      style={{
-                        position: "absolute",
-                        top: idx === 0 ? 16 : idx === 1 ? 110 : 200,
-                      }}
+                      // style={{
+                      //   position: "absolute",
+                      //   top: idx === 0 ? 16 : idx === 1 ? 110 : 200,
+                      // }}
                     >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
