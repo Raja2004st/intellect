@@ -38,7 +38,7 @@
 
 .sp-left {
   position: relative;
-    top: 57px;
+  top: 57px;
   left: -3px;
   width: 143px;
   height: var(--sp-arc-height, 77%);
@@ -113,7 +113,7 @@
   padding-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sp-row {
@@ -157,16 +157,16 @@
   padding: 12px 14px;
   box-sizing: border-box;
 
-  p{
-  color: var(--color-black, #111);
-  font-size: var(--fs-sm);
-  line-height: 1.35;
-  font-weight: 500;
-   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
- margin: 0;
- }
+  p {
+    color: var(--color-black, #111);
+    font-size: var(--fs-sm);
+    line-height: 1.35;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
 }

@@ -38,11 +38,8 @@ const StrengthsPage = ({
       text: "Manages school finances and payment approvals appropriately and maintains clear and accurate accounts",
     },
   ],
-  improvementsGroupItems = [
-  ],
-  improvementsManagerItems = [
-
-  ],
+  improvementsGroupItems = [],
+  improvementsManagerItems = [],
 }) => {
   const [strengthPoints, setStrengthPoints] = useState([]);
   const [improvementPoints, setImprovementPoints] = useState([]);
@@ -57,6 +54,8 @@ const StrengthsPage = ({
     return true;
   };
 
+  console.log("strengthPoints", strengthPoints);
+  console.log("improvementPoints", improvementPoints);
   const handleStrengthPointsLine = useCallback((newPoints) => {
     setStrengthPoints((prev) => {
       if (arePointsEqual(prev, newPoints)) return prev;
@@ -121,7 +120,7 @@ const StrengthsPage = ({
                         style={{
                           top:
                             strengthPoints[i].y -
-                            (i === 2 ? rowTopAdjust + 7 : rowTopAdjust ),
+                            (i === 2 ? rowTopAdjust + 7 : rowTopAdjust),
                         }}
                       >
                         <div
@@ -135,7 +134,10 @@ const StrengthsPage = ({
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card"> <p>{it.text}</p></div>
+                        <div className="sp-card">
+                          {" "}
+                          <p>{it.text}</p>
+                        </div>
                       </div>
                     ))}
                 </div>
@@ -151,11 +153,21 @@ const StrengthsPage = ({
 
                 <div className="sp-col__body sp-col__body--manager">
                   {managerItems.map((it, idx) => (
-                    <div key={`m-${idx}`} className="sp-row sp-row--manager" >
+                    <div
+                      key={`m-${idx}`}
+                      className="sp-row sp-row--manager"
+                      style={{
+                        position: "absolute",
+                        top: idx === 0 ? 3 : idx === 1 ? 100 : 200,
+                      }}
+                    >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card"> <p>{it.text}</p></div>
+                      <div className="sp-card">
+                        {" "}
+                        <p>{it.text}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -176,7 +188,7 @@ const StrengthsPage = ({
             "--sp-arc-color": "var(--feedback-initial-underline-color)",
           }}
         >
-          <div className="sp-left" >
+          <div className="sp-left">
             <ArcConnector
               items={improvementsGroupItems}
               arcColor={"var(--feedback-initial-name-color)"}
@@ -228,7 +240,10 @@ const StrengthsPage = ({
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card"> <p> {it.text}</p></div>
+                        <div className="sp-card">
+                          {" "}
+                          <p> {it.text}</p>
+                        </div>
                       </div>
                     ))}
                 </div>
@@ -248,12 +263,21 @@ const StrengthsPage = ({
 
                 <div className="sp-col__body sp-col__body--manager">
                   {improvementsManagerItems.map((it, idx) => (
-                    <div key={`im-${idx}`} className="sp-row sp-row--manager" style={{position:"absolute",top: improvementPoints[idx].y -
-                            (idx == 2 ? rowTopAdjust : rowTopAdjust - 8)}} >
+                    <div
+                      key={`im-${idx}`}
+                      className="sp-row sp-row--manager"
+                      style={{
+                        position: "absolute",
+                        top: idx === 0 ? 16 : idx === 1 ? 110 : 200,
+                      }}
+                    >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card"> <p>{it.text}</p></div>
+                      <div className="sp-card">
+                        {" "}
+                        <p>{it.text}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
