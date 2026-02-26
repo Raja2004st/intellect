@@ -21,6 +21,8 @@ const Feedback360Report = () => {
   const [excelFile, setExcelFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
+  const [averageCompentency, setAverageCompentency] = useState(null);
+
   const buildCompetencyItemsFromApi = (summary) => {
     if (!summary) return [];
     return [
@@ -134,51 +136,8 @@ const Feedback360Report = () => {
     }));
   };
 
-  console.log(
-    buildThreeWayCompetencyItems(feedbackOverallData?.right_culture_competency),
-  );
-
   const competencyBiggerPictureItems = buildCompetencyItemsFromApi(
     feedbackOverallData?.competency_summary_overall || {},
-  );
-
-  const staffPerformanceCompetencyItems = buildThreeWayCompetencyItems(
-    feedbackOverallData?.leadership_staff_dev_competency,
-    [
-      {
-        label:
-          "Provides opportunities for career/professional development\nand growth",
-        groupMean: 4.74,
-        selfRating: 5,
-      },
-      {
-        label:
-          "Provides enough support, direction and guidance whenever\nrequired, for effective performance of team members",
-        groupMean: 4.72,
-        selfRating: 5,
-      },
-      {
-        label: "Helps in resolving issues/remove roadblocks in the job",
-        groupMean: 4.7,
-        selfRating: 5,
-      },
-      {
-        label: "Makes the team members feel empowered to take decisions",
-        groupMean: 4.63,
-        selfRating: 5,
-      },
-      {
-        label: "Delegates effectively",
-        groupMean: 4.53,
-        selfRating: 5,
-      },
-      {
-        label:
-          "Gives clear feedback about performance or when anything\ngoes right or wrong",
-        groupMean: 4.49,
-        selfRating: 5,
-      },
-    ],
   );
 
   const competencyBiggerPictureOverallScore = computeOverallFromApi(
@@ -260,7 +219,44 @@ const Feedback360Report = () => {
       },
     ],
   );
-
+  const staffPerformanceCompetencyItems = buildThreeWayCompetencyItems(
+    feedbackOverallData?.leadership_staff_dev_competency,
+    [
+      {
+        label:
+          "Provides opportunities for career/professional development\nand growth",
+        groupMean: 4.74,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Provides enough support, direction and guidance whenever\nrequired, for effective performance of team members",
+        groupMean: 4.72,
+        selfRating: 5,
+      },
+      {
+        label: "Helps in resolving issues/remove roadblocks in the job",
+        groupMean: 4.7,
+        selfRating: 5,
+      },
+      {
+        label: "Makes the team members feel empowered to take decisions",
+        groupMean: 4.63,
+        selfRating: 5,
+      },
+      {
+        label: "Delegates effectively",
+        groupMean: 4.53,
+        selfRating: 5,
+      },
+      {
+        label:
+          "Gives clear feedback about performance or when anything\ngoes right or wrong",
+        groupMean: 4.49,
+        selfRating: 5,
+      },
+    ],
+  );
   const engagementWithManagementItems = buildThreeWayCompetencyItems(
     feedbackOverallData?.engagement_with_management_competency,
     [
@@ -483,21 +479,14 @@ const Feedback360Report = () => {
     description:
       "Repeated themes, if any are captured as a snapshot to facilitate understanding and further action",
     note: "Note: If comments have been very diverse with no commonality, it will not be captured here but can be referenced in the individual slides",
-    columns: {
-      continue: [
-        "Demonstrating a humble, calm and kind leadership where all individuals feel valued and heard",
-        "Fostering a happy, harmonious and peaceful work environment",
-        "Providing guidance with positivity and encouragement, helping teachers and students move in the right direction",
-      ],
-      start: [
-        "Striking a balance between being approachable and maintaining firm boundaries with students to reinforce discipline",
-        "Strengthening accountability by setting clear expectations and targets for teachers, ensuring timely completion of responsibilities",
-        "Implementing compulsory enhancement classes for students who need additional academic support",
-      ],
-      stop: [
-        "Being overly lenient in situations where firmness is required; Ensuring that students adhere to discipline effectively",
-      ],
-    },
+    // Use the API-provided action_areas_thing object directly
+    // Structure: { continue: [...], start: [...], stop: [...] }
+    columns:
+      feedbackOverallData?.action_areas_thing || {
+        continue: [],
+        start: [],
+        stop: [],
+      },
   };
 
   const handleExcelChange = (e) => {
@@ -509,7 +498,7 @@ const Feedback360Report = () => {
     }
   };
 
-  console.log("feedbackOverallData", feedbackOverallData);
+  // console.log("feedbackOverallData", averageCompentency);
 
   const handleExcelUpload = async (fileArg) => {
     const fileToUpload = fileArg || excelFile;
@@ -524,6 +513,7 @@ const Feedback360Report = () => {
       setIsUploading(false);
     }
   };
+
 
   useEffect(() => {
     setHeaderName("Feedback");
@@ -565,6 +555,7 @@ const Feedback360Report = () => {
       <SuggestedGuidelines
         items={biggerPictureItems}
         overallScore={competencyBiggerPictureOverallScore}
+        averageCompentency={averageCompentency}
       />
 
       <StrengthsPage
@@ -586,6 +577,7 @@ const Feedback360Report = () => {
         )}
         leadershipItems={summaryByCompetencyLeadershipItems}
         barHeight={12}
+        setAverageCompentency={setAverageCompentency}
       />
 
       <StaffPerformanceSummaryByCompetencyPage
@@ -599,6 +591,7 @@ const Feedback360Report = () => {
         )}
         items2={educationalQualityCompetencyItems}
         barHeight={6}
+        setAverageCompentency={setAverageCompentency}
       />
 
       <EngagementWithManagementSummaryByCompetencyPage
@@ -606,6 +599,7 @@ const Feedback360Report = () => {
           feedbackOverallData?.engagement_with_management_competency || {},
         )}
         items={engagementWithManagementItems}
+        setAverageCompentency={setAverageCompentency}
       />
 
       <div className="section-page pdf-section">

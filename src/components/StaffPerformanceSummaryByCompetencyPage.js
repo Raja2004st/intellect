@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
@@ -34,7 +34,52 @@ const StaffPerformanceSummaryByCompetencyPage = ({
   overallScore2,
   items2 = [],
   barHeight = 12,
+  setAverageCompentency,
 }) => {
+  const [leftOverallScore, setLeftOverallScore] = useState(overallScore);
+  const [rightOverallScore, setRightOverallScore] = useState(overallScore2);
+  const [leftRows, setLeftRows] = useState(items);
+  const [rightRows, setRightRows] = useState(items2);
+
+
+  const computeOverallFromRows = (rows) => {
+    if (!Array.isArray(rows) || !rows.length) return 0;
+    let total = 0;
+    let count = 0;
+
+    rows.forEach((row) => {
+      Object.entries(row).forEach(([key, value]) => {
+        if (key === "label") return;
+        const num = Number(value);
+        if (Number.isFinite(num) && value) {
+          total += num;
+          count += 1;
+        }
+      });
+    });
+
+    if (!count) return 0;
+    return Number((total / count).toFixed(2));
+  };
+
+  const handleRowsChange = (rows, section) => {
+    if (section === "left") {
+      setLeftRows(rows);
+      setLeftOverallScore(computeOverallFromRows(rows));
+      setAverageCompentency((prev) => ({
+        ...prev,
+        leadership_staff_dev_competency: rows,
+      }));
+    } else if (section === "right") {
+      setRightRows(rows);
+      setRightOverallScore(computeOverallFromRows(rows));
+        setAverageCompentency((prev) => ({
+          ...prev,
+          educational_quality_competency: rows,
+        }));
+    }
+  };
+
   const blocks = useMemo(() => {
     const out = [];
 
@@ -99,16 +144,20 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       sectionOverallScore,
       sectionItems,
     }) => {
-      const chartItems = buildChartItems(sectionItems);
+      const isLeft = keyPrefix === "spsbc-1";
+      const rows = isLeft ? leftRows : rightRows;
+      const currentOverall = isLeft ? leftOverallScore : rightOverallScore;
+
+      const chartItems = buildChartItems(rows);
 
       out.push(
         <FeedbackCommonHeader
           key={`${keyPrefix}-hdr`}
           title={sectionTitle}
           right={
-            sectionOverallScore !== null ? (
+            currentOverall !== null && currentOverall !== undefined ? (
               <div className="sbc-header__pill">
-                Overall Score – {formatOverallScore2(sectionOverallScore)}/5
+                Overall Score – {formatOverallScore2(currentOverall)}/5
               </div>
             ) : null
           }
@@ -125,6 +174,9 @@ const StaffPerformanceSummaryByCompetencyPage = ({
             barHeight={12}
             barGap={6}
             firstRowBorder={true}
+            onRowsChange={(rows) =>
+              handleRowsChange(rows, isLeft ? "left" : "right")
+            }
           />
         </div>,
       );
@@ -147,7 +199,22 @@ const StaffPerformanceSummaryByCompetencyPage = ({
     }
 
     return out;
-  }, [items, items2, overallScore, overallScore2, title, title2, barHeight]);
+  }, [
+    leftRows,
+    rightRows,
+    leftOverallScore,
+    rightOverallScore,
+  ]);
+
+  useEffect(() => {
+    setLeftOverallScore(overallScore);
+    setLeftRows(items);
+  }, [overallScore]);
+
+  useEffect(() => {
+    setRightOverallScore(overallScore2);
+    setRightRows(items2);
+  }, [overallScore2]);
 
   return (
     // <div className="section-page-container">

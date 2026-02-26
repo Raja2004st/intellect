@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
@@ -10,20 +10,60 @@ const SummaryByCompetencyPage = ({
   items = [],
   leadershipOverallScore = 4.53,
   leadershipItems = [],
-  barHeight,
-  onItemsChange,
-  onLeadershipItemsChange,
-}) => {
+  setAverageCompentency,
+setFeedbackOverallData
+}) => {  
+  const [rightCultureCompetencyOverallScore, setRightCultureCompetencyOverallScore] = useState(overallScore);
+  const [leadershipCompetencyOverallScore, setLeadershipCompetencyOverallScore] = useState(leadershipOverallScore);
+  const [rightCultureRows, setRightCultureRows] = useState(items);
+  const [leadershipRows, setLeadershipRows] = useState(leadershipItems); 
 
-  const handleItemsChange = (rows) => {
-    console.log(rows);
-    onItemsChange(rows);
+  const handleOverallScore = (rows) => {
+    if (!Array.isArray(rows) || !rows.length) return 0;
+    let total = 0;
+    let count = 0;
+
+    rows.forEach((row) => {
+      Object.entries(row).forEach(([key, value]) => {
+        if (key === "label") return;
+        const num = Number(value);
+        if (Number.isFinite(num) && value) {
+          total += num;
+          count += 1;
+        }
+      });
+    });
+
+    if (!count) return 0;
+    return Number((total / count).toFixed(2));
+  };
+
+  const handleItemsChange = (rows, competency) => {
+    const overallScore = handleOverallScore(rows);
+
+    if (competency === "right_culture_competency") {
+      setRightCultureCompetencyOverallScore(overallScore);
+      setRightCultureRows(rows);
+     setAverageCompentency((prev) => ({
+  ...prev,
+  right_culture_competency: rows,
+}));
+    }
+    if (competency === "leadership_style_competency") {
+      setLeadershipCompetencyOverallScore(overallScore);
+       setLeadershipRows(rows);
+       setAverageCompentency((prev) => ({
+  ...prev,
+  leadership_style_competency: rows,
+}));
+    
+    }
   };
   
-    const blocks = useMemo(() => {
+  const blocks = useMemo(() => {
     const out = [];
 
-    const parsed = items.map((it) => ({
+    const parsed = rightCultureRows.map((it) => ({
       ...it,
       groupMean: Number(it.groupMean),
     }));
@@ -82,7 +122,7 @@ const SummaryByCompetencyPage = ({
         right={
           overallScore !== undefined && overallScore !== null ? (
             <div className="sbc-header__pill">
-              Overall Score – {overallScore}/5
+              Overall Score – {rightCultureCompetencyOverallScore}/5
             </div>
           ) : null
         }
@@ -98,7 +138,7 @@ const SummaryByCompetencyPage = ({
           barHeight={12}
           barGap={6}
           firstRowBorder={true}
-          onRowsChange={handleItemsChange}
+          onRowsChange={(row)=>handleItemsChange(row,"right_culture_competency")}
         />
       </div>,
     );
@@ -110,7 +150,7 @@ const SummaryByCompetencyPage = ({
         right={
           leadershipOverallScore !== undefined && leadershipOverallScore !== null ? (
             <div className="sbc-header__pill">
-              Overall Score – {leadershipOverallScore}/5
+              Overall Score – {leadershipCompetencyOverallScore}/5
             </div>
           ) : null
         }
@@ -121,18 +161,34 @@ const SummaryByCompetencyPage = ({
     out.push(
       <div key="sbc-chart-2" className="sbc-chart">
         <CompetencyThreeBarChart
-          items={leadershipItems}
+          items={leadershipRows}
           className="sbc-chart__inner"
           barHeight={9}
           barGap={4}
           firstRowBorder={true}
-          onRowsChange={onLeadershipItemsChange}
+          onRowsChange={(row)=>handleItemsChange(row,"leadership_style_competency")}
         />
       </div>,
     );
 
     return out;
-  }, [items, overallScore, title, barHeight, leadershipItems, leadershipOverallScore]);
+  }, [
+    rightCultureRows,
+    leadershipRows,
+    title,
+    rightCultureCompetencyOverallScore,
+    leadershipCompetencyOverallScore,
+  ]);
+
+   useEffect(() => {
+    setRightCultureCompetencyOverallScore(overallScore);
+    setRightCultureRows(items);
+  }, [overallScore]);
+
+  useEffect(() => {
+    setLeadershipCompetencyOverallScore(leadershipOverallScore);
+    setLeadershipRows(leadershipItems);
+  }, [leadershipOverallScore]);
 
   return (
     // <div className="section-page-container">

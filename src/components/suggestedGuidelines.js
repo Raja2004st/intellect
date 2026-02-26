@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
@@ -10,7 +10,120 @@ const SuggestedGuidelines = ({
   overallScore,
   note = "Snapshot of average / mean score for each Competency based on inputs from respondent's vis-a vis your self-rating",
   items = [],
+  averageCompentency,
 }) => {
+  const [averageCompentencyData, setAverageCompentencyData] = useState(items);
+  const [averageCompentencyOverallScore, setAverageCompentencyOverallScore] = useState(overallScore);
+  const handleOverallAvg = (data) => {
+    if (!data || typeof data !== "object") return [];
+
+    const competencyKeyMap = {
+      right_culture_competency: "Creating the Right Culture",
+      leadership_style_competency: "Leadership Personality & Style",
+      leadership_staff_dev_competency:
+        "Leadership for Staff Performance & Development",
+      educational_quality_competency:
+        "Educational Quality & Student Outcomes",
+      engagement_with_management_competency: "Engagement with Management",
+    };
+
+    const formatAvg = (n) => {
+      const num = Number(n);
+      if (!Number.isFinite(num)) return undefined;
+      return Number(num.toFixed(2));
+    };
+
+    const resultItems = [];
+
+    Object.entries(data).forEach(([compKey, rows]) => {
+      const label = competencyKeyMap[compKey] || compKey;
+      if (!Array.isArray(rows) || !rows.length) return;
+
+      let sumGroup = 0;
+      let countGroup = 0;
+      let sumManager = 0;
+      let countManager = 0;
+      let sumSelf = 0;
+      let countSelf = 0;
+
+      rows.forEach((row) => {
+        const g = Number(row?.groupMean);
+        if (Number.isFinite(g)) {
+          sumGroup += g;
+          countGroup += 1;
+        }
+
+        const m = Number(row?.managerRating);
+        if (Number.isFinite(m)) {
+          sumManager += m;
+          countManager += 1;
+        }
+
+        const s = Number(row?.selfRating);
+        if (Number.isFinite(s)) {
+          sumSelf += s;
+          countSelf += 1;
+        }
+      });
+
+      const avgGroup = countGroup ? formatAvg(sumGroup / countGroup) : null;
+      const avgManager = countManager
+        ? formatAvg(sumManager / countManager)
+        : null;
+      const avgSelf = countSelf ? formatAvg(sumSelf / countSelf) : null;
+
+      if (avgGroup !== null || avgManager !== null || avgSelf !== null) {
+        resultItems.push({
+          label,
+          groupMean: avgGroup,
+          managerRating: avgManager,
+          selfRating: avgSelf,
+        });
+      }
+    });
+
+    return resultItems;
+  };
+
+  useEffect(() => {
+    // if (!averageCompentency) return;
+    const summary = handleOverallAvg(averageCompentency);
+    if (!summary.length) {
+
+      setAverageCompentencyData(items);
+      setAverageCompentencyOverallScore(overallScore);
+      return;
+    }
+    const merged = items.map((baseRow) => {
+      const updated = summary.find((row) => row.label === baseRow.label);
+      return updated ? { ...baseRow, ...updated } : baseRow;
+    });
+    // console.log("merged", merged);
+    setAverageCompentencyData(merged);
+
+    let total = 0;
+    let count = 0;
+
+    merged.forEach((row) => {
+      Object.entries(row).forEach(([key, value]) => {
+        if (key === "label") return;
+        const num = Number(value);
+        if (Number.isFinite(num) && value) {
+          total += num;
+          count += 1;
+        }
+      });
+    });
+
+    if (!count) {
+      setAverageCompentencyOverallScore(overallScore);
+    } else {
+      setAverageCompentencyOverallScore(
+        Number((total / count).toFixed(2)),
+      );
+    }
+  }, [averageCompentency, items, overallScore]);
+
   const blocks = useMemo(() => {
     const out = [];
 
@@ -70,9 +183,10 @@ const SuggestedGuidelines = ({
         key="hdr"
         title={title}
         right={
-          overallScore !== undefined && overallScore !== null ? (
+          averageCompentencyOverallScore !== undefined &&
+          averageCompentencyOverallScore !== null ? (
             <div className="cbp-header__pill">
-              Overall Score – {overallScore}/5
+              Overall Score – {averageCompentencyOverallScore}/5
             </div>
           ) : null
         }
@@ -88,7 +202,11 @@ const SuggestedGuidelines = ({
 
     out.push(
       <div key="chart" className="cbp-chart">
-        <CompetencyThreeBarChart items={items} barHeight={8} barGap={7} />
+        <CompetencyThreeBarChart
+          items={averageCompentencyData}
+          barHeight={8}
+          barGap={7}
+        />
       </div>,
     );
 
@@ -101,7 +219,11 @@ const SuggestedGuidelines = ({
     // );
 
     return out;
-  }, [items, note, overallScore, title]);
+  }, [averageCompentencyData, note, overallScore, title]);
+
+  // useEffect(() => {
+  //   if (!averageCompentency) return;
+  // }, [averageCompentency]);
 
   return (
     // <div className="section-page-container">
@@ -118,3 +240,4 @@ const SuggestedGuidelines = ({
 };
 
 export default SuggestedGuidelines;
+

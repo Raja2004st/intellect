@@ -74,8 +74,8 @@ const StrengthsPage = ({
     const out = [];
 
     const rowSpacing = 96;
-    const topOffset = 60;
-    const arcHeight = 320;
+    const topOffset = 65;
+    const arcHeight = 380;
     const paddingTop = topOffset;
     const paddingBottom = topOffset;
     const rowTopAdjust = 55;
@@ -111,7 +111,7 @@ const StrengthsPage = ({
                 </div>
                 <div className="sp-col__header-sub">{groupSubTitle}</div>
 
-                <div className="sp-col__body" style={{ minHeight: arcHeight }}>
+                <div className="sp-col__body" style={{ minHeight: 310 }}>
                   {strengthPoints.length === groupItems.length &&
                     groupItems.map((it, i) => (
                       <div
@@ -119,15 +119,15 @@ const StrengthsPage = ({
                         className="sp-row"
                         style={{
                           top:
-                            strengthPoints[i].y -
-                            (i === 2 ? rowTopAdjust + 7 : rowTopAdjust),
+                            // strengthPoints[i].y - rowTopAdjust 
+                            i ===0 ? 19 : i === 1 ? 118 : 200
+                        
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
-                            // Clamp the connector so it stays within the score column
-                            width: Math.min(160 - strengthPoints[i].x, 62),
+                            width: Math.min(160 - strengthPoints[i].x, 65),
                             left: -(165 - strengthPoints[i].x),
                           }}
                         />
@@ -191,14 +191,14 @@ const StrengthsPage = ({
           <div className="sp-left">
             <ArcConnector
               items={improvementsGroupItems}
-              arcColor={"var(--feedback-initial-name-color)"}
+              arcColor={"#b33737"}
               arcHeight={arcHeight}
               paddingTop={paddingTop}
               paddingBottom={paddingBottom}
               setPointsLine={handleImprovementPointsLine}
               circleColor={"var(--improve-pill-bg"}
-              circleBorderColor={"var(--feedback-initial-name-color)"}
-              strokeWidth={5}
+              circleBorderColor={"#b33737"}
+              strokeWidth={6}
               circleRadius={7.5}
             />
             <div className="sp-left__icon" aria-hidden="true">
@@ -218,7 +218,7 @@ const StrengthsPage = ({
                   {improvementsGroupSubTitle}
                 </div>
 
-                <div className="sp-col__body" style={{ minHeight: arcHeight }}>
+                <div className="sp-col__body" style={{ minHeight: 310 }}>
                   {improvementPoints.length === improvementsGroupItems.length &&
                     improvementsGroupItems.map((it, i) => (
                       <div
@@ -226,14 +226,13 @@ const StrengthsPage = ({
                         className="sp-row"
                         style={{
                           top:
-                            improvementPoints[i].y -
-                            (i == 2 ? rowTopAdjust - 14 : rowTopAdjust - 8),
+                          i ===0 ? 27 : i === 1 ? 118 : 207
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
-                            width: Math.min(160 - improvementPoints[i].x, 62),
+                            width: Math.min(160 - improvementPoints[i].x, 65),
                             left: -(165 - improvementPoints[i].x),
                           }}
                         />
@@ -316,7 +315,7 @@ const StrengthsPage = ({
     <AutoPaginatedSections
       blocks={blocks}
       pageWidth={794}
-      pageHeight={1123}
+      pageHeight={1223}
       pagePadding={0}
       contentClassName="strengths-page"
       componentId="strengths-page"

@@ -125,22 +125,15 @@ const CompetencyThreeBarChart = ({
                             }
                             onBlur={() => {
                               const newVal = parseNum(editing.value);
-                              setRows((prev) =>
-                                prev.map((r, rIdx) =>
-                                  rIdx === idx
-                                    ? { ...r, [s.key]: newVal }
-                                    : r,
-                                ),
+
+                              const newRows = rows.map((r, rIdx) =>
+                                rIdx === idx ? { ...r, [s.key]: newVal } : r,
                               );
+                              setRows(newRows);
                               if (onRowsChange) {
-                                onRowsChange((prev) =>
-                                  prev.map((r, rIdx) =>
-                                    rIdx === idx
-                                      ? { ...r, [s.key]: newVal }
-                                      : r,
-                                  ),
-                                );
+                                onRowsChange(newRows);
                               }
+
                               setEditing(null);
                             }}
                             onKeyDown={(e) => {

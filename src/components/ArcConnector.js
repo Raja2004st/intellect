@@ -77,7 +77,7 @@ export default function ArcConnector({
     <svg
       className="bs-arc"
       viewBox={`0 0 200 ${arcHeight}`}
-      preserveAspectRatio="none"
+      preserveAspectRatio="xMidYMid meet"
     >
       {/* Arc Path */}
       <path

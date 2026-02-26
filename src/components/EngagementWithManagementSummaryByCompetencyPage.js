@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
@@ -65,11 +65,47 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
       diff: -0.2,
     },
   ],
+  setAverageCompentency,
 }) => {
+  const [localOverallScore, setLocalOverallScore] = useState(overallScore);
+  const [rows, setRows] = useState(items);
+
+  const computeOverallFromRows = (rowsArg) => {
+    if (!Array.isArray(rowsArg) || !rowsArg.length) return 0;
+
+    let total = 0;
+    let count = 0;
+    console.log(rowsArg);
+    
+  
+    rowsArg.forEach((row) => {
+      Object.entries(row).forEach(([key, value]) => {
+        if (key === "label" || key === "callout" ) return;
+        const num = Number(value);
+        if (Number.isFinite(num) && value) {
+          total += num;
+          count += 1;
+        }
+      });
+    });
+  
+    if (!count) return 0;
+    return Number((total / count).toFixed(2));
+  };
+
+  const handleRowsChange = (newRows) => {
+    setRows(newRows);
+    setLocalOverallScore(computeOverallFromRows(newRows));
+    setAverageCompentency((prev) => ({
+      ...prev,
+      engagement_with_management_competency: newRows,
+    }));
+  };
+
   const blocks = useMemo(() => {
     const out = [];
 
-    const parsed = items.map((it) => ({
+    const parsed = rows.map((it) => ({
       ...it,
       managerRating: Number(it.managerRating),
       selfRating: Number(it.selfRating),
@@ -80,9 +116,9 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
         key="ewm-hdr"
         title={title}
         right={
-          overallScore !== undefined && overallScore !== null ? (
+          localOverallScore !== undefined && localOverallScore !== null ? (
             <div className="sbc-header__pill">
-              Overall Score – {formatOverallScore(overallScore)}/5
+              Overall Score – {formatOverallScore(localOverallScore)}/5
             </div>
           ) : null
         }
@@ -100,6 +136,7 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
           barGap={6}
           rowPaddingY={24}
           firstRowBorder={true}
+          onRowsChange={handleRowsChange}
         />
       </div>,
     );
@@ -187,13 +224,19 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
 
     return out;
   }, [
-    items,
-    overallScore,
+    rows,
+    localOverallScore,
     title,
     comparisonTitle,
     comparisonNotes,
     comparisonRows,
   ]);
+
+  useEffect(() => {
+    setLocalOverallScore(overallScore);
+    setRows(items);
+  }, [overallScore]);
+
 
   return (
     // <div className="section-page-container">
@@ -210,3 +253,4 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
 };
 
 export default EngagementWithManagementSummaryByCompetencyPage;
+

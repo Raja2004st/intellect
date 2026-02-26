@@ -41,7 +41,7 @@
   top: 57px;
   left: -3px;
   width: 143px;
-  height: var(--sp-arc-height, 77%);
+  height: var(--sp-arc-height, 83%);
 }
 
 // .sp-left .bs-arc {
@@ -55,7 +55,7 @@
 .sp-left__icon {
   position: absolute;
   left: -38px;
-  top: 78px;
+  top: 84px;
   width: 132px;
   height: 132px;
 }
@@ -72,7 +72,7 @@
 
 .sp-cols {
   display: grid;
-  grid-template-columns: 1.2fr 1px 1fr;
+  grid-template-columns: 1fr 1px 1fr;
   align-items: start;
   gap: 8px;
 }
@@ -156,12 +156,14 @@
   background: var(--strength-card-bg, #efefef);
   padding: 12px 14px;
   box-sizing: border-box;
-
+    
   p {
     color: var(--color-black, #111);
     font-size: var(--fs-sm);
     line-height: 1.35;
     font-weight: 500;
+    max-height: 50px;
+    overflow: hidden;
     // display: -webkit-box;
     // -webkit-line-clamp: 3;
     // -webkit-box-orient: vertical;
