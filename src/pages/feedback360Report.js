@@ -11,6 +11,7 @@ import NomineesLeadershipStylePage from "../components/NomineesLeadershipStylePa
 import QualitativeFeedbackCoverPage from "../components/QualitativeFeedbackCoverPage";
 import ContinueDoingPage from "../components/ContinueDoingPage";
 import StopDoingPage from "../components/StopDoingPage";
+import GlobalLoader from "../components/globalLoader";
 import { downloadPdfSplitByHeader } from "../utils/pdf";
 import { excelSheetFeedback } from "../helper/apicalls/feedback";
 import { useOutletContext } from "react-router-dom";
@@ -521,6 +522,7 @@ const Feedback360Report = () => {
 
   return (
     <div className="feedbackreport-main-container">
+      <GlobalLoader visible={isUploading} />
       <div className="feedbackreport-toolbar">
         <button
           onClick={downloadPdfSplitByHeader}
@@ -561,6 +563,7 @@ const Feedback360Report = () => {
       <StrengthsPage
         startPage={6}
         groupItems={strengthsGroupItems}
+        averageCompentency={averageCompentency}
         managerItems={strengthsManagerItems}
         improvementsGroupItems={improvementsGroupItems}
         improvementsManagerItems={improvementsManagerItems}

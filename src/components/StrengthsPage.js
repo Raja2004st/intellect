@@ -40,9 +40,16 @@ const StrengthsPage = ({
   ],
   improvementsGroupItems = [],
   improvementsManagerItems = [],
+  averageCompentency = {},
 }) => {
   const [strengthPoints, setStrengthPoints] = useState([]);
   const [improvementPoints, setImprovementPoints] = useState([]);
+
+  console.log(averageCompentency,'skmkflkflkk');
+  
+  const handleStrengthImprovementCompentency = () => {
+    
+  }
 
   const arePointsEqual = (a, b) => {
     if (a === b) return true;
@@ -74,8 +81,8 @@ const StrengthsPage = ({
     const out = [];
 
     const rowSpacing = 96;
-    const topOffset = 65;
-    const arcHeight = 380;
+    const topOffset = 85;
+    const arcHeight = 450;
     const paddingTop = topOffset;
     const paddingBottom = topOffset;
     const rowTopAdjust = 55;
@@ -111,7 +118,7 @@ const StrengthsPage = ({
                 </div>
                 <div className="sp-col__header-sub">{groupSubTitle}</div>
 
-                <div className="sp-col__body" style={{ minHeight: 310 }}>
+                <div className="sp-col__body" style={{ height: 330 }}>
                   {strengthPoints.length === groupItems.length &&
                     groupItems.map((it, i) => (
                       <div
@@ -119,14 +126,14 @@ const StrengthsPage = ({
                         className="sp-row"
                         style={{
                           top:
-                            // strengthPoints[i].y - rowTopAdjust 
-                            i ===0 ? 19 : i === 1 ? 118 : 200
-                        
+                            // strengthPoints[i].y - rowTopAdjust
+                            i === 0 ? 22 : i === 1 ? 123 : 222,
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
+                            top: 31,
                             width: Math.min(160 - strengthPoints[i].x, 65),
                             left: -(165 - strengthPoints[i].x),
                           }}
@@ -134,10 +141,7 @@ const StrengthsPage = ({
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card">
-                          {" "}
-                          <p>{it.text}</p>
-                        </div>
+                        <div className="sp-card">{it.text}</div>
                       </div>
                     ))}
                 </div>
@@ -156,18 +160,15 @@ const StrengthsPage = ({
                     <div
                       key={`m-${idx}`}
                       className="sp-row sp-row--manager"
-                      // style={{
-                      //   position: "absolute",
-                      //   top: idx === 0 ? 3 : idx === 1 ? 100 : 200,
-                      // }}
+                      style={{
+                        position: "absolute",
+                        top: idx === 0 ? 22 : idx === 1 ? 123 : 222,
+                      }}
                     >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card">
-                        {" "}
-                        <p>{it.text}</p>
-                      </div>
+                      <div className="sp-card">{it.text}</div>
                     </div>
                   ))}
                 </div>
@@ -199,7 +200,7 @@ const StrengthsPage = ({
               circleColor={"var(--improve-pill-bg"}
               circleBorderColor={"#b33737"}
               strokeWidth={6}
-              circleRadius={7.5}
+              circleRadius={8}
             />
             <div className="sp-left__icon" aria-hidden="true">
               <img src={strengthImage} alt="" className="sp-left__img" />
@@ -218,20 +219,20 @@ const StrengthsPage = ({
                   {improvementsGroupSubTitle}
                 </div>
 
-                <div className="sp-col__body" style={{ minHeight: 310 }}>
+                <div className="sp-col__body" style={{ height: 330 }}>
                   {improvementPoints.length === improvementsGroupItems.length &&
                     improvementsGroupItems.map((it, i) => (
                       <div
                         key={`ig-${i}`}
                         className="sp-row"
                         style={{
-                          top:
-                          i ===0 ? 27 : i === 1 ? 118 : 207
+                          top: i === 0 ? 22 : i === 1 ? 123 : 222,
                         }}
                       >
                         <div
                           className="sp-row__line"
                           style={{
+                            top: 31,
                             width: Math.min(160 - improvementPoints[i].x, 65),
                             left: -(165 - improvementPoints[i].x),
                           }}
@@ -239,10 +240,7 @@ const StrengthsPage = ({
                         <div className="sp-pill">
                           {Number(it.score).toFixed(2)}
                         </div>
-                        <div className="sp-card">
-                          {" "}
-                          <p> {it.text}</p>
-                        </div>
+                        <div className="sp-card"> {it.text}</div>
                       </div>
                     ))}
                 </div>
@@ -265,18 +263,15 @@ const StrengthsPage = ({
                     <div
                       key={`im-${idx}`}
                       className="sp-row sp-row--manager"
-                      // style={{
-                      //   position: "absolute",
-                      //   top: idx === 0 ? 16 : idx === 1 ? 110 : 200,
-                      // }}
+                      style={{
+                        position: "absolute",
+                        top: idx === 0 ? 22 : idx === 1 ? 123 : 222,
+                      }}
                     >
                       <div className="sp-pill">
                         {Number(it.score).toFixed(2)}
                       </div>
-                      <div className="sp-card">
-                        {" "}
-                        <p>{it.text}</p>
-                      </div>
+                      <div className="sp-card">{it.text}</div>
                     </div>
                   ))}
                 </div>

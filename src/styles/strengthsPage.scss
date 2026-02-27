@@ -4,6 +4,10 @@
 
 .sp--improvement {
   --sp-arc-color: var(--feedback-initial-underline-color);
+
+  .feedback-common-header {
+    padding: 26px 48px 0;
+  }
 }
 
 .sp--improvement .sp-col__header,
@@ -55,7 +59,7 @@
 .sp-left__icon {
   position: absolute;
   left: -38px;
-  top: 84px;
+  top: 95px;
   width: 132px;
   height: 132px;
 }
@@ -122,10 +126,10 @@
   display: grid;
   grid-template-columns: 74px 1fr;
   column-gap: 12px;
-  align-items: center;
+  // align-items: center;
   width: 100%;
   // padding-right: 10px;
-  box-sizing: border-box;
+  // box-sizing: border-box;
 }
 
 .sp-row--manager {
@@ -141,6 +145,7 @@
 }
 
 .sp-pill {
+  margin-top: 12px;
   background: var(--strength-pill-bg, #86ffb8);
   color: var(--color-black, #111);
   border-radius: 22px;
@@ -155,20 +160,11 @@
 .sp-card {
   background: var(--strength-card-bg, #efefef);
   padding: 12px 14px;
-  box-sizing: border-box;
-    
-  p {
-    color: var(--color-black, #111);
-    font-size: var(--fs-sm);
-    line-height: 1.35;
-    font-weight: 500;
-    max-height: 50px;
-    overflow: hidden;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 3;
-    // -webkit-box-orient: vertical;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
-    margin: 0;
-  }
+  color: var(--color-black, #111);
+  font-size: var(--fs-sm);
+  white-space: wrap;
+  line-height: 1.35;
+  // height: px;
+  overflow: hidden;
+  max-height: 70px;
 }

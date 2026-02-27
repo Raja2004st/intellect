@@ -13,7 +13,8 @@ const SuggestedGuidelines = ({
   averageCompentency,
 }) => {
   const [averageCompentencyData, setAverageCompentencyData] = useState(items);
-  const [averageCompentencyOverallScore, setAverageCompentencyOverallScore] = useState(overallScore);
+  const [averageCompentencyOverallScore, setAverageCompentencyOverallScore] =
+    useState(overallScore);
   const handleOverallAvg = (data) => {
     if (!data || typeof data !== "object") return [];
 
@@ -22,8 +23,7 @@ const SuggestedGuidelines = ({
       leadership_style_competency: "Leadership Personality & Style",
       leadership_staff_dev_competency:
         "Leadership for Staff Performance & Development",
-      educational_quality_competency:
-        "Educational Quality & Student Outcomes",
+      educational_quality_competency: "Educational Quality & Student Outcomes",
       engagement_with_management_competency: "Engagement with Management",
     };
 
@@ -89,7 +89,6 @@ const SuggestedGuidelines = ({
     // if (!averageCompentency) return;
     const summary = handleOverallAvg(averageCompentency);
     if (!summary.length) {
-
       setAverageCompentencyData(items);
       setAverageCompentencyOverallScore(overallScore);
       return;
@@ -118,9 +117,7 @@ const SuggestedGuidelines = ({
     if (!count) {
       setAverageCompentencyOverallScore(overallScore);
     } else {
-      setAverageCompentencyOverallScore(
-        Number((total / count).toFixed(2)),
-      );
+      setAverageCompentencyOverallScore(Number((total / count).toFixed(2)));
     }
   }, [averageCompentency, items, overallScore]);
 
@@ -128,54 +125,97 @@ const SuggestedGuidelines = ({
     const out = [];
 
     out.push(
-      <FeedbackCommonHeader
-        key="sg-h1"
-        title="Suggested Guidelines When Viewing Your Report"
-      />,
-    );
-
-    out.push(
-      <div key="sg-content" className="suggested-guidelines-content">
-        <ul className="suggested-guidelines-list">
-          <li>
-            View the report with an open mind and without filters or
-            preconceived notions driven by self-perception or past feedback
-          </li>
-          <li>
-            Each Respondent views you in a particular light and this perception
-            is reality for them. So, do not be surprised if you hear things you
-            don’t like or disagree with
-          </li>
-          <li>
-            Each Respondent has invested their time to offer their honest
-            thoughts and perceptions. Please try not to discount any of the
-            feedback
-          </li>
-          <li>
-            The feedback is focused on specific behaviors at the workplace and
-            is not a reflection of you as a “whole”
-          </li>
-          <li>
-            See this as an opportunity to learn about yourself and a platform
-            for professional development
-          </li>
-          <li>
-            Provide equal focus on the areas of improvement as well as
-            positives/ areas of strength. You are the best person to decide the
-            areas you want to develop
-          </li>
-          <li>
-            Give yourself time to reflect on the information before taking
-            action
-          </li>
-          <li>
-            To gain more clarity on the report or get more ideas to grow, feel
-            free to speak to a mentor or even a professional you may consider a
-            role model in specific leadership competencies
-          </li>
-        </ul>
+      <div>
+        <FeedbackCommonHeader
+          key="sg-h1"
+          title="Suggested Guidelines When Viewing Your Report"
+        />
+        ,
+        <div key="sg-content" className="suggested-guidelines-content">
+          <ul className="suggested-guidelines-list">
+            <li>
+              View the report with an open mind and without filters or
+              preconceived notions driven by self-perception or past feedback
+            </li>
+            <li>
+              Each Respondent views you in a particular light and this
+              perception is reality for them. So, do not be surprised if you
+              hear things you don’t like or disagree with
+            </li>
+            <li>
+              Each Respondent has invested their time to offer their honest
+              thoughts and perceptions. Please try not to discount any of the
+              feedback
+            </li>
+            <li>
+              The feedback is focused on specific behaviors at the workplace and
+              is not a reflection of you as a “whole”
+            </li>
+            <li>
+              See this as an opportunity to learn about yourself and a platform
+              for professional development
+            </li>
+            <li>
+              Provide equal focus on the areas of improvement as well as
+              positives/ areas of strength. You are the best person to decide
+              the areas you want to develop
+            </li>
+            <li>
+              Give yourself time to reflect on the information before taking
+              action
+            </li>
+            <li>
+              To gain more clarity on the report or get more ideas to grow, feel
+              free to speak to a mentor or even a professional you may consider
+              a role model in specific leadership competencies
+            </li>
+          </ul>
+        </div>
       </div>,
     );
+
+    // out.push(
+    //   <div key="sg-content" className="suggested-guidelines-content">
+    //     <ul className="suggested-guidelines-list">
+    //       <li>
+    //         View the report with an open mind and without filters or
+    //         preconceived notions driven by self-perception or past feedback
+    //       </li>
+    //       <li>
+    //         Each Respondent views you in a particular light and this perception
+    //         is reality for them. So, do not be surprised if you hear things you
+    //         don’t like or disagree with
+    //       </li>
+    //       <li>
+    //         Each Respondent has invested their time to offer their honest
+    //         thoughts and perceptions. Please try not to discount any of the
+    //         feedback
+    //       </li>
+    //       <li>
+    //         The feedback is focused on specific behaviors at the workplace and
+    //         is not a reflection of you as a “whole”
+    //       </li>
+    //       <li>
+    //         See this as an opportunity to learn about yourself and a platform
+    //         for professional development
+    //       </li>
+    //       <li>
+    //         Provide equal focus on the areas of improvement as well as
+    //         positives/ areas of strength. You are the best person to decide the
+    //         areas you want to develop
+    //       </li>
+    //       <li>
+    //         Give yourself time to reflect on the information before taking
+    //         action
+    //       </li>
+    //       <li>
+    //         To gain more clarity on the report or get more ideas to grow, feel
+    //         free to speak to a mentor or even a professional you may consider a
+    //         role model in specific leadership competencies
+    //       </li>
+    //     </ul>
+    //   </div>,
+    // );
 
     out.push(
       <FeedbackCommonHeader
@@ -240,4 +280,3 @@ const SuggestedGuidelines = ({
 };
 
 export default SuggestedGuidelines;
-
