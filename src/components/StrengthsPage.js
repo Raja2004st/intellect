@@ -45,11 +45,75 @@ const StrengthsPage = ({
   const [strengthPoints, setStrengthPoints] = useState([]);
   const [improvementPoints, setImprovementPoints] = useState([]);
 
-  console.log(averageCompentency,'skmkflkflkk');
-  
-  const handleStrengthImprovementCompentency = () => {
-    
-  }
+  const derivedFromAverage = useMemo(() => {
+    if (!averageCompentency || typeof averageCompentency !== "object") {
+      return null;
+    }
+
+    const groupStrengths = [];
+    const groupImprovements = [];
+    const managerStrengths = [];
+    const managerImprovements = [];
+
+    Object.values(averageCompentency).forEach((rows) => {
+      if (!Array.isArray(rows)) return;
+
+      rows.forEach((row) => {
+        const label = row?.label;
+        if (!label) return;
+
+        const g = Number(row?.groupMean);
+        if (Number.isFinite(g)) {
+          if (g > 4.5) {
+            groupStrengths.push({ score: g, text: label });
+          } else if (g > 0 && g < 4.5) {
+            groupImprovements.push({ score: g, text: label });
+          }
+        }
+
+        const m = Number(row?.managerRating);
+        if (Number.isFinite(m)) {
+          if (m > 4) {
+            managerStrengths.push({ score: m, text: label });
+          } else if (m > 0 && m < 4) {
+            managerImprovements.push({ score: m, text: label });
+          }
+        }
+      });
+    });
+
+    groupStrengths.sort((a, b) => b.score - a.score);
+    groupImprovements.sort((a, b) => a.score - b.score);
+    managerStrengths.sort((a, b) => b.score - a.score);
+    managerImprovements.sort((a, b) => a.score - b.score);
+
+    return {
+      groupStrengths: groupStrengths.slice(0, 3),
+      groupImprovements: groupImprovements.slice(0, 3),
+      managerStrengths: managerStrengths.slice(0, 3),
+      managerImprovements: managerImprovements.slice(0, 3),
+    };
+  }, [averageCompentency]);
+
+  const effectiveGroupItems =
+    derivedFromAverage?.groupStrengths?.length
+      ? derivedFromAverage.groupStrengths
+      : groupItems;
+
+  const effectiveImprovementsGroupItems =
+    derivedFromAverage?.groupImprovements?.length
+      ? derivedFromAverage.groupImprovements
+      : improvementsGroupItems;
+
+  const effectiveManagerItems =
+    derivedFromAverage?.managerStrengths?.length
+      ? derivedFromAverage.managerStrengths
+      : managerItems;
+
+  const effectiveImprovementsManagerItems =
+    derivedFromAverage?.managerImprovements?.length
+      ? derivedFromAverage.managerImprovements
+      : improvementsManagerItems;
 
   const arePointsEqual = (a, b) => {
     if (a === b) return true;
@@ -94,7 +158,7 @@ const StrengthsPage = ({
         <div className="sp-grid" style={{ "--sp-arc-color": arcColor }}>
           <div className="sp-left">
             <ArcConnector
-              items={groupItems}
+              items={effectiveGroupItems}
               arcColor={"var(--strength-arc-color)"}
               arcHeight={arcHeight}
               paddingTop={paddingTop}
@@ -119,8 +183,8 @@ const StrengthsPage = ({
                 <div className="sp-col__header-sub">{groupSubTitle}</div>
 
                 <div className="sp-col__body" style={{ height: 330 }}>
-                  {strengthPoints.length === groupItems.length &&
-                    groupItems.map((it, i) => (
+                  {strengthPoints.length === effectiveGroupItems.length &&
+                    effectiveGroupItems.map((it, i) => (
                       <div
                         key={`g-${i}`}
                         className="sp-row"
@@ -156,7 +220,7 @@ const StrengthsPage = ({
                 <div className="sp-col__header-sub">{managerSubTitle}</div>
 
                 <div className="sp-col__body sp-col__body--manager">
-                  {managerItems.map((it, idx) => (
+                  {effectiveManagerItems.map((it, idx) => (
                     <div
                       key={`m-${idx}`}
                       className="sp-row sp-row--manager"
@@ -191,7 +255,7 @@ const StrengthsPage = ({
         >
           <div className="sp-left">
             <ArcConnector
-              items={improvementsGroupItems}
+              items={effectiveImprovementsGroupItems}
               arcColor={"#b33737"}
               arcHeight={arcHeight}
               paddingTop={paddingTop}
@@ -220,8 +284,9 @@ const StrengthsPage = ({
                 </div>
 
                 <div className="sp-col__body" style={{ height: 330 }}>
-                  {improvementPoints.length === improvementsGroupItems.length &&
-                    improvementsGroupItems.map((it, i) => (
+                  {improvementPoints.length ===
+                    effectiveImprovementsGroupItems.length &&
+                    effectiveImprovementsGroupItems.map((it, i) => (
                       <div
                         key={`ig-${i}`}
                         className="sp-row"
@@ -259,7 +324,7 @@ const StrengthsPage = ({
                 </div>
 
                 <div className="sp-col__body sp-col__body--manager">
-                  {improvementsManagerItems.map((it, idx) => (
+                  {effectiveImprovementsManagerItems.map((it, idx) => (
                     <div
                       key={`im-${idx}`}
                       className="sp-row sp-row--manager"
