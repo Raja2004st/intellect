@@ -3,6 +3,7 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
 import "../styles/summaryByCompetencyPage.scss";
+import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const SummaryByCompetencyPage = ({
   title = "Summary by Competency – Creating the Right Culture",
@@ -143,8 +144,23 @@ setFeedbackOverallData
       </div>,
     );
 
+    // out.push(
+    //   <FeedbackCommonHeader
+    //     key="sbc-hdr-2"
+    //     title={"Summary by Competency – Leadership Personality & Style"}
+    //     right={
+    //       leadershipOverallScore !== undefined && leadershipOverallScore !== null ? (
+    //         <div className="sbc-header__pill">
+    //           Overall Score – {leadershipCompetencyOverallScore}/5
+    //         </div>
+    //       ) : null
+    //     }
+    //     className="sbc-header"
+    //   />
+    // );
+
     out.push(
-      <FeedbackCommonHeader
+      <div>  <FeedbackCommonHeader
         key="sbc-hdr-2"
         title={"Summary by Competency – Leadership Personality & Style"}
         right={
@@ -155,20 +171,19 @@ setFeedbackOverallData
           ) : null
         }
         className="sbc-header"
-      />,
-    );
-
-    out.push(
+      />
       <div key="sbc-chart-2" className="sbc-chart">
         <CompetencyThreeBarChart
           items={leadershipRows}
           className="sbc-chart__inner"
-          barHeight={9}
+          barHeight={8}
           barGap={4}
           firstRowBorder={true}
+          rowPaddingY={6}
           onRowsChange={(row)=>handleItemsChange(row,"leadership_style_competency")}
         />
-      </div>,
+      </div></div>
+      
     );
 
     return out;
@@ -192,10 +207,10 @@ setFeedbackOverallData
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
+      <AutoPaginatedPptSections
         blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
+        // pageWidth={794}
+        pageHeight={550}
         pagePadding={0}
         contentClassName="summary-by-competency-page"
         componentId="summary-by-competency"

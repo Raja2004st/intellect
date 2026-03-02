@@ -4,6 +4,7 @@ import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
 import "../styles/suggestedGuidelines.scss";
 import "../styles/competencyBiggerPicture.scss";
+import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const SuggestedGuidelines = ({
   title = "Your Competency Summary: The Bigger Picture",
@@ -130,7 +131,7 @@ const SuggestedGuidelines = ({
           key="sg-h1"
           title="Suggested Guidelines When Viewing Your Report"
         />
-        ,
+        
         <div key="sg-content" className="suggested-guidelines-content">
           <ul className="suggested-guidelines-list">
             <li>
@@ -171,7 +172,7 @@ const SuggestedGuidelines = ({
             </li>
           </ul>
         </div>
-      </div>,
+      </div>
     );
 
     // out.push(
@@ -267,10 +268,10 @@ const SuggestedGuidelines = ({
 
   return (
     // <div className="section-page-container">
-    <AutoPaginatedSections
+    <AutoPaginatedPptSections
       blocks={blocks}
-      pageWidth={794}
-      pageHeight={1123}
+      // pageWidth={794}
+      pageHeight={500}
       pagePadding={0}
       contentClassName="suggested-guidelines-page"
       componentId="suggested-guidelines"
