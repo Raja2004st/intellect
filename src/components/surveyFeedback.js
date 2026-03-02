@@ -7,6 +7,7 @@ import personality from "../assets/png/personality.png";
 import educationalQulaity from "../assets/png/educationalQulaity.png";
 import culture from "../assets/png/culture.png";
 import management from "../assets/png/management.png";
+import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const SurveyFeedback = () => {
   const blocks = useMemo(() => {
@@ -14,7 +15,6 @@ const SurveyFeedback = () => {
 
     out.push(
       <div>
-        {" "}
         <FeedbackCommonHeader
           key="h1"
           title="360° Survey Feedback – Key Highlights"
@@ -78,14 +78,13 @@ const SurveyFeedback = () => {
             <li>Qualitative Comments</li>
           </ul>
 
-          <ul className="survey-feedback-bullets">
+          <ul className="survey-feedback-bullets survey-ul-margin-item">
             <li>
               Feedback has been solicited and received from your Team Members
               (43) and Manager/s
             </li>
           </ul>
         </div>
-        ,
       </div>,
     );
 
@@ -161,11 +160,11 @@ const SurveyFeedback = () => {
     // out.push(<div key="corner1" className="survey-feedback-corner" />);
 
     out.push(
-      <div>
-        <FeedbackCommonHeader key="h2" title="Survey Structure Overview" />,
+      <div className="survey-structure-page">
+        <FeedbackCommonHeader key="h2" title="Survey Structure Overview" />
         <div key="p2" className="survey-feedback-content survey-structure">
-          <ul className="survey-feedback-bullets">
-            <li>
+          <ul className="survey-feedback-bullets survey-ul-item">
+            <li className="survey-ul-item-li">
               Total number of <strong>Respondents</strong> – <strong>44</strong>{" "}
               +<strong> Self feedback</strong>
             </li>
@@ -224,7 +223,7 @@ const SurveyFeedback = () => {
             ))}
           </div>
 
-          <ul className="survey-feedback-bullets survey-structure__note">
+          <ul className="survey-feedback-bullets survey-structure__note survey-ul-margin-item">
             <li>
               <em>Note : Of the 24 survey questions on the 5 competencies,</em>
             </li>

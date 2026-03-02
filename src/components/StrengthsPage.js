@@ -95,25 +95,23 @@ const StrengthsPage = ({
     };
   }, [averageCompentency]);
 
-  const effectiveGroupItems =
-    derivedFromAverage?.groupStrengths?.length
-      ? derivedFromAverage.groupStrengths
-      : groupItems;
+  const effectiveGroupItems = derivedFromAverage?.groupStrengths?.length
+    ? derivedFromAverage.groupStrengths
+    : groupItems;
 
-  const effectiveImprovementsGroupItems =
-    derivedFromAverage?.groupImprovements?.length
-      ? derivedFromAverage.groupImprovements
-      : improvementsGroupItems;
+  const effectiveImprovementsGroupItems = derivedFromAverage?.groupImprovements
+    ?.length
+    ? derivedFromAverage.groupImprovements
+    : improvementsGroupItems;
 
-  const effectiveManagerItems =
-    derivedFromAverage?.managerStrengths?.length
-      ? derivedFromAverage.managerStrengths
-      : managerItems;
+  const effectiveManagerItems = derivedFromAverage?.managerStrengths?.length
+    ? derivedFromAverage.managerStrengths
+    : managerItems;
 
-  const effectiveImprovementsManagerItems =
-    derivedFromAverage?.managerImprovements?.length
-      ? derivedFromAverage.managerImprovements
-      : improvementsManagerItems;
+  const effectiveImprovementsManagerItems = derivedFromAverage
+    ?.managerImprovements?.length
+    ? derivedFromAverage.managerImprovements
+    : improvementsManagerItems;
 
   const arePointsEqual = (a, b) => {
     if (a === b) return true;

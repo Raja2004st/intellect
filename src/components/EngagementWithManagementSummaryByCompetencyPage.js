@@ -3,6 +3,7 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
 import "../styles/summaryByCompetencyPage.scss";
+import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const LEGEND_2 = [
   {
@@ -76,11 +77,10 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
     let total = 0;
     let count = 0;
     console.log(rowsArg);
-    
-  
+
     rowsArg.forEach((row) => {
       Object.entries(row).forEach(([key, value]) => {
-        if (key === "label" || key === "callout" ) return;
+        if (key === "label" || key === "callout") return;
         const num = Number(value);
         if (Number.isFinite(num) && value) {
           total += num;
@@ -88,7 +88,7 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
         }
       });
     });
-  
+
     if (!count) return 0;
     return Number((total / count).toFixed(2));
   };
@@ -237,7 +237,6 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
     setRows(items);
   }, [overallScore]);
 
-
   return (
     // <div className="section-page-container">
     <AutoPaginatedSections
@@ -253,4 +252,3 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
 };
 
 export default EngagementWithManagementSummaryByCompetencyPage;
-
