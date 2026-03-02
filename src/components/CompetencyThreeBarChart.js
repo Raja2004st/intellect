@@ -45,6 +45,7 @@ const CompetencyThreeBarChart = ({
   className = "",
   firstRowBorder = false,
   onRowsChange,
+  hideInputField = false,
 }) => {
   const [rows, setRows] = useState(items);
   const [editing, setEditing] = useState(null); // { rowIndex, seriesKey, value }
@@ -107,10 +108,11 @@ const CompetencyThreeBarChart = ({
                           background: s.color,
                         }}
                       />
-                      {s.value !== -1 && (
-                        editing &&
+                      {s.value !== -1 &&
+                        (editing &&
                         editing.rowIndex === idx &&
-                        editing.seriesKey === s.key ? (
+                        editing.seriesKey === s.key &&
+                        !hideInputField ? (
                           <input
                             type="number"
                             className="ctbc-bar__value ctbc-bar__value-input"
@@ -157,8 +159,7 @@ const CompetencyThreeBarChart = ({
                           >
                             {formatValue(s.value)}
                           </div>
-                        )
-                      )}
+                        ))}
                     </div>
                   </div>
                 ))}
@@ -167,8 +168,13 @@ const CompetencyThreeBarChart = ({
                   <div
                     className={`ctbc-row__callout ctbc-row__callout--${row.callout.variant || "info"}`}
                   >
-                    <div className="ctbc-row__callout-arrow" aria-hidden="true" />
-                    <div className="ctbc-row__callout-text">{row.callout.text}</div>
+                    <div
+                      className="ctbc-row__callout-arrow"
+                      aria-hidden="true"
+                    />
+                    <div className="ctbc-row__callout-text">
+                      {row.callout.text}
+                    </div>
                   </div>
                 ) : null}
               </div>

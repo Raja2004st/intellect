@@ -2,8 +2,13 @@
   width: 100%;
   height: 100%;
   background: var(--color-white);
-  padding: 64px 28px 64px 58px;
+  // padding: 64px 28px 64px 58px;
   box-sizing: border-box;
+
+  .nominee-donut-container {
+    padding: 56px 28px 48px 58px;
+    border-bottom: 1px solid var(--color-black);
+  }
 }
 
 .nls-header {
@@ -28,7 +33,6 @@
 
 .nls-main {
   width: 100%;
-  padding-bottom: 40px;
 }
 
 .nls-charts {
@@ -103,6 +107,7 @@
 
 .nls-adj {
   // margin-top: 56px;
+  padding: 48px 28px 40px 58px;
 }
 
 .nls-adj__title {

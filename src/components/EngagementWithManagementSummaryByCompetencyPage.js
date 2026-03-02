@@ -112,34 +112,48 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
     }));
 
     out.push(
-      <FeedbackCommonHeader
-        key="ewm-hdr"
-        title={title}
-        right={
-          localOverallScore !== undefined && localOverallScore !== null ? (
-            <div className="sbc-header__pill">
-              Overall Score – {formatOverallScore(localOverallScore)}/5
-            </div>
-          ) : null
-        }
-        className="sbc-header"
-      />,
-    );
-
-    out.push(
-      <div key="ewm-chart" className="sbc-chart">
-        <CompetencyThreeBarChart
-          items={parsed}
-          legendItems={LEGEND_2}
-          className="sbc-chart__inner"
-          barHeight={barHeight}
-          barGap={6}
-          rowPaddingY={24}
-          firstRowBorder={true}
-          onRowsChange={handleRowsChange}
+      <div className="sbc-hdr-chart-wrapper" key="ewm-hdr-chart">
+        <FeedbackCommonHeader
+          key="ewm-hdr"
+          title={title}
+          right={
+            localOverallScore !== undefined && localOverallScore !== null ? (
+              <div className="sbc-header__pill">
+                Overall Score – {formatOverallScore(localOverallScore)}/5
+              </div>
+            ) : null
+          }
+          className="sbc-header"
         />
+        <div key="ewm-chart" className="sbc-chart">
+          <CompetencyThreeBarChart
+            items={parsed}
+            legendItems={LEGEND_2}
+            className="sbc-chart__inner"
+            barHeight={barHeight}
+            barGap={6}
+            rowPaddingY={24}
+            firstRowBorder={true}
+            onRowsChange={handleRowsChange}
+          />
+        </div>
       </div>,
     );
+
+    // out.push(
+    //   <div key="ewm-chart" className="sbc-chart">
+    //     <CompetencyThreeBarChart
+    //       items={parsed}
+    //       legendItems={LEGEND_2}
+    //       className="sbc-chart__inner"
+    //       barHeight={barHeight}
+    //       barGap={6}
+    //       rowPaddingY={24}
+    //       firstRowBorder={true}
+    //       onRowsChange={handleRowsChange}
+    //     />
+    //   </div>,
+    // );
 
     out.push(
       <div key="ewm-compare" className="sbc-compare">
@@ -238,7 +252,6 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
   }, [overallScore]);
 
   return (
-    // <div className="section-page-container">
     <AutoPaginatedSections
       blocks={blocks}
       pageWidth={794}
@@ -247,7 +260,6 @@ const EngagementWithManagementSummaryByCompetencyPage = ({
       contentClassName="summary-by-competency-page"
       componentId="engagement-with-management-summary-by-competency"
     />
-    // </div>
   );
 };
 

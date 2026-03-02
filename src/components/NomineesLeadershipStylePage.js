@@ -166,33 +166,32 @@ const NomineesLeadershipStylePage = ({
     const out = [];
 
     out.push(
-      <FeedbackCommonHeader
-        key="nls-hdr"
-        title={title}
-        className="nls-header"
-      />,
-    );
+      <div className="nominee-donut-container">
+        <FeedbackCommonHeader
+          key="nls-hdr"
+          title={title}
+          className="nls-header"
+        />
+        <div key="nls-main" className="nls-main">
+          <div className="nls-charts">
+            {items?.map((it, idx) => (
+              <div key={idx} className="nls-charts__col">
+                <Donut percent={it.percent} color={it.color} />
+              </div>
+            ))}
+          </div>
 
-    out.push(
-      <div key="nls-main" className="nls-main">
-        <div className="nls-charts">
-          {items?.map((it, idx) => (
-            <div key={idx} className="nls-charts__col">
-              <Donut percent={it.percent} color={it.color} />
-            </div>
-          ))}
-        </div>
-
-        <div className="nls-pills">
-          {items.map((it, idx) => (
-            <div
-              key={idx}
-              className="nls-pill"
-              style={{ background: it.pillColor }}
-            >
-              {it.pillText}
-            </div>
-          ))}
+          <div className="nls-pills">
+            {items.map((it, idx) => (
+              <div
+                key={idx}
+                className="nls-pill"
+                style={{ background: it.pillColor }}
+              >
+                {it.pillText}
+              </div>
+            ))}
+          </div>
         </div>
       </div>,
     );
@@ -224,7 +223,6 @@ const NomineesLeadershipStylePage = ({
   }, [adjectives, adjectivesSubtitle, adjectivesTitle, footnote, items, title]);
 
   return (
-    // <div className="section-page-container">
     <AutoPaginatedSections
       blocks={blocks}
       pageWidth={794}
@@ -233,7 +231,6 @@ const NomineesLeadershipStylePage = ({
       contentClassName="nls-page"
       componentId="nominees-leadership-style"
     />
-    // </div>
   );
 };
 

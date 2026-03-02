@@ -4,7 +4,6 @@ import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
 import "../styles/suggestedGuidelines.scss";
 import "../styles/competencyBiggerPicture.scss";
-import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const SuggestedGuidelines = ({
   title = "Your Competency Summary: The Bigger Picture",
@@ -126,7 +125,7 @@ const SuggestedGuidelines = ({
     const out = [];
 
     out.push(
-      <div>
+      <div key="sg" className="suggested-guidelines-block">
         <FeedbackCommonHeader
           key="sg-h1"
           title="Suggested Guidelines When Viewing Your Report"
@@ -175,49 +174,6 @@ const SuggestedGuidelines = ({
       </div>,
     );
 
-    // out.push(
-    //   <div key="sg-content" className="suggested-guidelines-content">
-    //     <ul className="suggested-guidelines-list">
-    //       <li>
-    //         View the report with an open mind and without filters or
-    //         preconceived notions driven by self-perception or past feedback
-    //       </li>
-    //       <li>
-    //         Each Respondent views you in a particular light and this perception
-    //         is reality for them. So, do not be surprised if you hear things you
-    //         don’t like or disagree with
-    //       </li>
-    //       <li>
-    //         Each Respondent has invested their time to offer their honest
-    //         thoughts and perceptions. Please try not to discount any of the
-    //         feedback
-    //       </li>
-    //       <li>
-    //         The feedback is focused on specific behaviors at the workplace and
-    //         is not a reflection of you as a “whole”
-    //       </li>
-    //       <li>
-    //         See this as an opportunity to learn about yourself and a platform
-    //         for professional development
-    //       </li>
-    //       <li>
-    //         Provide equal focus on the areas of improvement as well as
-    //         positives/ areas of strength. You are the best person to decide the
-    //         areas you want to develop
-    //       </li>
-    //       <li>
-    //         Give yourself time to reflect on the information before taking
-    //         action
-    //       </li>
-    //       <li>
-    //         To gain more clarity on the report or get more ideas to grow, feel
-    //         free to speak to a mentor or even a professional you may consider a
-    //         role model in specific leadership competencies
-    //       </li>
-    //     </ul>
-    //   </div>,
-    // );
-
     out.push(
       <FeedbackCommonHeader
         className="suggestion-overall"
@@ -247,24 +203,13 @@ const SuggestedGuidelines = ({
           items={averageCompentencyData}
           barHeight={8}
           barGap={7}
+          hideInputField={true}
         />
       </div>,
     );
 
-    // out.push(
-    //   <div
-    //     key="corner"
-    //     className="suggested-guidelines-corner"
-    //     aria-hidden="true"
-    //   />
-    // );
-
     return out;
   }, [averageCompentencyData, note, overallScore, title]);
-
-  // useEffect(() => {
-  //   if (!averageCompentency) return;
-  // }, [averageCompentency]);
 
   return (
     // <div className="section-page-container">

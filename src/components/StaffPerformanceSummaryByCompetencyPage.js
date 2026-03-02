@@ -41,7 +41,6 @@ const StaffPerformanceSummaryByCompetencyPage = ({
   const [leftRows, setLeftRows] = useState(items);
   const [rightRows, setRightRows] = useState(items2);
 
-
   const computeOverallFromRows = (rows) => {
     if (!Array.isArray(rows) || !rows.length) return 0;
     let total = 0;
@@ -73,10 +72,10 @@ const StaffPerformanceSummaryByCompetencyPage = ({
     } else if (section === "right") {
       setRightRows(rows);
       setRightOverallScore(computeOverallFromRows(rows));
-        setAverageCompentency((prev) => ({
-          ...prev,
-          educational_quality_competency: rows,
-        }));
+      setAverageCompentency((prev) => ({
+        ...prev,
+        educational_quality_competency: rows,
+      }));
     }
   };
 
@@ -143,6 +142,7 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       sectionTitle,
       sectionOverallScore,
       sectionItems,
+      border = false,
     }) => {
       const isLeft = keyPrefix === "spsbc-1";
       const rows = isLeft ? leftRows : rightRows;
@@ -151,35 +151,54 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       const chartItems = buildChartItems(rows);
 
       out.push(
-        <FeedbackCommonHeader
-          key={`${keyPrefix}-hdr`}
-          title={sectionTitle}
-          right={
-            currentOverall !== null && currentOverall !== undefined ? (
-              <div className="sbc-header__pill">
-                Overall Score – {formatOverallScore2(currentOverall)}/5
-              </div>
-            ) : null
-          }
-          className="sbc-header"
-        />,
-      );
-
-      out.push(
-        <div key={`${keyPrefix}-chart`} className="sbc-chart">
-          <CompetencyThreeBarChart
-            items={chartItems}
-            legendItems={LEGEND_2}
-            className="sbc-chart__inner"
-            barHeight={12}
-            barGap={6}
-            firstRowBorder={true}
-            onRowsChange={(rows) =>
-              handleRowsChange(rows, isLeft ? "left" : "right")
+        <div
+          className={`${border ? "sbc-hdr-chart-wrapper" : "sbc-hdr-chart-educational-quality"} `}
+          key={keyPrefix}
+        >
+          <FeedbackCommonHeader
+            key={`${keyPrefix}-hdr`}
+            title={sectionTitle}
+            right={
+              currentOverall !== null && currentOverall !== undefined ? (
+                <div className="sbc-header__pill">
+                  Overall Score – {formatOverallScore2(currentOverall)}/5
+                </div>
+              ) : null
             }
+            className={`sbc-header  `}
           />
+
+          <div key={`${keyPrefix}-chart`} className="sbc-chart">
+            <CompetencyThreeBarChart
+              items={chartItems}
+              legendItems={LEGEND_2}
+              className="sbc-chart__inner"
+              barHeight={12}
+              barGap={6}
+              firstRowBorder={true}
+              onRowsChange={(rows) =>
+                handleRowsChange(rows, isLeft ? "left" : "right")
+              }
+            />
+          </div>
         </div>,
       );
+
+      // out.push(
+      //   <div key={`${keyPrefix}-chart`} className="sbc-chart">
+      //     <CompetencyThreeBarChart
+      //       items={chartItems}
+      //       legendItems={LEGEND_2}
+      //       className="sbc-chart__inner"
+      //       barHeight={12}
+      //       barGap={6}
+      //       firstRowBorder={true}
+      //       onRowsChange={(rows) =>
+      //         handleRowsChange(rows, isLeft ? "left" : "right")
+      //       }
+      //     />
+      //   </div>,
+      // );
     };
 
     pushSection({
@@ -187,6 +206,7 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       sectionTitle: title,
       sectionOverallScore: overallScore,
       sectionItems: items,
+      border: true,
     });
 
     if (title2 || (items2 && items2.length)) {
@@ -199,12 +219,7 @@ const StaffPerformanceSummaryByCompetencyPage = ({
     }
 
     return out;
-  }, [
-    leftRows,
-    rightRows,
-    leftOverallScore,
-    rightOverallScore,
-  ]);
+  }, [leftRows, rightRows, leftOverallScore, rightOverallScore]);
 
   useEffect(() => {
     setLeftOverallScore(overallScore);
@@ -217,7 +232,6 @@ const StaffPerformanceSummaryByCompetencyPage = ({
   }, [overallScore2]);
 
   return (
-    // <div className="section-page-container">
     <AutoPaginatedSections
       blocks={blocks}
       pageWidth={794}
@@ -226,7 +240,6 @@ const StaffPerformanceSummaryByCompetencyPage = ({
       contentClassName="summary-by-competency-page"
       componentId="staff-performance-summary-by-competency"
     />
-    // </div>
   );
 };
 

@@ -123,8 +123,6 @@ const StrengthsPage = ({
     return true;
   };
 
-  // console.log("strengthPoints", strengthPoints);
-  // console.log("improvementPoints", improvementPoints);
   const handleStrengthPointsLine = useCallback((newPoints) => {
     setStrengthPoints((prev) => {
       if (arePointsEqual(prev, newPoints)) return prev;
@@ -142,15 +140,13 @@ const StrengthsPage = ({
   const blocks = useMemo(() => {
     const out = [];
 
-    const rowSpacing = 96;
     const topOffset = 85;
     const arcHeight = 450;
     const paddingTop = topOffset;
     const paddingBottom = topOffset;
-    const rowTopAdjust = 55;
 
     out.push(
-      <div key="strengths" className="sp">
+      <div key="strengths" className="sp sp-strengths">
         <FeedbackCommonHeader title={title} />
 
         <div className="sp-grid" style={{ "--sp-arc-color": arcColor }}>
@@ -369,7 +365,6 @@ const StrengthsPage = ({
   ]);
 
   return (
-    // <div className="section-page-container">
     <AutoPaginatedSections
       blocks={blocks}
       pageWidth={794}
@@ -378,7 +373,6 @@ const StrengthsPage = ({
       contentClassName="strengths-page"
       componentId="strengths-page"
     />
-    // </div>
   );
 };
 

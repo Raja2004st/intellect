@@ -11,12 +11,18 @@ const SummaryByCompetencyPage = ({
   leadershipOverallScore = 4.53,
   leadershipItems = [],
   setAverageCompentency,
-setFeedbackOverallData
-}) => {  
-  const [rightCultureCompetencyOverallScore, setRightCultureCompetencyOverallScore] = useState(overallScore);
-  const [leadershipCompetencyOverallScore, setLeadershipCompetencyOverallScore] = useState(leadershipOverallScore);
+  setFeedbackOverallData,
+}) => {
+  const [
+    rightCultureCompetencyOverallScore,
+    setRightCultureCompetencyOverallScore,
+  ] = useState(overallScore);
+  const [
+    leadershipCompetencyOverallScore,
+    setLeadershipCompetencyOverallScore,
+  ] = useState(leadershipOverallScore);
   const [rightCultureRows, setRightCultureRows] = useState(items);
-  const [leadershipRows, setLeadershipRows] = useState(leadershipItems); 
+  const [leadershipRows, setLeadershipRows] = useState(leadershipItems);
 
   const handleOverallScore = (rows) => {
     if (!Array.isArray(rows) || !rows.length) return 0;
@@ -44,22 +50,21 @@ setFeedbackOverallData
     if (competency === "right_culture_competency") {
       setRightCultureCompetencyOverallScore(overallScore);
       setRightCultureRows(rows);
-     setAverageCompentency((prev) => ({
-  ...prev,
-  right_culture_competency: rows,
-}));
+      setAverageCompentency((prev) => ({
+        ...prev,
+        right_culture_competency: rows,
+      }));
     }
     if (competency === "leadership_style_competency") {
       setLeadershipCompetencyOverallScore(overallScore);
-       setLeadershipRows(rows);
-       setAverageCompentency((prev) => ({
-  ...prev,
-  leadership_style_competency: rows,
-}));
-    
+      setLeadershipRows(rows);
+      setAverageCompentency((prev) => ({
+        ...prev,
+        leadership_style_competency: rows,
+      }));
     }
   };
-  
+
   const blocks = useMemo(() => {
     const out = [];
 
@@ -116,60 +121,93 @@ setFeedbackOverallData
     });
 
     out.push(
-      <FeedbackCommonHeader
-        key="sbc-hdr-1"
-        title={title}
-        right={
-          overallScore !== undefined && overallScore !== null ? (
-            <div className="sbc-header__pill">
-              Overall Score – {rightCultureCompetencyOverallScore}/5
-            </div>
-          ) : null
-        }
-        className="sbc-header"
-      />,
-    );
-
-    out.push(
-      <div key="sbc-chart-1" className="sbc-chart">
-        <CompetencyThreeBarChart
-          items={chartItems}
-          className="sbc-chart__inner"
-          barHeight={12}
-          barGap={6}
-          firstRowBorder={true}
-          onRowsChange={(row)=>handleItemsChange(row,"right_culture_competency")}
+      <div className="sbc-hdr-chart-wrapper" key="sbc-wrapper-1">
+        <FeedbackCommonHeader
+          key="sbc-hdr-1"
+          title={title}
+          right={
+            overallScore !== undefined && overallScore !== null ? (
+              <div className="sbc-header__pill">
+                Overall Score – {rightCultureCompetencyOverallScore}/5
+              </div>
+            ) : null
+          }
+          className="sbc-header"
         />
+        <div key="sbc-chart-1" className="sbc-chart">
+          <CompetencyThreeBarChart
+            items={chartItems}
+            className="sbc-chart__inner"
+            barHeight={12}
+            barGap={6}
+            firstRowBorder={true}
+            onRowsChange={(row) =>
+              handleItemsChange(row, "right_culture_competency")
+            }
+          />
+        </div>
       </div>,
     );
 
-    out.push(
-      <FeedbackCommonHeader
-        key="sbc-hdr-2"
-        title={"Summary by Competency – Leadership Personality & Style"}
-        right={
-          leadershipOverallScore !== undefined && leadershipOverallScore !== null ? (
-            <div className="sbc-header__pill">
-              Overall Score – {leadershipCompetencyOverallScore}/5
-            </div>
-          ) : null
-        }
-        className="sbc-header"
-      />,
-    );
+    // out.push(
+    //   <div key="sbc-chart-1" className="sbc-chart">
+    //     <CompetencyThreeBarChart
+    //       items={chartItems}
+    //       className="sbc-chart__inner"
+    //       barHeight={12}
+    //       barGap={6}
+    //       firstRowBorder={true}
+    //       onRowsChange={(row) =>
+    //         handleItemsChange(row, "right_culture_competency")
+    //       }
+    //     />
+    //   </div>,
+    // );
 
     out.push(
-      <div key="sbc-chart-2" className="sbc-chart">
-        <CompetencyThreeBarChart
-          items={leadershipRows}
-          className="sbc-chart__inner"
-          barHeight={9}
-          barGap={4}
-          firstRowBorder={true}
-          onRowsChange={(row)=>handleItemsChange(row,"leadership_style_competency")}
+      <div>
+        <FeedbackCommonHeader
+          key="sbc-hdr-2"
+          title={"Summary by Competency – Leadership Personality & Style"}
+          right={
+            leadershipOverallScore !== undefined &&
+            leadershipOverallScore !== null ? (
+              <div className="sbc-header__pill">
+                Overall Score – {leadershipCompetencyOverallScore}/5
+              </div>
+            ) : null
+          }
+          className="sbc-header-leadership"
         />
+        <div key="sbc-chart-2" className="sbc-chart">
+          <CompetencyThreeBarChart
+            items={leadershipRows}
+            className="sbc-chart__inner"
+            barHeight={9}
+            barGap={4}
+            firstRowBorder={true}
+            onRowsChange={(row) =>
+              handleItemsChange(row, "leadership_style_competency")
+            }
+          />
+        </div>
       </div>,
     );
+
+    // out.push(
+    //   <div key="sbc-chart-2" className="sbc-chart">
+    //     <CompetencyThreeBarChart
+    //       items={leadershipRows}
+    //       className="sbc-chart__inner"
+    //       barHeight={9}
+    //       barGap={4}
+    //       firstRowBorder={true}
+    //       onRowsChange={(row) =>
+    //         handleItemsChange(row, "leadership_style_competency")
+    //       }
+    //     />
+    //   </div>,
+    // );
 
     return out;
   }, [
@@ -180,7 +218,7 @@ setFeedbackOverallData
     leadershipCompetencyOverallScore,
   ]);
 
-   useEffect(() => {
+  useEffect(() => {
     setRightCultureCompetencyOverallScore(overallScore);
     setRightCultureRows(items);
   }, [overallScore]);
@@ -192,14 +230,14 @@ setFeedbackOverallData
 
   return (
     // <div className="section-page-container">
-      <AutoPaginatedSections
-        blocks={blocks}
-        pageWidth={794}
-        pageHeight={1123}
-        pagePadding={0}
-        contentClassName="summary-by-competency-page"
-        componentId="summary-by-competency"
-      />
+    <AutoPaginatedSections
+      blocks={blocks}
+      pageWidth={794}
+      pageHeight={1123}
+      pagePadding={0}
+      contentClassName="summary-by-competency-page"
+      componentId="summary-by-competency"
+    />
     // </div>
   );
 };
