@@ -2,28 +2,8 @@ import React, { useMemo } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import "../styles/continueDoingPage.scss";
-
-const tokenize = (text) => {
-  const src = String(text ?? "");
-  const parts = src.split(/(\*\*[^*]+\*\*|\{red\}[^}]+\{\/red\})/g);
-  return parts.filter(Boolean).map((p, idx) => {
-    if (p.startsWith("**") && p.endsWith("**")) {
-      return (
-        <strong key={idx} className="cd-strong">
-          {p.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (p.startsWith("{red}") && p.endsWith("{/red}")) {
-      return (
-        <span key={idx} className="cd-red">
-          {p.slice(5, -6)}
-        </span>
-      );
-    }
-    return <span key={idx}>{p}</span>;
-  });
-};
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const ContinueDoingPage = ({
   title = "What the Nominee Should “Continue Doing”…",
@@ -50,7 +30,10 @@ const ContinueDoingPage = ({
               {col.map((row, rowIdx) => (
                 <div key={rowIdx} className="cd-row" role="row">
                   <div className="cd-cell" role="cell">
-                    {tokenize(row)}
+                    {/* {tokenize(row)} */}
+                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                      {String(row ?? "")}
+                    </ReactMarkdown>
                   </div>
                 </div>
               ))}

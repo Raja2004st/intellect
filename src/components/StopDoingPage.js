@@ -2,28 +2,8 @@ import React, { useMemo } from "react";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import "../styles/stopDoingPage.scss";
-
-const tokenize = (text) => {
-  const src = String(text ?? "");
-  const parts = src.split(/(\*\*[^*]+\*\*|\{red\}[^}]+\{\/red\})/g);
-  return parts.filter(Boolean).map((p, idx) => {
-    if (p.startsWith("**") && p.endsWith("**")) {
-      return (
-        <strong key={idx} className="sd-strong">
-          {p.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (p.startsWith("{red}") && p.endsWith("{/red}")) {
-      return (
-        <span key={idx} className="sd-red">
-          {p.slice(5, -6)}
-        </span>
-      );
-    }
-    return <span key={idx}>{p}</span>;
-  });
-};
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const capitalize = (value) => {
   if (typeof value !== "string") return value;
@@ -65,7 +45,7 @@ const StopDoingPage = ({
                 {col.map((row, i) => (
                   <div key={i} className="sd-row" role="row">
                     <div className="sd-cell" role="cell">
-                      {tokenize(row)}
+                         <ReactMarkdown rehypePlugins={[rehypeRaw]}>{String(row ?? "")}</ReactMarkdown>
                     </div>
                   </div>
                 ))}
@@ -76,7 +56,7 @@ const StopDoingPage = ({
                 {col.map((row, i) => (
                   <div key={i} className="sd-row" role="row">
                     <div className="sd-cell" role="cell">
-                      {tokenize(row)}
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{String(row ?? "")}</ReactMarkdown>
                     </div>
                   </div>
                 ))}
