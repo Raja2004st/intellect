@@ -4,7 +4,6 @@ import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import ArcConnector from "./ArcConnector";
 import strengthImage from "../assets/png/strengthImage.png";
 import "../styles/strengthsPage.scss";
-import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const StrengthsPage = ({
   startPage = 4,
@@ -373,10 +372,10 @@ const StrengthsPage = ({
 
   return (
     // <div className="section-page-container">
-    <AutoPaginatedPptSections
+    <AutoPaginatedSections
       blocks={blocks}
-      // pageWidth={794}
-      pageHeight={540}
+      pageWidth={794}
+      pageHeight={1223}
       pagePadding={0}
       contentClassName="strengths-page"
       componentId="strengths-page"

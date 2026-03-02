@@ -31,10 +31,6 @@
     position: relative;
     counter-increment: page;
     gap: 24px;
-    display: flex;
-    flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
 
 
     &::after {

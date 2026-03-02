@@ -4,7 +4,6 @@ import { Doughnut } from "react-chartjs-2";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import "../styles/nomineesLeadershipStylePage.scss";
-import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -225,10 +224,10 @@ const NomineesLeadershipStylePage = ({
 
   return (
     // <div className="section-page-container">
-    <AutoPaginatedPptSections
+    <AutoPaginatedSections
       blocks={blocks}
-      // pageWidth={794}
-      pageHeight={550}
+      pageWidth={794}
+      pageHeight={1123}
       pagePadding={0}
       contentClassName="nls-page"
       componentId="nominees-leadership-style"

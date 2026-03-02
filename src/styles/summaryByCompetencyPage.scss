@@ -89,11 +89,8 @@
   color: var(--color-white);
   font-weight: 800;
   font-size: 13px;
-  padding: 4px 14px;
+  padding: 10px 14px;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  
 }
 
 .sbc-compare__th--right {
@@ -102,7 +99,7 @@
 }
 
 .sbc-compare__td {
-  padding: 6px 14px;
+  padding: 9px 14px;
   font-size: 13px;
   color: var(--color-text);
   background: #fff;

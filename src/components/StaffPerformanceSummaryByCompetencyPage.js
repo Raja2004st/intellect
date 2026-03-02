@@ -3,7 +3,6 @@ import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import CompetencyThreeBarChart from "./CompetencyThreeBarChart";
 import "../styles/summaryByCompetencyPage.scss";
-import AutoPaginatedPptSections from "./AutoPaginatedPptSections";
 
 const LEGEND_2 = [
   {
@@ -219,10 +218,10 @@ const StaffPerformanceSummaryByCompetencyPage = ({
 
   return (
     // <div className="section-page-container">
-    <AutoPaginatedPptSections
+    <AutoPaginatedSections
       blocks={blocks}
-      // pageWidth={794}
-      pageHeight={550}
+      pageWidth={794}
+      pageHeight={1123}
       pagePadding={0}
       contentClassName="summary-by-competency-page"
       componentId="staff-performance-summary-by-competency"
