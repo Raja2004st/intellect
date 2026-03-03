@@ -550,7 +550,7 @@ const Feedback360Report = () => {
         </button>
       </div>
       <div className="section-page pdf-section">
-        <FeedbackInitialPage />
+        <FeedbackInitialPage  initialName={feedbackOverallData?.name ? feedbackOverallData?.name : ""} />
       </div>
       <SurveyFeedback />
 

@@ -1,9 +1,75 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import AutoPaginatedSections from "./AutoPaginatedSections";
 import FeedbackCommonHeader from "./FeedbackCommonHeader";
 import "../styles/continueDoingPage.scss";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
+
+const EditableCell = ({ value, onSave }) => {
+  const [editValue, setEditValue] = useState(String(value ?? ""));
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSave(editValue);
+    } 
+    // else if (e.key === "Escape") {
+    //   onCancel();
+    // }
+  };
+
+  return (
+    <textarea
+      value={editValue}
+      onChange={(e) => setEditValue(e.target.value)}
+      onBlur={() => onSave(editValue)}
+      onKeyDown={handleKeyDown}
+      autoFocus
+      className="cd-edit-textarea"
+    />
+  );
+};
+
+const ContinueDoingGrid = ({ title, columns, onColumnsChange }) => {
+  const [editing, setEditing] = useState(null); // { colIdx, rowIdx }
+
+  return (
+    <div className="cd-grid" role="table" aria-label={title}>
+      {columns.map((col, colIdx) => (
+        <div key={colIdx} className="cd-col" role="rowgroup">
+          {col.map((row, rowIdx) => (
+            <div key={rowIdx} className="cd-row" role="row">
+              <div
+                className="cd-cell"
+                role="cell"
+                onDoubleClick={() => setEditing({ colIdx, rowIdx })}
+                style={{ cursor: "pointer" }}
+              >
+                {editing?.colIdx === colIdx && editing?.rowIdx === rowIdx ? (
+                  <EditableCell
+                    value={columns[colIdx]?.[rowIdx]}
+                    onSave={(newValue) => {
+                      const updated = [...columns];
+                      if (!updated[colIdx]) updated[colIdx] = [];
+                      updated[colIdx] = [...updated[colIdx]];
+                      updated[colIdx][rowIdx] = newValue;
+                      onColumnsChange(updated);
+                      setEditing(null);
+                    }}
+                  />
+                ) : (
+                  <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                    {String(row ?? "")}
+                  </ReactMarkdown>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const ContinueDoingPage = ({
   title = "What the Nominee Should “Continue Doing”…",
@@ -11,12 +77,18 @@ const ContinueDoingPage = ({
   footnote = "* This excludes self feedback",
   immediateActionSummary,
 }) => {
+  const [localColumns, setLocalColumns] = useState(columns);
+
+  useEffect(() => {
+    setLocalColumns(columns);
+  }, [columns]);
+
   const blocks = useMemo(() => {
     const out = [];
 
     const hasColumns =
-      Array.isArray(columns) &&
-      columns.some((c) => Array.isArray(c) && c.length);
+      Array.isArray(localColumns) &&
+      localColumns.some((c) => Array.isArray(c) && c.length);
 
     out.push(
       <FeedbackCommonHeader key="cd-hdr" title={title} className="cd-header" />,
@@ -24,22 +96,12 @@ const ContinueDoingPage = ({
 
     if (hasColumns) {
       out.push(
-        <div key="cd-grid" className="cd-grid" role="table" aria-label={title}>
-          {columns.map((col, colIdx) => (
-            <div key={colIdx} className="cd-col" role="rowgroup">
-              {col.map((row, rowIdx) => (
-                <div key={rowIdx} className="cd-row" role="row">
-                  <div className="cd-cell" role="cell">
-                    {/* {tokenize(row)} */}
-                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                      {String(row ?? "")}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>,
+        <ContinueDoingGrid
+          key="cd-grid"
+          title={title}
+          columns={localColumns}
+          onColumnsChange={setLocalColumns}
+        />,
       );
     }
 
@@ -137,7 +199,7 @@ const ContinueDoingPage = ({
     }
 
     return out;
-  }, [columns, footnote, immediateActionSummary, title]);
+  }, [localColumns, footnote, immediateActionSummary, title]);
 
   return (
     // <div className="section-page-container">

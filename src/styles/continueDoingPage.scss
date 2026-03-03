@@ -64,6 +64,24 @@
     margin: 0;
   }
 }
+.cd-edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.25;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: vertical;
+  min-height: 1.2em;
+  text-align: left;
+  font-weight: 800;
+  color: var(--color-black, #111);
+  // white-space: nowrap;
+  overflow: hidden;
+}
 
 .cd-strong {
   font-weight: 800;
